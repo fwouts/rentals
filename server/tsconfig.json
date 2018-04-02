@@ -1,9 +1,9 @@
 {
   "extends": "../tsconfig",
   "compilerOptions": {
-    "outDir": "build/",
-  },
-  "include": [
-    "src/**/*"
-  ]
+    "outDir": "build",
+    "target": "es2017",
+    "rootDir": "src",
+    "baseUrl": "./"
+  }
 }

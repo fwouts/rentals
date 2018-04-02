@@ -1,14 +1,16 @@
 {
   "compilerOptions": {
-    "target": "es2017",
     "module": "commonjs",
+    "moduleResolution": "node",
     "declaration": true,
     "sourceMap": true,
     "strict": true,
+    "forceConsistentCasingInFileNames": true,
     "noUnusedLocals": true,
     "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitAny": true,
     "noFallthroughCasesInSwitch": true,
-    "baseUrl": "./",
     "esModuleInterop": true,
   }
 }
