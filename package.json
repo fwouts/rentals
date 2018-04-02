@@ -1,0 +1,14 @@
+{
+  "name": "toptal-project",
+  "author": "Francois Wouts <f@zenc.io>",
+  "private": true,
+  "devDependencies": {
+    "husky": "^0.15.0-rc.13",
+    "prettier": "^1.11.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "./precommit.sh"
+    }
+  }
+}

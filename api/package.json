@@ -1,0 +1,13 @@
+{
+  "name": "api",
+  "author": "Francois Wouts <f@zenc.io>",
+  "private": true,
+  "scripts": {
+    "generate": "yarn generate-client && yarn generate-server",
+    "generate-client": "api generate typescript rentals.api -c https://rentals.toptal.zenc.io > ../client/src/api.ts",
+    "generate-server": "api generate typescript rentals.api -s > ../server/src/main.ts"
+  },
+  "devDependencies": {
+    "@zenclabs/api": "^0.0.10"
+  }
+}

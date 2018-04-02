@@ -1,0 +1,239 @@
+// HEADERS
+
+type AuthOptional = {
+  Authorization?: string
+}
+
+type AuthRequired = {
+  Authorization: string
+}
+
+// USERS ENDPOINTS
+
+// Endpoint to register users.
+//
+// Restrictions:
+// - anyone can register a new user who is @client or @realtor
+// - only admins can register a new user who is @admin
+@headers(AuthOptional)
+endpoint registerUser: POST /users/register RegisterUserRequest -> RegisterUserResponse
+
+type RegisterUserRequest = {
+  email: string
+  password: string
+  role: Role
+}
+
+type RegisterUserResponse = {
+  status: @success | @error
+  message: string
+}
+
+// Endpoint to login users.
+//
+// Used by clients, realtors and admins.
+endpoint loginUser: POST /users/login LoginUserRequest -> LoginUserResponse
+
+type LoginUserRequest = {
+  email: string
+  password: string
+}
+
+type LoginUserResponse = {
+  status: @error
+  message: string
+} | {
+  status: @success
+  jwtToken: string
+  role: Role
+}
+
+// Endpoint to update users.
+//
+// Restrictions:
+// - clients and realtors can only update their own information
+// - admins can update any user
+@headers(AuthRequired)
+endpoint updateUser: PUT /users/:id UpdateUserRequest -> UpdateUserResponse
+
+type UpdateUserRequest = {
+  email?: string
+  // Current password must be set for clients and realtors.
+  currentPassword?: string
+  newPassword?: string
+}
+
+type UpdateUserResponse = {
+  status: @success | @error
+  message: string
+}
+
+// Endpoint to delete users.
+//
+// Restrictions:
+// - clients and realtors can only delete their own account
+// - admins can delete any user
+@headers(AuthRequired)
+endpoint deleteUser: DELETE /users/:id DeleteUserRequest -> DeleteUserResponse
+
+type DeleteUserRequest = {
+  // Password must be set for clients and realtors.
+  password?: string
+}
+
+type DeleteUserResponse = {
+  status: @success | @error
+  message: string
+}
+
+// Endpoint to list users.
+//
+// Restrictions:
+// - only admins can list users
+@headers(AuthRequired)
+endpoint listUsers: GET /users ListUsersRequest -> ListUsersResponse
+
+type ListUsersRequest = {
+  filter?: {
+    role: Role
+  }
+  pageToken?: string
+}
+
+type ListUsersResponse = {
+  results: UserDetails[]
+  totalResults: int
+  nextPageToken?: string
+}
+
+type UserDetails = {
+  id: string
+  email: string
+  role: Role
+}
+
+type Role = @client | @realtor | @admin
+
+
+
+// APARTMENT ENDPOINTS
+
+// Endpoint to create apartments.
+//
+// Restrictions:
+// - clients cannot create an apartment
+// - only admins can set a realtor ID
+@headers(AuthRequired)
+endpoint createApartment: POST /apartments CreateApartmentRequest -> CreateApartmentResponse
+
+type CreateApartmentRequest = {
+  info: ApartmentInfo
+  realtorId?: string
+}
+
+type CreateApartmentResponse = {
+  status: @success | @error
+  message: string
+}
+
+// Endpoint to update apartments.
+//
+// Restrictions:
+// - clients cannot update an apartment
+// - realtors can only update the apartments they manage
+@headers(AuthRequired)
+endpoint updateApartment: PUT /apartments/:id UpdateApartmentRequest -> UpdateApartmentResponse
+
+type UpdateApartmentRequest = {
+  info: ApartmentInfo
+}
+
+type UpdateApartmentResponse = {
+  status: @success | @error
+  message: string
+}
+
+// Endpoint to delete apartments.
+//
+// Restrictions:
+// - clients cannot delete an apartment
+// - realtors can only delete the apartments they manage
+@headers(AuthRequired)
+endpoint deleteApartment: DELETE /apartments/:id void -> DeleteApartmentResponse
+
+type DeleteApartmentResponse = {
+  status: @success | @error
+  message: string
+}
+
+// Endpoint to list apartments.
+//
+// Everyone can set the same filters, but the set of apartments that will be filtered is different:
+// - clients will see rentable apartments from any realtor (rented=true will always return an
+//   empty list)
+// - realtors will see rentable and rented apartments they manage
+// - admins will see all apartments
+@headers(AuthRequired)
+endpoint listApartments: GET /apartments ListApartmentsRequest -> ListApartmentsResponse
+
+type ListApartmentsRequest = {
+  filter?: {
+    rented?: bool
+    sizeRange?: {
+      min: int
+      max: int
+    }
+    priceRange?: {
+      min: int
+      max: int
+    }
+    numberOfRooms?: {
+      min: int
+      max: int
+    }
+  }
+  pageToken?: string
+}
+
+type ListApartmentsResponse = {
+  results: ApartmentDetails[]
+  totalResults: int
+  nextPageToken?: string
+}
+
+type ApartmentDetails = {
+  info: ApartmentInfo
+  realtor: Realtor
+  dateAdded: Date
+}
+
+type ApartmentInfo = {
+  id: string;
+
+  // Floor area in square meters.
+  floorArea: float
+
+  // Price per month in USD.
+  pricePerMonth: int
+
+  // Number of rooms.
+  numberOfRooms: int
+
+  // Geographical coordinates.
+  coordinates: Coordinates
+
+  rented: bool
+}
+
+type Coordinates = {
+  latitude: float
+  longitude: float
+}
+
+// Seconds since epoch.
+type Date = long
+
+type Realtor = {
+  id: string
+  name: string
+}
