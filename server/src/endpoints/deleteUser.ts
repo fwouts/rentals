@@ -1,4 +1,4 @@
-import { AuthRequired, DeleteUserRequest, DeleteUserResponse } from "../main";
+import { AuthRequired, DeleteUserRequest, DeleteUserResponse } from "../api";
 
 export async function deleteUser(
   headers: AuthRequired,

@@ -1,4 +1,4 @@
-import { LoginUserRequest, LoginUserResponse } from "../main";
+import { LoginUserRequest, LoginUserResponse } from "../api";
 
 export async function loginUser(
   request: LoginUserRequest,

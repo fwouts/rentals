@@ -2,7 +2,7 @@ import {
   AuthOptional,
   RegisterUserRequest,
   RegisterUserResponse,
-} from "../main";
+} from "../api";
 
 export async function registerUser(
   headers: AuthOptional,

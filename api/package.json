@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "generate": "yarn generate-client && yarn generate-server",
-    "generate-client": "api generate typescript rentals.api -c https://rentals.toptal.zenc.io > ../client/src/api.ts",
-    "generate-server": "api generate typescript rentals.api -s > ../server/src/main.ts"
+    "generate-client": "apidef generate typescript rentals.api ../client/src -c https://rentals.toptal.zenc.io",
+    "generate-server": "apidef generate typescript rentals.api ../server/src -s"
   },
   "devDependencies": {
-    "@zenclabs/api": "^0.0.10"
+    "@zenclabs/api": "^0.0.11"
   }
 }

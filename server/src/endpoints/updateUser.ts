@@ -1,4 +1,4 @@
-import { AuthRequired, UpdateUserRequest, UpdateUserResponse } from "../main";
+import { AuthRequired, UpdateUserRequest, UpdateUserResponse } from "../api";
 
 export async function updateUser(
   headers: AuthRequired,

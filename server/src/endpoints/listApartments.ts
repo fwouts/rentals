@@ -2,7 +2,7 @@ import {
   AuthRequired,
   ListApartmentsRequest,
   ListApartmentsResponse,
-} from "../main";
+} from "../api";
 
 export async function listApartments(
   headers: AuthRequired,

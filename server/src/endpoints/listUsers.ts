@@ -1,4 +1,4 @@
-import { AuthRequired, ListUsersRequest, ListUsersResponse } from "../main";
+import { AuthRequired, ListUsersRequest, ListUsersResponse } from "../api";
 
 export async function listUsers(
   headers: AuthRequired,
