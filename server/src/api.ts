@@ -30,6 +30,7 @@ export type LoginUserResponse =
   | {
       status: "success";
       jwtToken: string;
+      userId: string;
       role: Role;
     };
 
@@ -67,7 +68,7 @@ export interface ListUsersResponse {
 }
 
 export interface UserDetails {
-  id: string;
+  userId: string;
   email: string;
   role: Role;
 }
@@ -79,13 +80,20 @@ export interface CreateApartmentRequest {
   realtorId?: string;
 }
 
-export interface CreateApartmentResponse {
-  status: "success" | "error";
-  message: string;
-}
+export type CreateApartmentResponse =
+  | {
+      status: "error";
+      message: string;
+    }
+  | {
+      status: "success";
+      message: string;
+      apartmentId: string;
+    };
 
 export interface UpdateApartmentRequest {
   info: ApartmentInfo;
+  realtorId?: string;
 }
 
 export interface UpdateApartmentResponse {
@@ -100,6 +108,7 @@ export interface DeleteApartmentResponse {
 
 export interface ListApartmentsRequest {
   filter?: {
+    realtorId?: string;
     rented?: boolean;
     sizeRange?: {
       min: number;
@@ -124,13 +133,13 @@ export interface ListApartmentsResponse {
 }
 
 export interface ApartmentDetails {
+  apartmentId: string;
   info: ApartmentInfo;
   realtor: Realtor;
   dateAdded: Date;
 }
 
 export interface ApartmentInfo {
-  id: string;
   floorArea: number;
   pricePerMonth: number;
   numberOfRooms: number;
@@ -146,6 +155,6 @@ export interface Coordinates {
 export type Date = number;
 
 export interface Realtor {
-  id: string;
+  realtorId: string;
   name: string;
 }

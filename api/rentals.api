@@ -45,6 +45,7 @@ type LoginUserResponse = {
 } | {
   status: @success
   jwtToken: string
+  userId: string
   role: Role
 }
 
@@ -107,7 +108,7 @@ type ListUsersResponse = {
 }
 
 type UserDetails = {
-  id: string
+  userId: string
   email: string
   role: Role
 }
@@ -132,8 +133,12 @@ type CreateApartmentRequest = {
 }
 
 type CreateApartmentResponse = {
-  status: @success | @error
+  status: @error
   message: string
+} | {
+  status: @success
+  message: string
+  apartmentId: string
 }
 
 // Endpoint to update apartments.
@@ -141,11 +146,13 @@ type CreateApartmentResponse = {
 // Restrictions:
 // - clients cannot update an apartment
 // - realtors can only update the apartments they manage
+// - only admins can reassign realtors to appartments
 @headers(AuthRequired)
 endpoint updateApartment: PUT /apartments/:id UpdateApartmentRequest -> UpdateApartmentResponse
 
 type UpdateApartmentRequest = {
   info: ApartmentInfo
+  realtorId?: string
 }
 
 type UpdateApartmentResponse = {
@@ -178,6 +185,7 @@ endpoint listApartments: GET /apartments ListApartmentsRequest -> ListApartments
 
 type ListApartmentsRequest = {
   filter?: {
+    realtorId?: string
     rented?: bool
     sizeRange?: {
       min: int
@@ -202,14 +210,13 @@ type ListApartmentsResponse = {
 }
 
 type ApartmentDetails = {
+  apartmentId: string;
   info: ApartmentInfo
   realtor: Realtor
   dateAdded: Date
 }
 
 type ApartmentInfo = {
-  id: string;
-
   // Floor area in square meters.
   floorArea: float
 
@@ -234,6 +241,6 @@ type Coordinates = {
 type Date = long
 
 type Realtor = {
-  id: string
+  realtorId: string
   name: string
 }
