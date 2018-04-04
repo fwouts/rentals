@@ -30,7 +30,7 @@ export async function deleteApartment(
           message: "Realtors cannot delete other realtors' apartment listings.",
         };
       }
-      await connection.manager.getRepository(Apartment).delete({
+      await connection.manager.delete(Apartment, {
         apartmentId,
         realtor: {
           userId,
@@ -41,7 +41,7 @@ export async function deleteApartment(
         message: "The apartment listing was deleted successfully.",
       };
     case "admin":
-      await connection.manager.getRepository(Apartment).delete({
+      await connection.manager.delete(Apartment, {
         apartmentId,
       });
       return {
