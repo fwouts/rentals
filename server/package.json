@@ -6,7 +6,7 @@
     "start": "yarn build && node build/server.js",
     "build": "tsc",
     "lint": "tslint --project tsconfig.json --fix",
-    "test": "jest",
+    "test": "jest --runInBand",
     "precommit": "yarn build && lint-staged && yarn test"
   },
   "_moduleAliases": {
