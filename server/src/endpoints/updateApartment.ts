@@ -44,29 +44,16 @@ export async function updateApartment(
           message: "Realtors cannot reassign apartments to other realtors.",
         };
       }
-      // TODO: Clean this up.
-      apartment.floorArea = request.info.floorArea;
-      apartment.pricePerMonth = request.info.pricePerMonth;
-      apartment.numberOfRooms = request.info.numberOfRooms;
-      apartment.latitude = request.info.coordinates.latitude;
-      apartment.longitude = request.info.coordinates.longitude;
-      apartment.rented = request.info.rented;
+      Apartment.updateInfo(apartment, request.info);
       await connection.manager.save(apartment);
       return {
         status: "success",
         message: "The apartment listing was updated successfully.",
       };
     case "admin":
-      // TODO: Clean this up.
-      apartment.floorArea = request.info.floorArea;
-      apartment.pricePerMonth = request.info.pricePerMonth;
-      apartment.numberOfRooms = request.info.numberOfRooms;
-      apartment.latitude = request.info.coordinates.latitude;
-      apartment.longitude = request.info.coordinates.longitude;
-      apartment.rented = request.info.rented;
+      Apartment.updateInfo(apartment, request.info);
       if (request.realtorId) {
-        apartment.realtor = new User();
-        apartment.realtor.userId = request.realtorId;
+        apartment.realtor = new User(request.realtorId);
       }
       await connection.manager.save(apartment);
       return {

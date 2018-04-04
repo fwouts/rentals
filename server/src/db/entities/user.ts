@@ -10,8 +10,7 @@ export class User {
     password: string;
     role: Role;
   }): User {
-    const user = new User();
-    user.userId = uuid.v4();
+    const user = new User(uuid.v4());
     user.email = props.email;
     user.role = props.role;
     const saltedHash = salting.saltedHash(props.password);
@@ -45,4 +44,10 @@ export class User {
     enum: ["client", "realtor", "admin"],
   })
   public role!: Role;
+
+  public constructor(userId?: string) {
+    if (userId) {
+      this.userId = userId;
+    }
+  }
 }

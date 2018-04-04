@@ -3,7 +3,6 @@ import { connection } from "@/db/connections";
 import { Apartment } from "@/db/entities/apartment";
 import { Between, FindConditions } from "typeorm";
 import {
-  ApartmentDetails,
   AuthRequired,
   ListApartmentsRequest,
   ListApartmentsResponse,
@@ -102,7 +101,7 @@ export async function listApartments(
     },
   );
   return {
-    results: results.map(toApartmentDetails),
+    results: results.map(Apartment.toApi),
     totalResults: totalCount,
     ...(skip + results.length < totalCount && {
       nextPageToken: btoa(
@@ -111,26 +110,5 @@ export async function listApartments(
         }),
       ),
     }),
-  };
-}
-
-function toApartmentDetails(apartment: Apartment): ApartmentDetails {
-  return {
-    apartmentId: apartment.apartmentId,
-    info: {
-      floorArea: apartment.floorArea,
-      pricePerMonth: apartment.pricePerMonth,
-      numberOfRooms: apartment.numberOfRooms,
-      coordinates: {
-        latitude: apartment.latitude,
-        longitude: apartment.longitude,
-      },
-      rented: apartment.rented,
-    },
-    realtor: {
-      realtorId: apartment.realtor.userId,
-      name: apartment.realtor.email,
-    },
-    dateAdded: apartment.added.getTime() / 1000,
   };
 }
