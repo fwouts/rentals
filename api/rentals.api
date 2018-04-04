@@ -21,6 +21,7 @@ endpoint registerUser: POST /users/register RegisterUserRequest -> RegisterUserR
 type RegisterUserRequest = {
   email: string
   password: string
+  name: string
   role: Role
 }
 
@@ -59,7 +60,8 @@ endpoint updateUser: PUT /users/:id UpdateUserRequest -> UpdateUserResponse
 
 type UpdateUserRequest = {
   email?: string
-  // Current password must be set for clients and realtors.
+  name?: string
+  // Current password must be set for updating the current user.
   currentPassword?: string
   newPassword?: string
 }
@@ -110,6 +112,7 @@ type ListUsersResponse = {
 type UserDetails = {
   userId: string
   email: string
+  name: string
   role: Role
 }
 

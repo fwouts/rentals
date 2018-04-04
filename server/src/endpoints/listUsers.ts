@@ -67,6 +67,7 @@ function toUserDetails(user: User): UserDetails {
   return {
     userId: user.userId,
     email: user.email,
+    name: user.name,
     role: user.role,
   };
 }

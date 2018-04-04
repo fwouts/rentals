@@ -13,6 +13,7 @@ test("email cannot be reused", async () => {
     {
       email: "hello@gmail.com",
       password: GOOD_PASSWORD_1,
+      name: "Realtor",
       role: "realtor",
     },
   );
@@ -25,6 +26,7 @@ test("email cannot be reused", async () => {
     {
       email: "hello@gmail.com",
       password: GOOD_PASSWORD_1,
+      name: "Client",
       role: "client",
     },
   );

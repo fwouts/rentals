@@ -20,16 +20,19 @@ beforeEach(async () => {
   const admin = User.create({
     email: "admin1@gmail.com",
     password: GOOD_PASSWORD_1,
+    name: "Admin 1",
     role: "admin",
   });
   const realtor = User.create({
     email: "realtor@gmail.com",
     password: GOOD_PASSWORD_2,
+    name: "Realtor",
     role: "realtor",
   });
   const client = User.create({
     email: "client@gmail.com",
     password: GOOD_PASSWORD_3,
+    name: "Client",
     role: "client",
   });
   await connection.manager.save([admin, realtor, client]);
@@ -41,6 +44,7 @@ test("only an admin can register another admin", async () => {
     {
       email: "admin2@gmail.com",
       password: GOOD_PASSWORD_4,
+      name: "Admin 2",
       role: "admin",
     },
   );
@@ -54,6 +58,7 @@ test("only an admin can register another admin", async () => {
     {
       email: "admin2@gmail.com",
       password: GOOD_PASSWORD_4,
+      name: "Admin 2",
       role: "admin",
     },
   );
@@ -67,6 +72,7 @@ test("only an admin can register another admin", async () => {
     {
       email: "admin2@gmail.com",
       password: GOOD_PASSWORD_4,
+      name: "Admin 2",
       role: "admin",
     },
   );
@@ -80,6 +86,7 @@ test("only an admin can register another admin", async () => {
     {
       email: "admin2@gmail.com",
       password: GOOD_PASSWORD_4,
+      name: "Admin 2",
       role: "admin",
     },
   );
@@ -95,6 +102,7 @@ test("admin registration", async () => {
     {
       email: "admin2@gmail.com",
       password: GOOD_PASSWORD_4,
+      name: "Admin 2",
       role: "admin",
     },
   );

@@ -14,6 +14,7 @@ test("client registration", async () => {
     {
       email: "client@gmail.com",
       password: GOOD_PASSWORD_1,
+      name: "Client",
       role: "client",
     },
   );

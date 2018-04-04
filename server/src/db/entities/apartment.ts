@@ -34,7 +34,7 @@ export class Apartment {
       },
       realtor: {
         realtorId: apartment.realtor.userId,
-        name: apartment.realtor.email,
+        name: apartment.realtor.name,
       },
       dateAdded: apartment.added.getTime() / 1000,
     };

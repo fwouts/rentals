@@ -37,6 +37,7 @@ export async function registerUser(
   const user = User.create({
     email: request.email,
     password: request.password,
+    name: request.name,
     role: request.role,
   });
   try {

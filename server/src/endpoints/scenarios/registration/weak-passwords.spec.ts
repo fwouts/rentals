@@ -38,6 +38,7 @@ async function expectRejected(password: string, expectedMessage: string) {
     {
       email: uuid.v4() + "@gmail.com",
       password,
+      name: "Client",
       role: "client",
     },
   );
@@ -53,6 +54,7 @@ async function expectAccepted(password: string) {
     {
       email: uuid.v4() + "@gmail.com",
       password,
+      name: "Client",
       role: "client",
     },
   );

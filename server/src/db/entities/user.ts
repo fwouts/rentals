@@ -8,10 +8,12 @@ export class User {
   public static create(props: {
     email: string;
     password: string;
+    name: string;
     role: Role;
   }): User {
     const user = new User(uuid.v4());
     user.email = props.email;
+    user.name = props.name;
     user.role = props.role;
     const saltedHash = salting.saltedHash(props.password);
     user.salt = saltedHash.salt;
@@ -29,6 +31,11 @@ export class User {
     length: 254,
   })
   public email!: string;
+
+  @Column("varchar", {
+    length: 64,
+  })
+  public name!: string;
 
   @Column("varchar", {
     length: 36,

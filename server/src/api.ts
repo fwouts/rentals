@@ -9,6 +9,7 @@ export interface AuthRequired {
 export interface RegisterUserRequest {
   email: string;
   password: string;
+  name: string;
   role: Role;
 }
 
@@ -36,6 +37,7 @@ export type LoginUserResponse =
 
 export interface UpdateUserRequest {
   email?: string;
+  name?: string;
   currentPassword?: string;
   newPassword?: string;
 }
@@ -70,6 +72,7 @@ export interface ListUsersResponse {
 export interface UserDetails {
   userId: string;
   email: string;
+  name: string;
   role: Role;
 }
 
