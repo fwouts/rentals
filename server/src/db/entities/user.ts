@@ -20,14 +20,29 @@ export class User {
     return user;
   }
 
-  @PrimaryColumn("text") public userId!: string;
+  @PrimaryColumn("varchar", {
+    length: 36,
+  })
+  public userId!: string;
 
-  @Column("text", { unique: true })
+  @Column("varchar", {
+    unique: true,
+    length: 254,
+  })
   public email!: string;
 
-  @Column("text") public salt!: string;
+  @Column("varchar", {
+    length: 36,
+  })
+  public salt!: string;
 
-  @Column("text") public saltedPassword!: string;
+  @Column("varchar", {
+    length: 128,
+  })
+  public saltedPassword!: string;
 
-  @Column("text") public role!: Role;
+  @Column("enum", {
+    enum: ["client", "realtor", "admin"],
+  })
+  public role!: Role;
 }

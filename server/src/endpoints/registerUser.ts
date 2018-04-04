@@ -35,7 +35,7 @@ export async function registerUser(
       message: "User successfully registered.",
     };
   } catch (e) {
-    if (e.constraint === "uk_user_email") {
+    if (e.message.indexOf("duplicate key value") !== -1) {
       return {
         status: "error",
         message: "Email already registered.",
