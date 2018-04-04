@@ -15,7 +15,10 @@ test("email cannot be reused", async () => {
       role: "realtor",
     },
   );
-  expect(registerFirstAccountResponse.status).toBe("success");
+  expect(registerFirstAccountResponse).toMatchObject({
+    status: "success",
+    message: "User successfully registered.",
+  });
   const registerSecondAccountResponse = await registerUser(
     {},
     {
@@ -24,5 +27,8 @@ test("email cannot be reused", async () => {
       role: "client",
     },
   );
-  expect(registerSecondAccountResponse.status).toBe("error");
+  expect(registerSecondAccountResponse).toMatchObject({
+    status: "error",
+    message: "Email already registered.",
+  });
 });

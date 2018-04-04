@@ -37,7 +37,10 @@ test("only an admin can register another admin", async () => {
       role: "admin",
     },
   );
-  expect(registerWithoutAuthorization.status).toBe("error");
+  expect(registerWithoutAuthorization).toMatchObject({
+    status: "error",
+    message: "Only an admin can register another admin.",
+  });
 
   const registerWithRealtorAuthorization = await registerUser(
     {
@@ -49,7 +52,10 @@ test("only an admin can register another admin", async () => {
       role: "admin",
     },
   );
-  expect(registerWithRealtorAuthorization.status).toBe("error");
+  expect(registerWithRealtorAuthorization).toMatchObject({
+    status: "error",
+    message: "Only an admin can register another admin.",
+  });
 
   const registerWithClientAuthorization = await registerUser(
     {
@@ -61,7 +67,10 @@ test("only an admin can register another admin", async () => {
       role: "admin",
     },
   );
-  expect(registerWithClientAuthorization.status).toBe("error");
+  expect(registerWithClientAuthorization).toMatchObject({
+    status: "error",
+    message: "Only an admin can register another admin.",
+  });
 
   const registerWithAdminAuthorization = await registerUser(
     {
@@ -73,10 +82,10 @@ test("only an admin can register another admin", async () => {
       role: "admin",
     },
   );
-  expect(registerWithAdminAuthorization.status).toBe("success");
-  expect(registerWithAdminAuthorization.message).toBe(
-    "User successfully registered.",
-  );
+  expect(registerWithAdminAuthorization).toMatchObject({
+    status: "success",
+    message: "User successfully registered.",
+  });
 });
 
 test("admin registration", async () => {
@@ -90,20 +99,29 @@ test("admin registration", async () => {
       role: "admin",
     },
   );
-  expect(registerResponse.status).toBe("success");
+  expect(registerResponse).toMatchObject({
+    status: "success",
+    message: "User successfully registered.",
+  });
   const incorrectLoginResponse = await loginUser({
     email: "admin2@gmail.com",
     password: "wrong password",
   });
-  expect(incorrectLoginResponse.status).toBe("error");
+  expect(incorrectLoginResponse).toMatchObject({
+    status: "error",
+    message: "Invalid credentials.",
+  });
   const correctLoginResponse = await loginUser({
     email: "admin2@gmail.com",
     password: "pass",
   });
+  expect(correctLoginResponse).toMatchObject({
+    status: "success",
+    role: "admin",
+  });
   if (correctLoginResponse.status !== "success") {
-    throw expect(correctLoginResponse.status).toBe("success");
+    throw new Error();
   }
-  expect(correctLoginResponse.role).toBe("admin");
   expect(correctLoginResponse.jwtToken.length).toBeGreaterThan(5);
 });
 
@@ -113,7 +131,7 @@ async function token(email: string, password: string): Promise<string> {
     password,
   });
   if (loginResponse.status !== "success") {
-    throw expect(loginResponse.status).toBe("success");
+    throw new Error();
   }
   return loginResponse.jwtToken;
 }

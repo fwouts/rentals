@@ -16,20 +16,28 @@ test("client registration", async () => {
       role: "client",
     },
   );
-  expect(registerResponse.status).toBe("success");
-  expect(registerResponse.message).toBe("User successfully registered.");
+  expect(registerResponse).toMatchObject({
+    status: "success",
+    message: "User successfully registered.",
+  });
   const incorrectLoginResponse = await loginUser({
     email: "client@gmail.com",
     password: "wrong password",
   });
-  expect(incorrectLoginResponse.status).toBe("error");
+  expect(incorrectLoginResponse).toMatchObject({
+    status: "error",
+    message: "Invalid credentials.",
+  });
   const correctLoginResponse = await loginUser({
     email: "client@gmail.com",
     password: "pass",
   });
+  expect(correctLoginResponse).toMatchObject({
+    status: "success",
+    role: "client",
+  });
   if (correctLoginResponse.status !== "success") {
-    throw expect(correctLoginResponse.status).toBe("success");
+    throw new Error();
   }
-  expect(correctLoginResponse.role).toBe("client");
   expect(correctLoginResponse.jwtToken.length).toBeGreaterThan(5);
 });

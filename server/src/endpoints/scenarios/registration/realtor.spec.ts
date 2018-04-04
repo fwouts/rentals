@@ -16,20 +16,28 @@ test("realtor registration", async () => {
       role: "realtor",
     },
   );
-  expect(registerResponse.status).toBe("success");
-  expect(registerResponse.message).toBe("User successfully registered.");
+  expect(registerResponse).toMatchObject({
+    status: "success",
+    message: "User successfully registered.",
+  });
   const incorrectLoginResponse = await loginUser({
     email: "realtor@gmail.com",
     password: "wrong password",
   });
-  expect(incorrectLoginResponse.status).toBe("error");
+  expect(incorrectLoginResponse).toMatchObject({
+    status: "error",
+    message: "Invalid credentials.",
+  });
   const correctLoginResponse = await loginUser({
     email: "realtor@gmail.com",
     password: "pass",
   });
+  expect(correctLoginResponse).toMatchObject({
+    status: "success",
+    role: "realtor",
+  });
   if (correctLoginResponse.status !== "success") {
-    throw expect(correctLoginResponse.status).toBe("success");
+    throw new Error();
   }
-  expect(correctLoginResponse.role).toBe("realtor");
   expect(correctLoginResponse.jwtToken.length).toBeGreaterThan(5);
 });
