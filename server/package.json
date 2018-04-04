@@ -7,7 +7,7 @@
     "build": "tsc",
     "lint": "tslint --project tsconfig.json --fix",
     "test": "jest",
-    "precommit": "yarn build && lint-staged"
+    "precommit": "yarn build && lint-staged && yarn test"
   },
   "_moduleAliases": {
     "@": "build"
