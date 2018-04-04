@@ -22,7 +22,7 @@ async function wipeData() {
   const testConnection = await createTestOnlyConnection({
     forWiping: true,
   });
-  await testConnection.query('DROP TABLE IF EXISTS "user";');
+  await testConnection.query('DROP TABLE IF EXISTS "apartment", "user";');
   await testConnection.close();
 }
 

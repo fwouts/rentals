@@ -1,3 +1,4 @@
+import { Apartment } from "@/db/entities/apartment";
 import "reflect-metadata";
 import { Connection } from "typeorm";
 import { User } from "./entities/user";
@@ -8,4 +9,4 @@ export async function initConnection(newConnection: Connection) {
   connection = newConnection;
 }
 
-export const ENTITIES = [User];
+export const ENTITIES = [Apartment, User];
