@@ -2,6 +2,7 @@ import "module-alias/register";
 
 import { ENTITIES, initConnection } from "@/db/connections";
 import bodyParser from "body-parser";
+import cors from "cors";
 import express from "express";
 import { createConnection } from "typeorm";
 import * as api from "./api";
@@ -19,6 +20,12 @@ const PORT = 3010;
 
 const app = express();
 app.use(bodyParser.json());
+// TODO: Change CORS configuration.
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+  }),
+);
 
 app.post("/users/register", async (req, res, next) => {
   try {
@@ -174,11 +181,11 @@ if (require.main === module) {
 async function initDatabase() {
   const connection = await createConnection({
     type: "postgres",
-    host: process.env.DB_HOST,
+    host: process.env.DB_HOST || "localhost",
     port: 5432,
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE,
+    username: process.env.DB_USERNAME || "rentals-dev",
+    password: process.env.DB_PASSWORD || "",
+    database: process.env.DB_DATABASE || "rentals-dev",
     entities: ENTITIES,
     synchronize: true,
     logging: false,

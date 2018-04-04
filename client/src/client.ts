@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as api from "./api";
 
-const URL = "https://rentals.toptal.zenc.io";
+const URL = "http://localhost:3010";
 
 export async function registerUser(
   headers: api.AuthOptional,

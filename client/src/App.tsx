@@ -1,10 +1,22 @@
 import * as React from "react";
 import "./App.css";
+import { registerUser } from "./client";
 
 const logo = require("./logo.svg");
 
 class App extends React.Component {
   public render() {
+    registerUser(
+      {},
+      {
+        email: "f@zenc.io",
+        password: "test!$Yes1",
+        name: "Francois",
+        role: "admin",
+      },
+    )
+      .then(console.log)
+      .catch(console.error);
     return (
       <div className="App">
         <header className="App-header">
