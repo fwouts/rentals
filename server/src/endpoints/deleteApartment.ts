@@ -8,7 +8,7 @@ export async function deleteApartment(
   apartmentId: string,
 ): Promise<DeleteApartmentResponse> {
   const { userId, role } = decodeJwt(headers.Authorization);
-  const apartment = await connection.manager.getRepository(Apartment).findOne({
+  const apartment = await connection.manager.findOne(Apartment, {
     apartmentId,
   });
   if (!apartment) {

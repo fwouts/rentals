@@ -2,12 +2,28 @@ import { connection } from "@/db/connections";
 import { Apartment } from "@/db/entities/apartment";
 import { findUser, REALTOR_HELENA, REALTOR_JOHN } from "@/testing/users";
 
-export async function findNewestApartment(): Promise<Apartment> {
-  return connection.manager.getRepository(Apartment).findOneOrFail({
-    order: {
-      added: "DESC",
-    },
-  });
+export async function findNewestApartment(
+  realtorEmail?: string,
+): Promise<Apartment> {
+  if (realtorEmail) {
+    const realtor = await findUser(realtorEmail);
+    return connection.manager.findOneOrFail(Apartment, {
+      where: {
+        realtor: {
+          userId: realtor.userId,
+        },
+      },
+      order: {
+        added: "DESC",
+      },
+    });
+  } else {
+    return connection.manager.findOneOrFail(Apartment, {
+      order: {
+        added: "DESC",
+      },
+    });
+  }
 }
 
 export async function createTestApartments(): Promise<void> {

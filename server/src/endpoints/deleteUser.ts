@@ -10,7 +10,7 @@ export async function deleteUser(
   request: DeleteUserRequest,
 ): Promise<DeleteUserResponse> {
   const { userId, role } = decodeJwt(headers.Authorization);
-  const user = await connection.manager.getRepository(User).findOne({
+  const user = await connection.manager.findOne(User, {
     userId: deleteUserId,
   });
   if (!user) {
