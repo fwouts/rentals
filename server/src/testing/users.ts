@@ -18,6 +18,9 @@ export const HELENA_PASSWORD = 'Da$4/8A"';
 export const ADMIN_FRANK = "frank@rentals.com";
 export const FRANK_PASSWORD = "3@4NUx`&";
 
+export const ADMIN_GEORGE = "george@rentals.com";
+export const GEORGE_PASSWORD = "9tLS<s/X";
+
 export async function createTestUsers() {
   await connection.manager.save([
     User.create({
@@ -43,6 +46,11 @@ export async function createTestUsers() {
     User.create({
       email: ADMIN_FRANK,
       password: FRANK_PASSWORD,
+      role: "admin",
+    }),
+    User.create({
+      email: ADMIN_GEORGE,
+      password: GEORGE_PASSWORD,
       role: "admin",
     }),
   ]);
