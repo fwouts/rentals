@@ -1,3 +1,4 @@
+import { User } from "@/db/entities/user";
 import crypto from "crypto";
 import uuid from "uuid";
 
@@ -17,4 +18,9 @@ export function saltedHash(password: string, salt?: string): Salted {
     salt,
     saltedPassword,
   };
+}
+
+export function passwordValid(password: string, potentialUser: User) {
+  const { saltedPassword } = saltedHash(password, potentialUser.salt);
+  return saltedPassword === potentialUser.saltedPassword;
 }

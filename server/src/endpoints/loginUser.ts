@@ -1,5 +1,5 @@
 import { encodeJwt } from "@/auth/jwt";
-import { saltedHash } from "@/auth/salting";
+import { passwordValid } from "@/auth/salting";
 import { LoginUserRequest, LoginUserResponse } from "../api";
 import { connection } from "../db/connections";
 import { User } from "../db/entities/user";
@@ -16,8 +16,7 @@ export async function loginUser(
       message: "Invalid credentials.",
     };
   }
-  const { saltedPassword } = saltedHash(request.password, potentialUser.salt);
-  if (saltedPassword !== potentialUser.saltedPassword) {
+  if (!passwordValid(request.password, potentialUser)) {
     return {
       status: "error",
       message: "Invalid credentials.",
