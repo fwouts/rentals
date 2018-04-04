@@ -1,3 +1,5 @@
+import "module-alias/register";
+
 import { ENTITIES, initConnection } from "@/db/connections";
 import bodyParser from "body-parser";
 import express from "express";
