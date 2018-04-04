@@ -36,7 +36,6 @@ export async function deleteApartment(
           userId,
         },
       });
-      // TODO: Check deleted count.
       return {
         status: "success",
         message: "The apartment listing was deleted successfully.",
@@ -45,7 +44,6 @@ export async function deleteApartment(
       await connection.manager.getRepository(Apartment).delete({
         apartmentId,
       });
-      // TODO: Check deleted count.
       return {
         status: "success",
         message: "The apartment listing was deleted successfully.",
