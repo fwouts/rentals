@@ -1,7 +1,12 @@
 import { Role } from "@/api";
 import * as salting from "@/auth/salting";
+import owasp from "owasp-password-strength-test";
 import { Column, Entity, PrimaryColumn } from "typeorm";
 import uuid from "uuid";
+
+owasp.config({
+  minLength: 8,
+});
 
 @Entity()
 export class User {
@@ -15,9 +20,7 @@ export class User {
     user.email = props.email;
     user.name = props.name;
     user.role = props.role;
-    const saltedHash = salting.saltedHash(props.password);
-    user.salt = saltedHash.salt;
-    user.saltedPassword = saltedHash.saltedPassword;
+    user.setPassword(props.password);
     return user;
   }
 
@@ -56,5 +59,15 @@ export class User {
     if (userId) {
       this.userId = userId;
     }
+  }
+
+  public setPassword(password: string) {
+    const passwordTest = owasp.test(password);
+    if (passwordTest.errors.length > 0) {
+      throw new Error("Password too weak:\n" + passwordTest.errors.join("\n"));
+    }
+    const saltedHash = salting.saltedHash(password);
+    this.salt = saltedHash.salt;
+    this.saltedPassword = saltedHash.saltedPassword;
   }
 }

@@ -8,10 +8,6 @@ import {
 import { connection } from "../db/connections";
 import { User } from "../db/entities/user";
 
-owasp.config({
-  minLength: 8,
-});
-
 export async function registerUser(
   headers: AuthOptional,
   request: RegisterUserRequest,
