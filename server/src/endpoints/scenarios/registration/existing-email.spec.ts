@@ -1,6 +1,7 @@
 import { registerUser } from "@/endpoints/registerUser";
 import { useTestingDatabase } from "@/testing/db";
 import { setUpJwtForTesting } from "@/testing/jwt";
+import { GOOD_PASSWORD_1 } from "@/testing/passwords";
 import "jest";
 
 setUpJwtForTesting();
@@ -11,7 +12,7 @@ test("email cannot be reused", async () => {
     {},
     {
       email: "hello@gmail.com",
-      password: "pass",
+      password: GOOD_PASSWORD_1,
       role: "realtor",
     },
   );
@@ -23,7 +24,7 @@ test("email cannot be reused", async () => {
     {},
     {
       email: "hello@gmail.com",
-      password: "pass",
+      password: GOOD_PASSWORD_1,
       role: "client",
     },
   );

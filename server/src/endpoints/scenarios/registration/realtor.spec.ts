@@ -2,6 +2,7 @@ import { loginUser } from "@/endpoints/loginUser";
 import { registerUser } from "@/endpoints/registerUser";
 import { useTestingDatabase } from "@/testing/db";
 import { setUpJwtForTesting } from "@/testing/jwt";
+import { GOOD_PASSWORD_1 } from "@/testing/passwords";
 import "jest";
 
 setUpJwtForTesting();
@@ -12,7 +13,7 @@ test("realtor registration", async () => {
     {},
     {
       email: "realtor@gmail.com",
-      password: "pass",
+      password: GOOD_PASSWORD_1,
       role: "realtor",
     },
   );
@@ -30,7 +31,7 @@ test("realtor registration", async () => {
   });
   const correctLoginResponse = await loginUser({
     email: "realtor@gmail.com",
-    password: "pass",
+    password: GOOD_PASSWORD_1,
   });
   expect(correctLoginResponse).toMatchObject({
     status: "success",

@@ -1,4 +1,5 @@
 import { decodeJwt } from "@/auth/jwt";
+import owasp from "owasp-password-strength-test";
 import {
   AuthOptional,
   RegisterUserRequest,
@@ -6,6 +7,10 @@ import {
 } from "../api";
 import { connection } from "../db/connections";
 import { User } from "../db/entities/user";
+
+owasp.config({
+  minLength: 8,
+});
 
 export async function registerUser(
   headers: AuthOptional,
@@ -22,7 +27,13 @@ export async function registerUser(
       message: "Only an admin can register another admin.",
     };
   }
-  // TODO: Reject too short or obvious passwords.
+  const passwordTest = owasp.test(request.password);
+  if (passwordTest.errors.length > 0) {
+    return {
+      status: "error",
+      message: "Password too weak:\n" + passwordTest.errors.join("\n"),
+    };
+  }
   const user = User.create({
     email: request.email,
     password: request.password,

@@ -4,6 +4,12 @@ import { loginUser } from "@/endpoints/loginUser";
 import { registerUser } from "@/endpoints/registerUser";
 import { useTestingDatabase } from "@/testing/db";
 import { setUpJwtForTesting } from "@/testing/jwt";
+import {
+  GOOD_PASSWORD_1,
+  GOOD_PASSWORD_2,
+  GOOD_PASSWORD_3,
+  GOOD_PASSWORD_4,
+} from "@/testing/passwords";
 import "jest";
 
 setUpJwtForTesting();
@@ -12,17 +18,17 @@ useTestingDatabase();
 beforeEach(async () => {
   const admin = User.create({
     email: "admin1@gmail.com",
-    password: "adminpass",
+    password: GOOD_PASSWORD_1,
     role: "admin",
   });
   const realtor = User.create({
     email: "realtor@gmail.com",
-    password: "realtorpass",
+    password: GOOD_PASSWORD_2,
     role: "realtor",
   });
   const client = User.create({
     email: "client@gmail.com",
-    password: "clientpass",
+    password: GOOD_PASSWORD_3,
     role: "client",
   });
   await connection.manager.save([admin, realtor, client]);
@@ -33,7 +39,7 @@ test("only an admin can register another admin", async () => {
     {},
     {
       email: "admin2@gmail.com",
-      password: "pass",
+      password: GOOD_PASSWORD_4,
       role: "admin",
     },
   );
@@ -44,11 +50,11 @@ test("only an admin can register another admin", async () => {
 
   const registerWithRealtorAuthorization = await registerUser(
     {
-      Authorization: await token("realtor@gmail.com", "realtorpass"),
+      Authorization: await token("realtor@gmail.com", GOOD_PASSWORD_2),
     },
     {
       email: "admin2@gmail.com",
-      password: "pass",
+      password: GOOD_PASSWORD_4,
       role: "admin",
     },
   );
@@ -59,11 +65,11 @@ test("only an admin can register another admin", async () => {
 
   const registerWithClientAuthorization = await registerUser(
     {
-      Authorization: await token("client@gmail.com", "clientpass"),
+      Authorization: await token("client@gmail.com", GOOD_PASSWORD_3),
     },
     {
       email: "admin2@gmail.com",
-      password: "pass",
+      password: GOOD_PASSWORD_4,
       role: "admin",
     },
   );
@@ -74,11 +80,11 @@ test("only an admin can register another admin", async () => {
 
   const registerWithAdminAuthorization = await registerUser(
     {
-      Authorization: await token("admin1@gmail.com", "adminpass"),
+      Authorization: await token("admin1@gmail.com", GOOD_PASSWORD_1),
     },
     {
       email: "admin2@gmail.com",
-      password: "pass",
+      password: GOOD_PASSWORD_4,
       role: "admin",
     },
   );
@@ -91,11 +97,11 @@ test("only an admin can register another admin", async () => {
 test("admin registration", async () => {
   const registerResponse = await registerUser(
     {
-      Authorization: await token("admin1@gmail.com", "adminpass"),
+      Authorization: await token("admin1@gmail.com", GOOD_PASSWORD_1),
     },
     {
       email: "admin2@gmail.com",
-      password: "pass",
+      password: GOOD_PASSWORD_4,
       role: "admin",
     },
   );
@@ -113,7 +119,7 @@ test("admin registration", async () => {
   });
   const correctLoginResponse = await loginUser({
     email: "admin2@gmail.com",
-    password: "pass",
+    password: GOOD_PASSWORD_4,
   });
   expect(correctLoginResponse).toMatchObject({
     status: "success",
@@ -129,6 +135,9 @@ async function token(email: string, password: string): Promise<string> {
   const loginResponse = await loginUser({
     email,
     password,
+  });
+  expect(loginResponse).toMatchObject({
+    status: "success",
   });
   if (loginResponse.status !== "success") {
     throw new Error();
