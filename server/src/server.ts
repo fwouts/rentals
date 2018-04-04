@@ -1,4 +1,9 @@
+import "module-alias/register";
+
+import { ENTITIES, initConnection } from "@/db/connections";
+import bodyParser from "body-parser";
 import express from "express";
+import { createConnection } from "typeorm";
 import * as api from "./api";
 import { createApartment } from "./endpoints/createApartment";
 import { deleteApartment } from "./endpoints/deleteApartment";
@@ -13,6 +18,7 @@ import { updateUser } from "./endpoints/updateUser";
 const PORT = 3010;
 
 const app = express();
+app.use(bodyParser.json());
 
 app.post("/users/register", async (req, res, next) => {
   try {
@@ -155,5 +161,27 @@ app.get("/apartments", async (req, res, next) => {
   }
 });
 
-// tslint:disable-next-line no-console
-app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+if (require.main === module) {
+  initDatabase().catch((e) => {
+    // tslint:disable-next-line no-console
+    console.error(e);
+    process.exit(1);
+  });
+  // tslint:disable-next-line no-console
+  app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+}
+
+async function initDatabase() {
+  const connection = await createConnection({
+    type: "postgres",
+    host: process.env.DB_HOST,
+    port: 5432,
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+    entities: ENTITIES,
+    synchronize: true,
+    logging: false,
+  });
+  initConnection(connection);
+}
