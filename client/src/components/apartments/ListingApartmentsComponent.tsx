@@ -1,4 +1,4 @@
-import { Button, Card, Checkbox, Form, InputNumber, Loading, Table } from "element-react";
+import { Alert, Button, Card, Checkbox, Form, InputNumber, Loading, Table } from "element-react";
 import { observer } from "mobx-react";
 import moment from "moment";
 import * as React from "react";
@@ -49,6 +49,13 @@ export class ListingApartmentsComponent extends React.Component<{controller: Lis
           </Card>
         </div>
         <Loading className="list" loading={this.props.controller.loading}>
+          {this.props.controller.total > 0 && <>
+            <Alert
+              title={`We found ${this.props.controller.total} result${this.props.controller.total !== 1 ? "s" : ""}.`}
+              closable={false}
+            />
+            <br />
+          </>}
           <Table
             columns={COLUMNS}
             data={this.props.controller.apartments.map(formatRow)}
