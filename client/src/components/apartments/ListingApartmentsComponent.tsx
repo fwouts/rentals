@@ -1,4 +1,5 @@
-import { Alert, Button, Card, Checkbox, Form, InputNumber, Loading, Pagination, Select, Table } from "element-react";
+import {
+  Alert, Button, Card, Checkbox, Dialog, Form, InputNumber, Loading, Pagination, Select, Table } from "element-react";
 import { observer } from "mobx-react";
 import moment from "moment";
 import * as React from "react";
@@ -6,16 +7,35 @@ import { ApartmentDetails } from "../../api";
 import { ListingApartments } from "../../state/authenticated/states/apartments/listing";
 import "./ListingApartmentsComponent.scss";
 
+interface Row {
+  details: ApartmentDetails;
+  apartmentId: string;
+  realtorName: string;
+  floorArea: number;
+  numberOfRooms: number;
+  pricePerMonth: number;
+  rented: "Rented" | "Rentable";
+  dateAdded: string;
+  editable: boolean;
+}
+
 @observer
 export class ListingApartmentsComponent extends React.Component<{
   controller: ListingApartments,
   enableRentedFilter?: boolean,
+  enableModification?: {
+    filter: {
+      realtorId: string,
+    } | "all",
+    editApartment(apartmentDetails: ApartmentDetails);
+    deleteApartment(apartmentDetails: ApartmentDetails);
+  },
 }> {
   public render() {
     const columns = [
       {
         label: "Realtor",
-        prop: "realtor",
+        prop: "realtorName",
         align: "center",
       },
       {
@@ -45,6 +65,33 @@ export class ListingApartmentsComponent extends React.Component<{
         prop: "dateAdded",
         align: "center",
       },
+      ...(this.props.enableModification ? [
+        {
+          label: "Operations",
+          align: "center",
+          fixed: "right",
+          render: (row: Row) => {
+            return this.props.enableModification && row.editable && (
+              <>
+                <Button
+                  type="text"
+                  size="small"
+                  onClick={() => this.props.enableModification!.editApartment(row.details)}
+                >
+                  Edit
+                </Button>
+                <Button
+                  type="text"
+                  size="small"
+                  onClick={() => this.props.enableModification!.deleteApartment(row.details)}
+                >
+                  Delete
+                </Button>
+              </>
+            );
+          },
+        },
+      ] : []),
     ];
     return (
       <div className="ListingApartmentsComponent">
@@ -82,6 +129,20 @@ export class ListingApartmentsComponent extends React.Component<{
             </Form>
           </Card>
         </div>
+        <Dialog
+          visible={!!this.props.controller.deletingApartment}
+          title="Delete apartment?"
+          size="tiny"
+          onCancel={() => this.props.controller.deletingApartment!.cancel()}
+        >
+          <Dialog.Body>
+            <span>This will permanently delete this apartment listing.</span>
+          </Dialog.Body>
+          <Dialog.Footer className="dialog-footer">
+            <Button onClick={() => this.props.controller.deletingApartment!.cancel()}>Cancel</Button>
+            <Button type="primary" onClick={() => this.props.controller.deletingApartment!.confirm()}>Confirm</Button>
+          </Dialog.Footer>
+        </Dialog>
         <Loading className="list" loading={this.props.controller.loading}>
           {this.props.controller.total > 0 && <>
             <Alert
@@ -92,7 +153,7 @@ export class ListingApartmentsComponent extends React.Component<{
           </>}
           <Table
             columns={columns}
-            data={this.props.controller.apartments.map(formatRow)}
+            data={this.props.controller.apartments.map(this.formatRow)}
             stripe={true}
             {...({emptyText: "No apartments to show."}) as any}
           />
@@ -200,19 +261,25 @@ export class ListingApartmentsComponent extends React.Component<{
     );
   }
 
+  private formatRow = (apartment: ApartmentDetails): Row => {
+    return {
+      details: apartment,
+      apartmentId: apartment.apartmentId,
+      realtorName: apartment.realtor.name,
+      floorArea: apartment.info.floorArea,
+      numberOfRooms: apartment.info.numberOfRooms,
+      pricePerMonth: apartment.info.pricePerMonth,
+      rented: apartment.info.rented ? "Rented" : "Rentable",
+      dateAdded: moment(apartment.dateAdded * 1000).fromNow(),
+      editable: this.props.enableModification ? (
+        this.props.enableModification.filter === "all" ||
+        this.props.enableModification.filter.realtorId === apartment.realtor.realtorId
+      ) : false,
+    };
+  }
+
   private onSubmit = (e: Event) => {
     this.props.controller.loadFresh();
     e.preventDefault();
   }
-}
-
-function formatRow(apartment: ApartmentDetails) {
-  return {
-    realtor: apartment.realtor.name,
-    floorArea: apartment.info.floorArea,
-    numberOfRooms: apartment.info.numberOfRooms,
-    pricePerMonth: apartment.info.pricePerMonth,
-    rented: apartment.info.rented ? "Rented" : "Rentable",
-    dateAdded: moment(apartment.dateAdded * 1000).fromNow(),
-  };
 }

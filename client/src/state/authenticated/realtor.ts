@@ -1,7 +1,6 @@
 import { observable } from "mobx";
 import { Authenticated } from "../authenticating";
 import { CreatingApartment } from "./states/apartments/creating";
-import { DeletingApartment } from "./states/apartments/deleting";
 import { ListingApartments } from "./states/apartments/listing";
 import { UpdatingApartment } from "./states/apartments/updating";
 import { DeletingSelf } from "./states/users/deleting-self";
@@ -15,7 +14,6 @@ export class AuthenticatedRealtor {
     | ListingApartments
     | CreatingApartment
     | UpdatingApartment
-    | DeletingApartment
     | UpdatingSelf
     | DeletingSelf;
   public readonly signOut: () => void;

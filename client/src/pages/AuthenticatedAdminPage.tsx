@@ -3,6 +3,7 @@ import { observer } from "mobx-react";
 import * as React from "react";
 import { CreatingApartmentComponent } from "../components/apartments/CreatingApartmentComponent";
 import { ListingApartmentsComponent } from "../components/apartments/ListingApartmentsComponent";
+import { UpdatingApartmentComponent } from "../components/apartments/UpdatingApartmentComponent";
 import { AuthenticatedAdmin } from "../state/authenticated/admin";
 
 @observer
@@ -15,12 +16,24 @@ export class AuthenticatedAdminPage extends React.Component<{controller: Authent
           <ListingApartmentsComponent
             controller={this.props.controller.state}
             enableRentedFilter={true}
+            enableModification={{
+              filter: "all",
+              editApartment: this.props.controller.editApartment,
+              deleteApartment: this.props.controller.state.deleteApartment,
+            }}
           />
         );
         break;
       case "creating-apartment":
         element = (
           <CreatingApartmentComponent
+            controller={this.props.controller.state}
+          />
+        );
+        break;
+      case "updating-apartment":
+        element = (
+          <UpdatingApartmentComponent
             controller={this.props.controller.state}
           />
         );
@@ -51,8 +64,8 @@ export class AuthenticatedAdminPage extends React.Component<{controller: Authent
         this.props.controller.listApartments();
         break;
       case "apartments-create":
-          this.props.controller.createApartment();
-          break;
+        this.props.controller.createApartment();
+        break;
     }
   }
 }

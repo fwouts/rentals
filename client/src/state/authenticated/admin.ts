@@ -1,7 +1,7 @@
 import { observable } from "mobx";
+import { ApartmentDetails } from "../../api";
 import { Authenticated } from "../authenticating";
 import { CreatingApartment } from "./states/apartments/creating";
-import { DeletingApartment } from "./states/apartments/deleting";
 import { ListingApartments } from "./states/apartments/listing";
 import { UpdatingApartment } from "./states/apartments/updating";
 import { AdminDeletingOther } from "./states/users/admin-deleting-other";
@@ -17,7 +17,6 @@ export class AuthenticatedAdmin {
     | ListingApartments
     | CreatingApartment
     | UpdatingApartment
-    | DeletingApartment
     | UpdatingSelf
     | DeletingSelf
     | AdminUpdatingOther
@@ -29,8 +28,7 @@ export class AuthenticatedAdmin {
   public constructor(authenticated: Authenticated, callbacks: Callbacks) {
     this.authenticated = authenticated;
     this.signOut = callbacks.signOut;
-    // this.listApartments();
-    this.createApartment();
+    this.listApartments();
   }
 
   public listApartments = async () => {
@@ -40,6 +38,17 @@ export class AuthenticatedAdmin {
 
   public createApartment = async () => {
     this.state = new CreatingApartment(this.authenticated, this.listApartments);
+  }
+
+  public editApartment = async (apartment: ApartmentDetails) => {
+    this.state = new UpdatingApartment(
+      this.authenticated,
+      {
+        onDone: this.listApartments,
+        onCancel: this.listApartments,
+      },
+      apartment,
+    );
   }
 }
 

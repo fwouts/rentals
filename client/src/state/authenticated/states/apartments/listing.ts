@@ -2,6 +2,7 @@ import { observable } from "mobx";
 import { ApartmentDetails, ListApartmentsFilter } from "../../../../api";
 import { listApartments } from "../../../../client";
 import { Authenticated } from "../../../authenticating";
+import { DeletingApartment } from "./deleting";
 
 export class ListingApartments {
   public readonly kind = "listing-apartments";
@@ -19,6 +20,8 @@ export class ListingApartments {
   @observable public total = 0;
   @observable public pageCount = 0;
   @observable public currentPage = 1;
+
+  @observable public deletingApartment: DeletingApartment | null = null;
 
   private appliedFilter = this.filter;
   private readonly authenticated: Authenticated;
@@ -56,6 +59,23 @@ export class ListingApartments {
     } finally {
       this.loading = false;
     }
+  }
+
+  public deleteApartment = async (apartment: ApartmentDetails) => {
+    this.deletingApartment = new DeletingApartment(
+      this.authenticated,
+      {
+        onDone: () => {
+          this.deletingApartment = null;
+          this.apartments = this.apartments.filter(
+            (a) => a.apartmentId !== apartment.apartmentId,
+          );
+          this.total--;
+        },
+        onCancel: () => (this.deletingApartment = null),
+      },
+      apartment,
+    );
   }
 }
 
