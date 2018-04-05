@@ -63,10 +63,10 @@ export async function listUsers(
   headers: api.AuthRequired,
   request: api.ListUsersRequest,
 ): Promise<api.ListUsersResponse> {
-  const url = `${URL}/users`;
+  const url = `${URL}/users/list`;
   const response = await axios({
     url,
-    method: "GET",
+    method: "POST",
     data: request,
     headers,
   });
@@ -77,7 +77,7 @@ export async function createApartment(
   headers: api.AuthRequired,
   request: api.CreateApartmentRequest,
 ): Promise<api.CreateApartmentResponse> {
-  const url = `${URL}/apartments`;
+  const url = `${URL}/apartments/create`;
   const response = await axios({
     url,
     method: "POST",
@@ -119,10 +119,10 @@ export async function listApartments(
   headers: api.AuthRequired,
   request: api.ListApartmentsRequest,
 ): Promise<api.ListApartmentsResponse> {
-  const url = `${URL}/apartments`;
+  const url = `${URL}/apartments/list`;
   const response = await axios({
     url,
-    method: "GET",
+    method: "POST",
     data: request,
     headers,
   });

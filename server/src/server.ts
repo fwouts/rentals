@@ -97,7 +97,7 @@ app.delete("/users/:id", async (req, res, next) => {
   }
 });
 
-app.get("/users", async (req, res, next) => {
+app.post("/users/list", async (req, res, next) => {
   try {
     const headers: api.AuthRequired = {
       Authorization: req.header("Authorization") || "",
@@ -110,7 +110,7 @@ app.get("/users", async (req, res, next) => {
   }
 });
 
-app.post("/apartments", async (req, res, next) => {
+app.post("/apartments/create", async (req, res, next) => {
   try {
     const headers: api.AuthRequired = {
       Authorization: req.header("Authorization") || "",
@@ -160,7 +160,7 @@ app.delete("/apartments/:id", async (req, res, next) => {
   }
 });
 
-app.get("/apartments", async (req, res, next) => {
+app.post("/apartments/list", async (req, res, next) => {
   try {
     const headers: api.AuthRequired = {
       Authorization: req.header("Authorization") || "",

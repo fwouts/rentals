@@ -94,7 +94,7 @@ type DeleteUserResponse = {
 // Restrictions:
 // - only admins can list users
 @headers(AuthRequired)
-endpoint listUsers: GET /users ListUsersRequest -> ListUsersResponse
+endpoint listUsers: POST /users/list ListUsersRequest -> ListUsersResponse
 
 type ListUsersRequest = {
   filter?: {
@@ -128,7 +128,7 @@ type Role = @client | @realtor | @admin
 // - clients cannot create an apartment
 // - only admins can set a realtor ID
 @headers(AuthRequired)
-endpoint createApartment: POST /apartments CreateApartmentRequest -> CreateApartmentResponse
+endpoint createApartment: POST /apartments/create CreateApartmentRequest -> CreateApartmentResponse
 
 type CreateApartmentRequest = {
   info: ApartmentInfo
@@ -184,7 +184,7 @@ type DeleteApartmentResponse = {
 // - realtors will see rentable and rented apartments they manage
 // - admins will see all apartments
 @headers(AuthRequired)
-endpoint listApartments: GET /apartments ListApartmentsRequest -> ListApartmentsResponse
+endpoint listApartments: POST /apartments/list ListApartmentsRequest -> ListApartmentsResponse
 
 type ListApartmentsRequest = {
   filter?: ListApartmentsFilter

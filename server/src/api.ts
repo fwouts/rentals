@@ -23,17 +23,15 @@ export interface LoginUserRequest {
   password: string;
 }
 
-export type LoginUserResponse =
-  | {
-      status: "error";
-      message: string;
-    }
-  | {
-      status: "success";
-      jwtToken: string;
-      userId: string;
-      role: Role;
-    };
+export type LoginUserResponse = {
+  status: "error";
+  message: string;
+} | {
+  status: "success";
+  jwtToken: string;
+  userId: string;
+  role: Role;
+};
 
 export interface UpdateUserRequest {
   email?: string;
@@ -83,16 +81,14 @@ export interface CreateApartmentRequest {
   realtorId?: string;
 }
 
-export type CreateApartmentResponse =
-  | {
-      status: "error";
-      message: string;
-    }
-  | {
-      status: "success";
-      message: string;
-      apartmentId: string;
-    };
+export type CreateApartmentResponse = {
+  status: "error";
+  message: string;
+} | {
+  status: "success";
+  message: string;
+  apartmentId: string;
+};
 
 export interface UpdateApartmentRequest {
   info: ApartmentInfo;

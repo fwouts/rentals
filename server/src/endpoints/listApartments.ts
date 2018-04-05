@@ -81,7 +81,9 @@ export async function listApartments(
   let skip;
   if (request.pageToken) {
     try {
-      const token = JSON.parse(atob(request.pageToken));
+      const token = JSON.parse(
+        Buffer.from(request.pageToken, "base64").toString(),
+      );
       skip = parseInt(token.skip, 10);
     } catch (e) {
       // Ignore any error, but log it for debugging purposes.
@@ -104,11 +106,11 @@ export async function listApartments(
     results: results.map(Apartment.toApi),
     totalResults: totalCount,
     ...(skip + results.length < totalCount && {
-      nextPageToken: btoa(
+      nextPageToken: Buffer.from(
         JSON.stringify({
           skip: skip + maxResultsPerPage,
         }),
-      ),
+      ).toString("base64"),
     }),
   };
 }
