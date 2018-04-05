@@ -22,14 +22,21 @@ export class AuthenticatedRealtor {
     | DeletingSelf = {
     kind: "home",
   };
+  public readonly signOut: () => void;
+
   private readonly authenticated: Authenticated;
 
-  public constructor(authenticated: Authenticated) {
+  public constructor(authenticated: Authenticated, callbacks: Callbacks) {
     this.authenticated = authenticated;
+    this.signOut = callbacks.signOut;
   }
 
   public listApartments = async () => {
     this.state = new ListingApartments(this.authenticated);
     await this.state.loadFresh();
   }
+}
+
+export interface Callbacks {
+  signOut(): void;
 }

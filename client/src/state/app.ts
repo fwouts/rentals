@@ -35,12 +35,9 @@ export class AppController {
       }
     }
     if (authenticated) {
-      this.state = this.getState(authenticated);
+      this.state = this.getAuthenticatedState(authenticated);
     } else {
-      this.state = new Unauthenticated({
-        register: this.register,
-        authenticate: this.authenticate,
-      });
+      this.state = this.getUnauthenticatedState();
     }
   }
 
@@ -58,20 +55,37 @@ export class AppController {
           JSON.stringify(authenticated),
         );
       }
-      this.state = this.getState(authenticated);
+      this.state = this.getAuthenticatedState(authenticated);
     });
   }
 
-  private getState(authenticated: Authenticated) {
+  private getAuthenticatedState(authenticated: Authenticated) {
+    const callbacks = {
+      signOut: this.signOut,
+    };
     switch (authenticated.role) {
       case "client":
-        return new AuthenticatedClient(authenticated);
+        return new AuthenticatedClient(authenticated, callbacks);
       case "realtor":
-        return new AuthenticatedRealtor(authenticated);
+        return new AuthenticatedRealtor(authenticated, callbacks);
       case "admin":
-        return new AuthenticatedAdmin(authenticated);
+        return new AuthenticatedAdmin(authenticated, callbacks);
       default:
         throw new Error(`Unknown role: ${authenticated.role}.`);
     }
+  }
+
+  private getUnauthenticatedState() {
+    return new Unauthenticated({
+      register: this.register,
+      authenticate: this.authenticate,
+    });
+  }
+
+  private signOut = () => {
+    if (window.localStorage) {
+      window.localStorage.removeItem(LOCAL_STORAGE_AUTHENTICATION_KEY);
+    }
+    this.state = this.getUnauthenticatedState();
   }
 }
