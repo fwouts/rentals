@@ -11,6 +11,7 @@ export class Registering {
   @observable public name = "";
   @observable public role: Role = "client";
   @observable public error: string | null = null;
+  @observable public pending = false;
 
   private readonly onSuccess: OnSuccess;
 
@@ -20,30 +21,37 @@ export class Registering {
 
   @action
   public submit = async () => {
-    if (this.password !== this.confirmPassword) {
-      this.error = "Passwords do not match.";
-      return;
-    }
-    // TODO: Check for empty fields, trim inputs (across all forms).
-    const response = await registerUser(
-      {},
-      {
-        email: this.email,
-        password: this.password,
-        name: this.name,
-        role: this.role,
-      },
-    );
-    runInAction(() => {
-      switch (response.status) {
-        case "error":
-          this.error = response.message;
-          break;
-        case "success":
-          this.onSuccess();
-          break;
+    try {
+      this.pending = true;
+      if (this.password !== this.confirmPassword) {
+        this.error = "Passwords do not match.";
+        return;
       }
-    });
+      // TODO: Check for empty fields, trim inputs (across all forms).
+      const response = await registerUser(
+        {},
+        {
+          email: this.email,
+          password: this.password,
+          name: this.name,
+          role: this.role,
+        },
+      );
+      runInAction(() => {
+        switch (response.status) {
+          case "error":
+            this.error = response.message;
+            break;
+          case "success":
+            this.onSuccess();
+            break;
+        }
+      });
+    } finally {
+      runInAction(() => {
+        this.pending = false;
+      });
+    }
   }
 }
 

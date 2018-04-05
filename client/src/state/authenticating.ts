@@ -8,6 +8,7 @@ export class Authenticating {
   @observable public email = "";
   @observable public password = "";
   @observable public error: string | null = null;
+  @observable public pending = false;
 
   private readonly onSuccess: OnSuccess;
 
@@ -25,21 +26,29 @@ export class Authenticating {
     this.password = password;
   }
 
+  @action
   public submit = async () => {
-    const response = await loginUser({
-      email: this.email,
-      password: this.password,
-    });
-    runInAction(() => {
-      switch (response.status) {
-        case "error":
-          this.error = response.message;
-          break;
-        case "success":
-          this.onSuccess(response);
-          break;
-      }
-    });
+    try {
+      this.pending = true;
+      const response = await loginUser({
+        email: this.email,
+        password: this.password,
+      });
+      runInAction(() => {
+        switch (response.status) {
+          case "error":
+            this.error = response.message;
+            break;
+          case "success":
+            this.onSuccess(response);
+            break;
+        }
+      });
+    } finally {
+      runInAction(() => {
+        this.pending = false;
+      });
+    }
   }
 }
 

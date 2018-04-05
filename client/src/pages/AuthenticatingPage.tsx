@@ -1,4 +1,4 @@
-import { Alert, Button, Form, Input } from "element-react";
+import { Alert, Button, Form, Input, Loading } from "element-react";
 import { observer } from "mobx-react";
 import * as React from "react"; import { Authenticating } from "../state/authenticating";
 
@@ -14,6 +14,7 @@ export class AuthenticatingPage extends React.Component<{controller: Authenticat
         <h1>
           Sign in
         </h1>
+        {this.props.controller.pending && <Loading fullscreen={true} />}
         <Form model={this.props.controller} {...onSubmit}>
           {this.props.controller.error && <Alert title={this.props.controller.error} type="error" />}
           <Form.Item label="Email address" required={true}>
