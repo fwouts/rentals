@@ -4,7 +4,6 @@ import { CreatingApartment } from "./states/apartments/creating";
 import { DeletingApartment } from "./states/apartments/deleting";
 import { ListingApartments } from "./states/apartments/listing";
 import { UpdatingApartment } from "./states/apartments/updating";
-import { Home } from "./states/home";
 import { DeletingSelf } from "./states/users/deleting-self";
 import { UpdatingSelf } from "./states/users/updating-self";
 
@@ -12,16 +11,13 @@ export class AuthenticatedRealtor {
   public readonly kind = "authenticated-realtor";
 
   @observable
-  public state:
-    | Home
+  public state!:
     | ListingApartments
     | CreatingApartment
     | UpdatingApartment
     | DeletingApartment
     | UpdatingSelf
-    | DeletingSelf = {
-    kind: "home",
-  };
+    | DeletingSelf;
   public readonly signOut: () => void;
 
   private readonly authenticated: Authenticated;
@@ -29,6 +25,7 @@ export class AuthenticatedRealtor {
   public constructor(authenticated: Authenticated, callbacks: Callbacks) {
     this.authenticated = authenticated;
     this.signOut = callbacks.signOut;
+    this.listApartments();
   }
 
   public listApartments = async () => {

@@ -4,7 +4,6 @@ import { CreatingApartment } from "./states/apartments/creating";
 import { DeletingApartment } from "./states/apartments/deleting";
 import { ListingApartments } from "./states/apartments/listing";
 import { UpdatingApartment } from "./states/apartments/updating";
-import { Home } from "./states/home";
 import { AdminDeletingOther } from "./states/users/admin-deleting-other";
 import { AdminUpdatingOther } from "./states/users/admin-updating-other";
 import { DeletingSelf } from "./states/users/deleting-self";
@@ -14,8 +13,7 @@ export class AuthenticatedAdmin {
   public readonly kind = "authenticated-admin";
 
   @observable
-  public state:
-    | Home
+  public state!:
     | ListingApartments
     | CreatingApartment
     | UpdatingApartment
@@ -23,7 +21,7 @@ export class AuthenticatedAdmin {
     | UpdatingSelf
     | DeletingSelf
     | AdminUpdatingOther
-    | AdminDeletingOther = new Home();
+    | AdminDeletingOther;
   public readonly signOut: () => void;
 
   private readonly authenticated: Authenticated;
@@ -31,6 +29,7 @@ export class AuthenticatedAdmin {
   public constructor(authenticated: Authenticated, callbacks: Callbacks) {
     this.authenticated = authenticated;
     this.signOut = callbacks.signOut;
+    this.listApartments();
   }
 
   public listApartments = async () => {
