@@ -66,18 +66,18 @@ export class Apartment {
   @ManyToOne((type) => User, {
     eager: true,
   })
-  @JoinColumn({ name: "realtorId" })
+  @JoinColumn({ name: "realtorid" })
   public realtor!: User;
 
-  @Column("float") public floorArea!: number;
+  @Column("real") public floorArea!: number;
 
   @Column("int") public pricePerMonth!: number;
 
   @Column("int") public numberOfRooms!: number;
 
-  @Column("float") public latitude!: number;
+  @Column("real") public latitude!: number;
 
-  @Column("float") public longitude!: number;
+  @Column("real") public longitude!: number;
 
   @Column("bool") public rented!: boolean;
 

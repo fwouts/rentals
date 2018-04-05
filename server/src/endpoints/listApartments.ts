@@ -1,7 +1,6 @@
 import { decodeJwt } from "@/auth/jwt";
 import { connection } from "@/db/connections";
 import { Apartment } from "@/db/entities/apartment";
-import { Between, FindConditions } from "typeorm";
 import {
   AuthRequired,
   ListApartmentsRequest,
@@ -27,34 +26,6 @@ export async function listApartments(
     };
   }
   const requestFilter = request.filter || {};
-  const where: FindConditions<Apartment> = {
-    ...(requestFilter.realtorId !== undefined && {
-      realtor: {
-        userId: requestFilter.realtorId,
-      },
-    }),
-    ...(requestFilter.rented !== undefined && {
-      rented: requestFilter.rented,
-    }),
-    ...(requestFilter.sizeRange !== undefined && {
-      floorArea: Between(
-        requestFilter.sizeRange.min,
-        requestFilter.sizeRange.max,
-      ),
-    }),
-    ...(requestFilter.priceRange !== undefined && {
-      pricePerMonth: Between(
-        requestFilter.priceRange.min,
-        requestFilter.priceRange.max,
-      ),
-    }),
-    ...(requestFilter.numberOfRooms !== undefined && {
-      numberOfRooms: Between(
-        requestFilter.numberOfRooms.min,
-        requestFilter.numberOfRooms.max,
-      ),
-    }),
-  };
   if (role === "client") {
     if (requestFilter.rented) {
       // Don't show rented apartments to clients.
@@ -64,7 +35,7 @@ export async function listApartments(
         pageCount: 0,
       };
     } else {
-      where.rented = false;
+      requestFilter.rented = false;
     }
   }
   if (role === "realtor") {
@@ -77,9 +48,38 @@ export async function listApartments(
           pageCount: 0,
         };
       } else {
-        where.rented = false;
+        requestFilter.rented = false;
       }
     }
+  }
+  const whereQueries: string[] = [];
+  const whereArgs: { [arg: string]: string | number | boolean } = {};
+  if (requestFilter.realtorId) {
+    whereQueries.push(`(apartment.realtorid = :realtorId)`);
+    whereArgs.realtorId = requestFilter.realtorId;
+  }
+  if (requestFilter.rented !== undefined) {
+    whereQueries.push(`(apartment.rented = :rented)`);
+    whereArgs.rented = requestFilter.rented;
+  }
+  if (requestFilter.sizeRange) {
+    whereQueries.push(`(apartment.floorArea BETWEEN :floorMin AND :floorMax)`);
+    whereArgs.floorMin = requestFilter.sizeRange.min;
+    whereArgs.floorMax = requestFilter.sizeRange.max;
+  }
+  if (requestFilter.priceRange) {
+    whereQueries.push(
+      `(apartment.pricePerMonth BETWEEN :priceMin AND :priceMax)`,
+    );
+    whereArgs.priceMin = requestFilter.priceRange.min;
+    whereArgs.priceMax = requestFilter.priceRange.max;
+  }
+  if (requestFilter.numberOfRooms) {
+    whereQueries.push(
+      `(apartment.numberOfRooms BETWEEN :roomsMin AND :roomsMax)`,
+    );
+    whereArgs.roomsMin = requestFilter.numberOfRooms.min;
+    whereArgs.roomsMax = requestFilter.numberOfRooms.max;
   }
   let skip;
   if (request.page) {
@@ -87,14 +87,14 @@ export async function listApartments(
   } else {
     skip = 0;
   }
-  const [results, totalCount] = await connection.manager.findAndCount(
-    Apartment,
-    {
-      where,
-      skip,
-      take: maxResultsPerPage,
-    },
-  );
+  const [results, totalCount] = await connection.manager
+    .getRepository(Apartment)
+    .createQueryBuilder("apartment")
+    .innerJoinAndSelect("apartment.realtor", "user")
+    .where(whereQueries.join(" AND "), whereArgs)
+    .skip(skip)
+    .take(maxResultsPerPage)
+    .getManyAndCount();
   return {
     results: results.map(Apartment.toApi),
     totalResults: totalCount,

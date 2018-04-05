@@ -5,9 +5,10 @@ import { findUser, REALTOR_HELENA, REALTOR_JOHN } from "@/testing/users";
 export async function findNewestApartment(
   realtorEmail?: string,
 ): Promise<Apartment> {
+  let apartment = null;
   if (realtorEmail) {
     const realtor = await findUser(realtorEmail);
-    return connection.manager.findOneOrFail(Apartment, {
+    apartment = await connection.manager.findOne(Apartment, {
       where: {
         realtor: {
           userId: realtor.userId,
@@ -18,12 +19,16 @@ export async function findNewestApartment(
       },
     });
   } else {
-    return connection.manager.findOneOrFail(Apartment, {
+    apartment = await connection.manager.findOne(Apartment, {
       order: {
         added: "DESC",
       },
     });
   }
+  if (!apartment) {
+    throw new Error(`No apartment found.`);
+  }
+  return apartment;
 }
 
 export async function createTestApartments(): Promise<void> {

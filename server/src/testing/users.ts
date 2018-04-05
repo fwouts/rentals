@@ -62,8 +62,12 @@ export async function createTestUsers() {
   ]);
 }
 
-export async function findUser(email: string) {
-  return connection.manager.findOneOrFail(User, { email });
+export async function findUser(email: string): Promise<User> {
+  const user = await connection.manager.findOne(User, { email });
+  if (!user) {
+    throw new Error(`No user found.`);
+  }
+  return user;
 }
 
 export async function authHeaders(

@@ -50,8 +50,13 @@ export class User {
   })
   public saltedPassword!: string;
 
-  @Column("enum", {
-    enum: ["client", "realtor", "admin"],
+  // TODO: Switch to enum once TypeORM supports it.
+  // See https://github.com/typeorm/typeorm/issues/1045.
+  // @Column("enum", {
+  //   enum: ["client", "realtor", "admin"],
+  // })
+  @Column("varchar", {
+    length: 7,
   })
   public role!: Role;
 

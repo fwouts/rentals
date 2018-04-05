@@ -1,6 +1,7 @@
 import { decodeJwt } from "@/auth/jwt";
 import { connection } from "@/db/connections";
 import { Apartment } from "@/db/entities/apartment";
+import { User } from "@/db/entities/user";
 import { AuthRequired, DeleteApartmentResponse } from "../api";
 
 export async function deleteApartment(
@@ -32,9 +33,7 @@ export async function deleteApartment(
       }
       await connection.manager.delete(Apartment, {
         apartmentId,
-        realtor: {
-          userId,
-        },
+        realtor: new User(userId),
       });
       return {
         status: "success",
