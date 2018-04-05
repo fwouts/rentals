@@ -31,7 +31,7 @@ export class AuthenticatedAdmin {
   }
 
   @action
-  public async listApartments() {
+  public listApartments = async () => {
     this.state = new ListingApartments(this.authenticated);
     await this.state.loadFresh();
   }

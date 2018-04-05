@@ -20,7 +20,7 @@ export class ListingApartments {
   }
 
   @action
-  public async loadFresh() {
+  public loadFresh = async () => {
     try {
       this.loading = true;
       const filter = this.filter;
@@ -46,7 +46,7 @@ export class ListingApartments {
   }
 
   @action
-  public async loadMore() {
+  public loadMore = async () => {
     if (!this.nextPageToken) {
       return false;
     }

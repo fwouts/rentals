@@ -14,17 +14,24 @@ export class AppController {
     | Authenticating
     | AuthenticatedAdmin
     | AuthenticatedRealtor
-    | AuthenticatedClient = new Unauthenticated();
+    | AuthenticatedClient;
+
+  constructor() {
+    this.state = new Unauthenticated({
+      register: this.register,
+      authenticate: this.authenticate,
+    });
+  }
 
   @action
-  public register() {
+  public register = () => {
     this.state = new Registering(() => {
       this.authenticate();
     });
   }
 
   @action
-  public authenticate() {
+  public authenticate = () => {
     this.state = new Authenticating((authenticated) => {
       runInAction(() => {
         switch (authenticated.role) {

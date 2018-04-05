@@ -19,7 +19,7 @@ export class Registering {
   }
 
   @action
-  public async submit() {
+  public submit = async () => {
     if (this.password !== this.confirmPassword) {
       this.error = "Passwords do not match.";
       return;

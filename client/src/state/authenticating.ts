@@ -15,7 +15,7 @@ export class Authenticating {
     this.onSuccess = onSuccess;
   }
 
-  public async submit() {
+  public submit = async () => {
     const response = await loginUser({
       email: this.email,
       password: this.password,

@@ -21,7 +21,7 @@ export class AuthenticatedClient {
   }
 
   @action
-  public async listApartments() {
+  public listApartments = async () => {
     this.state = new ListingApartments(this.authenticated);
     await this.state.loadFresh();
   }

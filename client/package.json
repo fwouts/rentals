@@ -25,6 +25,8 @@
     "chalk": "1.1.3",
     "css-loader": "0.28.7",
     "dotenv": "4.0.0",
+    "element-react": "^1.4.12",
+    "element-theme-default": "^1.4.13",
     "extract-text-webpack-plugin": "3.0.2",
     "file-loader": "0.11.2",
     "fork-ts-checker-webpack-plugin": "^0.2.8",

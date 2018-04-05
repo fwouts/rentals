@@ -1,3 +1,4 @@
+import "element-theme-default";
 import { configure } from "mobx";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
