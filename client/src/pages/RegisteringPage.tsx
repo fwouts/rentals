@@ -6,17 +6,13 @@ import { Registering } from "../state/registering";
 @observer
 export class RegisteringPage extends React.Component<{controller: Registering}> {
   public render() {
-    // HACK: onSubmit is missing from the FormProps type.
-    const onSubmit: any = {
-      onSubmit: this.onSubmit,
-    };
     return (
       <div>
         <h1>
           Create an account
         </h1>
         {this.props.controller.pending && <Loading fullscreen={true} />}
-        <Form model={this.props.controller} {...onSubmit}>
+        <Form model={this.props.controller} {...{onSubmit: this.onSubmit} as any}>
           {this.props.controller.error && <Alert title={this.props.controller.error} type="error" />}
           <Form.Item label="Name" required={true}>
             <Input

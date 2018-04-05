@@ -46,15 +46,11 @@ export class ListingApartmentsComponent extends React.Component<{
         align: "center",
       },
     ];
-    // HACK: onSubmit is missing from the FormProps type.
-    const onSubmit: any = {
-      onSubmit: this.onSubmit,
-    };
     return (
       <div className="ListingApartmentsComponent">
         <div className="filter-panel">
           <Card>
-            <Form model={this.props.controller.filter} {...onSubmit}>
+            <Form model={this.props.controller.filter} {...{onSubmit: this.onSubmit} as any}>
               {this.renderFilter(
                 "Filter by floor area",
                 "Floor area (m²)",

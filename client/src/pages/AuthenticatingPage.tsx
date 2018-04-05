@@ -5,17 +5,13 @@ import * as React from "react"; import { Authenticating } from "../state/authent
 @observer
 export class AuthenticatingPage extends React.Component<{controller: Authenticating}> {
   public render() {
-    // HACK: onSubmit is missing from the FormProps type.
-    const onSubmit: any = {
-      onSubmit: this.onSubmit,
-    };
     return (
       <div>
         <h1>
           Sign in
         </h1>
         {this.props.controller.pending && <Loading fullscreen={true} />}
-        <Form model={this.props.controller} {...onSubmit}>
+        <Form model={this.props.controller} {...{onSubmit: this.onSubmit} as any}>
           {this.props.controller.error && <Alert title={this.props.controller.error} type="error" />}
           <Form.Item label="Email address" required={true}>
             <Input
