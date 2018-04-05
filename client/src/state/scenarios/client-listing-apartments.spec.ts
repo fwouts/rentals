@@ -59,7 +59,6 @@ test("client listing apartments", async () => {
     state: {
       kind: "listing-apartments",
       loading: true,
-      apartments: [],
     },
   });
   await firstPage;

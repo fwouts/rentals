@@ -1,8 +1,10 @@
+import { observable } from "mobx";
+
 export class DeletingApartment {
   public readonly kind = "deleting-apartment";
 
-  public apartmentId: string;
-  public pending = false;
+  @observable public apartmentId: string;
+  @observable public pending = false;
 
   constructor(apartmentId: string) {
     this.apartmentId = apartmentId;

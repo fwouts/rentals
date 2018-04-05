@@ -1,8 +1,10 @@
+import { observable } from "mobx";
 import { ApartmentInfo } from "../../../../api";
 
 export class CreatingApartment {
   public readonly kind = "creating-apartment";
 
+  @observable
   public apartmentInfo: ApartmentInfo = {
     floorArea: 0,
     pricePerMonth: 0,
@@ -13,5 +15,5 @@ export class CreatingApartment {
     },
     rented: false,
   };
-  public pending = false;
+  @observable public pending = false;
 }

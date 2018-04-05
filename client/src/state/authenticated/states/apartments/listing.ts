@@ -1,3 +1,4 @@
+import { action, observable, runInAction } from "mobx";
 import { ApartmentDetails, ListApartmentsFilter } from "../../../../api";
 import { listApartments } from "../../../../client";
 import { Authenticated } from "../../../authenticating";
@@ -5,10 +6,11 @@ import { Authenticated } from "../../../authenticating";
 export class ListingApartments {
   public readonly kind = "listing-apartments";
 
-  public loading = false;
-  public filter: ListApartmentsFilter = {};
-  public apartments: ApartmentDetails[] = [];
-  public total = 0;
+  @observable public loading = false;
+  @observable public filter: ListApartmentsFilter = {};
+  @observable public apartments: ApartmentDetails[] = [];
+  @observable public total = 0;
+
   private currentResultsFilter: ListApartmentsFilter = {};
   private nextPageToken: string | null = null;
   private readonly authenticated: Authenticated;
@@ -17,6 +19,7 @@ export class ListingApartments {
     this.authenticated = authenticated;
   }
 
+  @action
   public async loadFresh() {
     try {
       this.loading = true;
@@ -29,15 +32,20 @@ export class ListingApartments {
           filter,
         },
       );
-      this.apartments = response.results;
-      this.total = response.totalResults;
-      this.currentResultsFilter = filter;
-      this.nextPageToken = response.nextPageToken || null;
+      runInAction(() => {
+        this.apartments = response.results;
+        this.total = response.totalResults;
+        this.currentResultsFilter = filter;
+        this.nextPageToken = response.nextPageToken || null;
+      });
     } finally {
-      this.loading = false;
+      runInAction(() => {
+        this.loading = false;
+      });
     }
   }
 
+  @action
   public async loadMore() {
     if (!this.nextPageToken) {
       return false;
@@ -53,12 +61,16 @@ export class ListingApartments {
           pageToken: this.nextPageToken,
         },
       );
-      this.apartments = this.apartments.concat(response.results);
-      this.total = response.totalResults;
-      this.nextPageToken = response.nextPageToken || null;
+      runInAction(() => {
+        this.apartments = this.apartments.concat(response.results);
+        this.total = response.totalResults;
+        this.nextPageToken = response.nextPageToken || null;
+      });
       return true;
     } finally {
-      this.loading = false;
+      runInAction(() => {
+        this.loading = false;
+      });
     }
   }
 }

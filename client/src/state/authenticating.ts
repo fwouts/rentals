@@ -1,12 +1,14 @@
+import { observable, runInAction } from "mobx";
 import { Role } from "../api";
 import { loginUser } from "../client";
 
 export class Authenticating {
   public readonly kind = "authenticating";
 
-  public email = "";
-  public password = "";
-  public error: string | null = null;
+  @observable public email = "";
+  @observable public password = "";
+  @observable public error: string | null = null;
+
   private readonly onSuccess: OnSuccess;
 
   constructor(onSuccess: OnSuccess) {
@@ -18,14 +20,16 @@ export class Authenticating {
       email: this.email,
       password: this.password,
     });
-    switch (response.status) {
-      case "error":
-        this.error = response.message;
-        break;
-      case "success":
-        this.onSuccess(response);
-        break;
-    }
+    runInAction(() => {
+      switch (response.status) {
+        case "error":
+          this.error = response.message;
+          break;
+        case "success":
+          this.onSuccess(response);
+          break;
+      }
+    });
   }
 }
 

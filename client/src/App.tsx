@@ -1,31 +1,23 @@
+import {observer} from "mobx-react";
 import * as React from "react";
 import "./App.css";
-import { registerUser } from "./client";
+import { UnauthenticatedPage } from "./pages/UnauthenticatedPage";
+import { AppController } from "./state/app";
 
-const logo = require("./logo.svg");
-
-class App extends React.Component {
+@observer
+class App extends React.Component<{controller: AppController}> {
   public render() {
-    registerUser(
-      {},
-      {
-        email: "f@zenc.io",
-        password: "test!$Yes1",
-        name: "Francois",
-        role: "admin",
-      },
-    )
-      .then(console.log)
-      .catch(console.error);
+    let element;
+    switch (this.props.controller.state.kind) {
+      case "unauthenticated":
+        element = <UnauthenticatedPage controller={this.props.controller.state} />;
+        break;
+      default:
+        throw new Error(`Unknown state: ${this.props.controller.state.kind}.`);
+    }
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.tsx</code> and save to reload.
-        </p>
+        {element}
       </div>
     );
   }

@@ -6,7 +6,8 @@
     "lib": ["es6", "dom"],
     "jsx": "react",
     "rootDir": "src",
-    "baseUrl": "./"
+    "baseUrl": "./",
+    "experimentalDecorators": true
   },
   "exclude": [
     "node_modules",
