@@ -1,4 +1,4 @@
-import { action, observable, runInAction } from "mobx";
+import { observable } from "mobx";
 import { Role } from "../api";
 import { loginUser } from "../client";
 
@@ -16,17 +16,6 @@ export class Authenticating {
     this.onSuccess = onSuccess;
   }
 
-  @action
-  public updateEmail = (email: string) => {
-    this.email = email;
-  }
-
-  @action
-  public updatePassword = (password: string) => {
-    this.password = password;
-  }
-
-  @action
   public submit = async () => {
     try {
       this.pending = true;
@@ -34,20 +23,16 @@ export class Authenticating {
         email: this.email,
         password: this.password,
       });
-      runInAction(() => {
-        switch (response.status) {
-          case "error":
-            this.error = response.message;
-            break;
-          case "success":
-            this.onSuccess(response);
-            break;
-        }
-      });
+      switch (response.status) {
+        case "error":
+          this.error = response.message;
+          break;
+        case "success":
+          this.onSuccess(response);
+          break;
+      }
     } finally {
-      runInAction(() => {
-        this.pending = false;
-      });
+      this.pending = false;
     }
   }
 }

@@ -1,4 +1,4 @@
-import { action, observable, runInAction } from "mobx";
+import { observable } from "mobx";
 import { AuthenticatedAdmin } from "./authenticated/admin";
 import { AuthenticatedClient } from "./authenticated/client";
 import { AuthenticatedRealtor } from "./authenticated/realtor";
@@ -23,29 +23,25 @@ export class AppController {
     });
   }
 
-  @action
   public register = () => {
     this.state = new Registering(() => {
       this.authenticate();
     });
   }
 
-  @action
   public authenticate = () => {
     this.state = new Authenticating((authenticated) => {
-      runInAction(() => {
-        switch (authenticated.role) {
-          case "client":
-            this.state = new AuthenticatedClient(authenticated);
-            break;
-          case "realtor":
-            this.state = new AuthenticatedRealtor(authenticated);
-            break;
-          case "admin":
-            this.state = new AuthenticatedAdmin(authenticated);
-            break;
-        }
-      });
+      switch (authenticated.role) {
+        case "client":
+          this.state = new AuthenticatedClient(authenticated);
+          break;
+        case "realtor":
+          this.state = new AuthenticatedRealtor(authenticated);
+          break;
+        case "admin":
+          this.state = new AuthenticatedAdmin(authenticated);
+          break;
+      }
     });
   }
 }

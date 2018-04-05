@@ -1,4 +1,4 @@
-import { action, observable } from "mobx";
+import { observable } from "mobx";
 import { Authenticated } from "../authenticating";
 import { ListingApartments } from "./states/apartments/listing";
 import { Home } from "./states/home";
@@ -20,7 +20,6 @@ export class AuthenticatedClient {
     this.authenticated = authenticated;
   }
 
-  @action
   public listApartments = async () => {
     this.state = new ListingApartments(this.authenticated);
     await this.state.loadFresh();

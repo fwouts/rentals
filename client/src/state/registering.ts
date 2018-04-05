@@ -1,4 +1,4 @@
-import { action, observable, runInAction } from "mobx";
+import { observable } from "mobx";
 import { Role } from "../api";
 import { registerUser } from "../client";
 
@@ -19,7 +19,6 @@ export class Registering {
     this.onSuccess = onSuccess;
   }
 
-  @action
   public submit = async () => {
     try {
       this.pending = true;
@@ -37,20 +36,16 @@ export class Registering {
           role: this.role,
         },
       );
-      runInAction(() => {
-        switch (response.status) {
-          case "error":
-            this.error = response.message;
-            break;
-          case "success":
-            this.onSuccess();
-            break;
-        }
-      });
+      switch (response.status) {
+        case "error":
+          this.error = response.message;
+          break;
+        case "success":
+          this.onSuccess();
+          break;
+      }
     } finally {
-      runInAction(() => {
-        this.pending = false;
-      });
+      this.pending = false;
     }
   }
 }

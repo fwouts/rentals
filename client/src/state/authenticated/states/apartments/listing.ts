@@ -1,4 +1,4 @@
-import { action, observable, runInAction } from "mobx";
+import { observable } from "mobx";
 import { ApartmentDetails, ListApartmentsFilter } from "../../../../api";
 import { listApartments } from "../../../../client";
 import { Authenticated } from "../../../authenticating";
@@ -19,7 +19,6 @@ export class ListingApartments {
     this.authenticated = authenticated;
   }
 
-  @action
   public loadFresh = async () => {
     try {
       this.loading = true;
@@ -32,20 +31,15 @@ export class ListingApartments {
           filter,
         },
       );
-      runInAction(() => {
-        this.apartments = response.results;
-        this.total = response.totalResults;
-        this.currentResultsFilter = filter;
-        this.nextPageToken = response.nextPageToken || null;
-      });
+      this.apartments = response.results;
+      this.total = response.totalResults;
+      this.currentResultsFilter = filter;
+      this.nextPageToken = response.nextPageToken || null;
     } finally {
-      runInAction(() => {
-        this.loading = false;
-      });
+      this.loading = false;
     }
   }
 
-  @action
   public loadMore = async () => {
     if (!this.nextPageToken) {
       return false;
@@ -61,16 +55,12 @@ export class ListingApartments {
           pageToken: this.nextPageToken,
         },
       );
-      runInAction(() => {
-        this.apartments = this.apartments.concat(response.results);
-        this.total = response.totalResults;
-        this.nextPageToken = response.nextPageToken || null;
-      });
+      this.apartments = this.apartments.concat(response.results);
+      this.total = response.totalResults;
+      this.nextPageToken = response.nextPageToken || null;
       return true;
     } finally {
-      runInAction(() => {
-        this.loading = false;
-      });
+      this.loading = false;
     }
   }
 }

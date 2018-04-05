@@ -20,14 +20,14 @@ export class AuthenticatingPage extends React.Component<{controller: Authenticat
           <Form.Item label="Email address" required={true}>
             <Input
               value={this.props.controller.email}
-              onChange={(value: any) => this.props.controller.updateEmail(value)}
+              onChange={(value: any) => this.props.controller.email = value}
             />
           </Form.Item>
           <Form.Item label="Password" required={true}>
             <Input
               type="password"
               value={this.props.controller.password}
-              onChange={(value: any) => this.props.controller.updatePassword(value)}
+              onChange={(value: any) => this.props.controller.password = value}
             />
           </Form.Item>
           <Form.Item>
