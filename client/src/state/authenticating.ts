@@ -31,6 +31,10 @@ export class Authenticating {
           this.onSuccess(response);
           break;
       }
+    } catch (e) {
+      // tslint:disable-next-line no-console
+      console.error(e);
+      this.error = "An unexpected error has occurred.";
     } finally {
       this.pending = false;
     }

@@ -29,12 +29,17 @@ export class AuthenticatedAdmin {
   public constructor(authenticated: Authenticated, callbacks: Callbacks) {
     this.authenticated = authenticated;
     this.signOut = callbacks.signOut;
-    this.listApartments();
+    // this.listApartments();
+    this.createApartment();
   }
 
   public listApartments = async () => {
     this.state = new ListingApartments(this.authenticated);
     await this.state.loadFresh();
+  }
+
+  public createApartment = async () => {
+    this.state = new CreatingApartment(this.authenticated, this.listApartments);
   }
 }
 

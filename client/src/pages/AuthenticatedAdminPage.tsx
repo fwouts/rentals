@@ -1,6 +1,7 @@
 import { Menu } from "element-react";
 import { observer } from "mobx-react";
 import * as React from "react";
+import { CreatingApartmentComponent } from "../components/apartments/CreatingApartmentComponent";
 import { ListingApartmentsComponent } from "../components/apartments/ListingApartmentsComponent";
 import { AuthenticatedAdmin } from "../state/authenticated/admin";
 
@@ -14,6 +15,13 @@ export class AuthenticatedAdminPage extends React.Component<{controller: Authent
           <ListingApartmentsComponent
             controller={this.props.controller.state}
             enableRentedFilter={true}
+          />
+        );
+        break;
+      case "creating-apartment":
+        element = (
+          <CreatingApartmentComponent
+            controller={this.props.controller.state}
           />
         );
         break;
@@ -42,6 +50,9 @@ export class AuthenticatedAdminPage extends React.Component<{controller: Authent
       case "apartments-list":
         this.props.controller.listApartments();
         break;
+      case "apartments-create":
+          this.props.controller.createApartment();
+          break;
     }
   }
 }
