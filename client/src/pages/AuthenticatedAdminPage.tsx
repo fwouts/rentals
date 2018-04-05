@@ -10,7 +10,12 @@ export class AuthenticatedAdminPage extends React.Component<{controller: Authent
     let element;
     switch (this.props.controller.state.kind) {
       case "listing-apartments":
-        element = <ListingApartmentsComponent controller={this.props.controller.state} />;
+        element = (
+          <ListingApartmentsComponent
+            controller={this.props.controller.state}
+            enableRentedFilter={true}
+          />
+        );
         break;
     }
     return (

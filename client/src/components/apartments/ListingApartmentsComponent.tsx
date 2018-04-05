@@ -1,4 +1,4 @@
-import { Alert, Button, Card, Checkbox, Form, InputNumber, Loading, Table } from "element-react";
+import { Alert, Button, Card, Checkbox, Form, InputNumber, Loading, Select, Table } from "element-react";
 import { observer } from "mobx-react";
 import moment from "moment";
 import * as React from "react";
@@ -7,8 +7,45 @@ import { ListingApartments } from "../../state/authenticated/states/apartments/l
 import "./ListingApartmentsComponent.scss";
 
 @observer
-export class ListingApartmentsComponent extends React.Component<{controller: ListingApartments}> {
+export class ListingApartmentsComponent extends React.Component<{
+  controller: ListingApartments,
+  enableRentedFilter?: boolean,
+}> {
   public render() {
+    const columns = [
+      {
+        label: "Realtor",
+        prop: "realtor",
+        align: "center",
+      },
+      {
+        label: "Rooms",
+        prop: "numberOfRooms",
+        align: "center",
+      },
+      {
+        label: "Floor area (m²)",
+        prop: "floorArea",
+        align: "center",
+      },
+      {
+        label: "Price per month (USD)",
+        prop: "pricePerMonth",
+        align: "center",
+      },
+      ...(this.props.enableRentedFilter ? [
+        {
+          label: "Status",
+          prop: "rented",
+          align: "center",
+        },
+      ] : []),
+      {
+        label: "Added",
+        prop: "dateAdded",
+        align: "center",
+      },
+    ];
     // HACK: onSubmit is missing from the FormProps type.
     const onSubmit: any = {
       onSubmit: this.onSubmit,
@@ -42,6 +79,7 @@ export class ListingApartmentsComponent extends React.Component<{controller: Lis
                 this.props.controller.filter.priceRange,
                 (value) => this.props.controller.filter.priceRange = value,
               )}
+              {this.props.enableRentedFilter && this.renderRentedFilter()}
               <Form.Item>
                 <Button type="primary" nativeType="submit">Filter</Button>
               </Form.Item>
@@ -57,7 +95,7 @@ export class ListingApartmentsComponent extends React.Component<{controller: Lis
             <br />
           </>}
           <Table
-            columns={COLUMNS}
+            columns={columns}
             data={this.props.controller.apartments.map(formatRow)}
             stripe={true}
             {...({emptyText: "No apartments to show."}) as any}
@@ -125,39 +163,42 @@ export class ListingApartmentsComponent extends React.Component<{controller: Lis
     );
   }
 
+  private renderRentedFilter() {
+    const filter = this.props.controller.filter;
+    const currentValue = (filter.rented === null) ? "show-all" : filter.rented ? "only-rented" : "only-rentable";
+    return (
+      <Form.Item label="Filter by status">
+        <Select
+          value={currentValue}
+          onChange={(value) => {
+            switch (value) {
+              case "show-all":
+                filter.rented = null;
+                break;
+              case "only-rented":
+                filter.rented = true;
+                break;
+              case "only-rentable":
+                filter.rented = false;
+                break;
+              default:
+                throw new Error(`Unknown value: ${value}.`);
+            }
+          }}
+        >
+          <Select.Option key="show-all" label="Show all apartments" value="show-all" />
+          <Select.Option key="only-rented" label="Show only rented apartments" value="only-rented" />
+          <Select.Option key="only-rentable" label="Show only rentable apartments" value="only-rentable" />
+        </Select>
+      </Form.Item>
+    );
+  }
+
   private onSubmit = (e: Event) => {
     this.props.controller.loadFresh();
     e.preventDefault();
   }
 }
-
-const COLUMNS = [
-  {
-    label: "Realtor",
-    prop: "realtor",
-    align: "center",
-  },
-  {
-    label: "Rooms",
-    prop: "numberOfRooms",
-    align: "center",
-  },
-  {
-    label: "Floor area (m²)",
-    prop: "floorArea",
-    align: "center",
-  },
-  {
-    label: "Price per month (USD)",
-    prop: "pricePerMonth",
-    align: "center",
-  },
-  {
-    label: "Added",
-    prop: "dateAdded",
-    align: "center",
-  },
-];
 
 function formatRow(apartment: ApartmentDetails) {
   return {
@@ -165,6 +206,7 @@ function formatRow(apartment: ApartmentDetails) {
     floorArea: apartment.info.floorArea,
     numberOfRooms: apartment.info.numberOfRooms,
     pricePerMonth: apartment.info.pricePerMonth,
+    rented: apartment.info.rented ? "Rented" : "Rentable",
     dateAdded: moment(apartment.dateAdded * 1000).fromNow(),
   };
 }
