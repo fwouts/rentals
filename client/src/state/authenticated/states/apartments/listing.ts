@@ -8,6 +8,7 @@ export class ListingApartments {
   public loading = false;
   public filter: ListApartmentsFilter = {};
   public apartments: ApartmentDetails[] = [];
+  public total = 0;
   private currentResultsFilter: ListApartmentsFilter = {};
   private nextPageToken: string | null = null;
   private readonly authenticated: Authenticated;
@@ -17,35 +18,47 @@ export class ListingApartments {
   }
 
   public async loadFresh() {
-    const filter = this.filter;
-    const response = await listApartments(
-      {
-        Authorization: this.authenticated.jwtToken,
-      },
-      {
-        filter,
-      },
-    );
-    this.apartments = response.results;
-    this.currentResultsFilter = filter;
-    this.nextPageToken = response.nextPageToken || null;
+    try {
+      this.loading = true;
+      const filter = this.filter;
+      const response = await listApartments(
+        {
+          Authorization: this.authenticated.jwtToken,
+        },
+        {
+          filter,
+        },
+      );
+      this.apartments = response.results;
+      this.total = response.totalResults;
+      this.currentResultsFilter = filter;
+      this.nextPageToken = response.nextPageToken || null;
+    } finally {
+      this.loading = false;
+    }
   }
 
   public async loadMore() {
     if (!this.nextPageToken) {
       return false;
     }
-    const response = await listApartments(
-      {
-        Authorization: this.authenticated.jwtToken,
-      },
-      {
-        filter: this.currentResultsFilter,
-        pageToken: this.nextPageToken,
-      },
-    );
-    this.apartments = this.apartments.concat(response.results);
-    this.nextPageToken = response.nextPageToken || null;
-    return true;
+    try {
+      this.loading = true;
+      const response = await listApartments(
+        {
+          Authorization: this.authenticated.jwtToken,
+        },
+        {
+          filter: this.currentResultsFilter,
+          pageToken: this.nextPageToken,
+        },
+      );
+      this.apartments = this.apartments.concat(response.results);
+      this.total = response.totalResults;
+      this.nextPageToken = response.nextPageToken || null;
+      return true;
+    } finally {
+      this.loading = false;
+    }
   }
 }

@@ -26,7 +26,8 @@ export class AuthenticatedRealtor {
     this.authenticated = authenticated;
   }
 
-  public listApartments() {
+  public async listApartments() {
     this.state = new ListingApartments(this.authenticated);
+    await this.state.loadFresh();
   }
 }
