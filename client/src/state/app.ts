@@ -2,9 +2,11 @@ import { observable } from "mobx";
 import { AuthenticatedAdmin } from "./authenticated/admin";
 import { AuthenticatedClient } from "./authenticated/client";
 import { AuthenticatedRealtor } from "./authenticated/realtor";
-import { Authenticating } from "./authenticating";
+import { Authenticated, Authenticating } from "./authenticating";
 import { Registering } from "./registering";
 import { Unauthenticated } from "./unauthenticated";
+
+const LOCAL_STORAGE_AUTHENTICATION_KEY = "auth";
 
 export class AppController {
   @observable
@@ -17,10 +19,29 @@ export class AppController {
     | AuthenticatedClient;
 
   constructor() {
-    this.state = new Unauthenticated({
-      register: this.register,
-      authenticate: this.authenticate,
-    });
+    let authenticated: Authenticated | null = null;
+    if (window.localStorage) {
+      const persistedAuth = window.localStorage.getItem(
+        LOCAL_STORAGE_AUTHENTICATION_KEY,
+      );
+      if (persistedAuth) {
+        try {
+          authenticated = JSON.parse(persistedAuth);
+        } catch (e) {
+          // tslint:disable-next-line no-console
+          console.error(e);
+          // Just ignore.
+        }
+      }
+    }
+    if (authenticated) {
+      this.state = this.getState(authenticated);
+    } else {
+      this.state = new Unauthenticated({
+        register: this.register,
+        authenticate: this.authenticate,
+      });
+    }
   }
 
   public register = () => {
@@ -31,17 +52,26 @@ export class AppController {
 
   public authenticate = () => {
     this.state = new Authenticating((authenticated) => {
-      switch (authenticated.role) {
-        case "client":
-          this.state = new AuthenticatedClient(authenticated);
-          break;
-        case "realtor":
-          this.state = new AuthenticatedRealtor(authenticated);
-          break;
-        case "admin":
-          this.state = new AuthenticatedAdmin(authenticated);
-          break;
+      if (window.localStorage) {
+        window.localStorage.setItem(
+          LOCAL_STORAGE_AUTHENTICATION_KEY,
+          JSON.stringify(authenticated),
+        );
       }
+      this.state = this.getState(authenticated);
     });
+  }
+
+  private getState(authenticated: Authenticated) {
+    switch (authenticated.role) {
+      case "client":
+        return new AuthenticatedClient(authenticated);
+      case "realtor":
+        return new AuthenticatedRealtor(authenticated);
+      case "admin":
+        return new AuthenticatedAdmin(authenticated);
+      default:
+        throw new Error(`Unknown role: ${authenticated.role}.`);
+    }
   }
 }
