@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "yarn build && node build/server.js",
+    "integration-test-server": "yarn build && node build/testing/integration/server.js",
     "build": "tsc",
     "lint": "tslint --project tsconfig.json --fix",
     "test": "jest --runInBand",

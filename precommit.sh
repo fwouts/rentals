@@ -2,8 +2,6 @@
 
 set -e
 
-echo "Prettifying code..."
-prettier --write **/*.ts **/*.tsx
 echo "Precommit for client package..."
 cd client
 yarn precommit

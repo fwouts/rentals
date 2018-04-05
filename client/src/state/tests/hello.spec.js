@@ -1,8 +1,13 @@
 import { AppController } from "../app";
 import uuid from "uuid";
+import { resetDatabase } from "../../testing/integration/client";
+import "jest";
+
+beforeEach(async () => {
+  await resetDatabase();
+});
 
 test("say hello", async () => {
-  const uniqueEmail = uuid.v4() + "@gmail.com";
   const app = new AppController();
   expect(app.state).toMatchObject({
     kind: "unauthenticated",
@@ -13,7 +18,7 @@ test("say hello", async () => {
   expect(app.state).toMatchObject({
     kind: "registering",
   });
-  app.state.email = uniqueEmail;
+  app.state.email = "f@zenc.io";
   app.state.password = "test!$Yes1";
   app.state.confirmPassword = "test!$Yes1";
   app.state.name = "Francois";
@@ -24,7 +29,7 @@ test("say hello", async () => {
   });
 
   // Authenticate user.
-  app.state.email = uniqueEmail;
+  app.state.email = "f@zenc.io";
   app.state.password = "test!$Yes1";
   await app.state.submit();
   expect(app.state).toMatchObject({
