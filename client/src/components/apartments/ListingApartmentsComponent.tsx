@@ -18,48 +18,30 @@ export class ListingApartmentsComponent extends React.Component<{controller: Lis
         <div className="filter-panel">
           <Card>
             <Form model={this.props.controller.filter} {...onSubmit}>
-              <Form.Item label="Filter by floor area">
-                <Checkbox
-                  checked={!!this.props.controller.filter.sizeRange}
-                  onChange={(checked: boolean) => {
-                    if (checked) {
-                      this.props.controller.filter.sizeRange = {
-                        min: 0,
-                        max: 100,
-                      };
-                    } else {
-                      this.props.controller.filter.sizeRange = null;
-                    }
-                  }}
-                />
-              </Form.Item>
-              {this.props.controller.filter.sizeRange &&
-                <>
-                  <h3>Floor area (m²)</h3>
-                  <Form.Item label="Min">
-                    <InputNumber
-                      defaultValue={0}
-                      value={this.props.controller.filter.sizeRange.min}
-                      onChange={(value: any) => {
-                        this.props.controller.filter.sizeRange!.min = value;
-                      }}
-                      min={0}
-                      size="small"
-                    />
-                  </Form.Item>
-                  <Form.Item label="Max">
-                    <InputNumber
-                      defaultValue={100}
-                      value={this.props.controller.filter.sizeRange.max}
-                      onChange={(value: any) => {
-                        this.props.controller.filter.sizeRange!.max = value;
-                      }}
-                      min={this.props.controller.filter.sizeRange.min}
-                      size="small"
-                    />
-                  </Form.Item>
-                </>
-              }
+              {this.renderFilter(
+                "Filter by floor area",
+                "Floor area (m²)",
+                0,
+                100,
+                this.props.controller.filter.sizeRange,
+                (value) => this.props.controller.filter.sizeRange = value,
+              )}
+              {this.renderFilter(
+                "Filter by number of rooms",
+                "Number of rooms",
+                1,
+                20,
+                this.props.controller.filter.numberOfRooms,
+                (value) => this.props.controller.filter.numberOfRooms = value,
+              )}
+              {this.renderFilter(
+                "Filter by price",
+                "Price range",
+                50,
+                20000,
+                this.props.controller.filter.priceRange,
+                (value) => this.props.controller.filter.priceRange = value,
+              )}
               <Form.Item>
                 <Button type="primary" nativeType="submit">Filter</Button>
               </Form.Item>
@@ -78,6 +60,64 @@ export class ListingApartmentsComponent extends React.Component<{controller: Lis
     );
   }
 
+  private renderFilter(
+    toggleLabel: string,
+    header: string,
+    min: number,
+    max: number,
+    field: {min: number, max: number} | null,
+    setField: (value: {min: number, max: number} | null) => void,
+  ) {
+    return (
+      <>
+        <Form.Item>
+          <Checkbox
+            checked={!!field}
+            onChange={(checked: boolean) => {
+              if (checked) {
+                setField({
+                  min,
+                  max,
+                });
+              } else {
+                setField(null);
+              }
+            }}
+          >
+            {toggleLabel}
+          </Checkbox>
+        </Form.Item>
+        {field &&
+          <>
+            <h3>{header}</h3>
+            <Form.Item label="Min">
+              <InputNumber
+                defaultValue={min}
+                value={field.min}
+                onChange={(value: any) => {
+                  field!.min = value;
+                }}
+                min={min}
+                size="small"
+              />
+            </Form.Item>
+            <Form.Item label="Max">
+              <InputNumber
+                defaultValue={max}
+                value={field.max}
+                onChange={(value: any) => {
+                  field!.max = value;
+                }}
+                min={field.min}
+                size="small"
+              />
+            </Form.Item>
+          </>
+        }
+      </>
+    );
+  }
+
   private onSubmit = (e: Event) => {
     this.props.controller.loadFresh();
     e.preventDefault();
@@ -91,8 +131,18 @@ const COLUMNS = [
     align: "center",
   },
   {
+    label: "Rooms",
+    prop: "numberOfRooms",
+    align: "center",
+  },
+  {
     label: "Floor area (m²)",
     prop: "floorArea",
+    align: "center",
+  },
+  {
+    label: "Price per month (USD)",
+    prop: "pricePerMonth",
     align: "center",
   },
   {
@@ -106,6 +156,8 @@ function formatRow(apartment: ApartmentDetails) {
   return {
     realtor: apartment.realtor.name,
     floorArea: apartment.info.floorArea,
+    numberOfRooms: apartment.info.numberOfRooms,
+    pricePerMonth: apartment.info.pricePerMonth,
     dateAdded: moment(apartment.dateAdded * 1000).fromNow(),
   };
 }
