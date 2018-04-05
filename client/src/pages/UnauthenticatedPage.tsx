@@ -7,7 +7,7 @@ import { Unauthenticated } from "../state/unauthenticated";
 export class UnauthenticatedPage extends React.Component<{controller: Unauthenticated}> {
   public render() {
     return (
-      <div className="UnauthenticatedPage">
+      <div>
         <h1>
           Welcome to Rentals!
         </h1>

@@ -4,6 +4,7 @@
     "tslint-react"
   ],
   "rules": {
+    "jsx-no-lambda": false,
     "no-var-requires": false
   }
 }

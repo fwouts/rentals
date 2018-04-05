@@ -1,4 +1,4 @@
-import { observable, runInAction } from "mobx";
+import { action, observable, runInAction } from "mobx";
 import { Role } from "../api";
 import { loginUser } from "../client";
 
@@ -13,6 +13,16 @@ export class Authenticating {
 
   constructor(onSuccess: OnSuccess) {
     this.onSuccess = onSuccess;
+  }
+
+  @action
+  public updateEmail = (email: string) => {
+    this.email = email;
+  }
+
+  @action
+  public updatePassword = (password: string) => {
+    this.password = password;
   }
 
   public submit = async () => {
