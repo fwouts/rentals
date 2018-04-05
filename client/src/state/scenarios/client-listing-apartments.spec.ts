@@ -1,7 +1,6 @@
-import { AppController } from "../app";
-import uuid from "uuid";
-import { resetDatabase } from "../../testing/integration/client";
 import "jest";
+import { resetDatabase } from "../../testing/integration/client";
+import { AppController } from "../app";
 
 beforeEach(async () => {
   await resetDatabase();
@@ -15,29 +14,46 @@ test("client listing apartments", async () => {
 
   // Register user.
   app.register();
-  expect(app.state).toMatchObject({
-    kind: "registering",
-  });
-  app.state.email = "f@zenc.io";
-  app.state.password = "test!$Yes1";
-  app.state.confirmPassword = "test!$Yes1";
-  app.state.name = "Francois";
-  app.state.role = "client";
-  await app.state.submit();
-  expect(app.state).toMatchObject({
-    kind: "authenticating",
-  });
+  const registeringState = app.state;
+  if (registeringState.kind !== "registering") {
+    throw expect(app.state).toMatchObject({
+      kind: "registering",
+    });
+  }
+  registeringState.email = "f@zenc.io";
+  registeringState.password = "test!$Yes1";
+  registeringState.confirmPassword = "test!$Yes1";
+  registeringState.name = "Francois";
+  registeringState.role = "client";
+  await registeringState.submit();
+
+  const authenticatingState = app.state;
+  if (authenticatingState.kind !== "authenticating") {
+    throw expect(app.state).toMatchObject({
+      kind: "authenticating",
+    });
+  }
 
   // Authenticate user.
-  app.state.email = "f@zenc.io";
-  app.state.password = "test!$Yes1";
-  await app.state.submit();
-  expect(app.state).toMatchObject({
-    kind: "authenticated-client",
-  });
+  authenticatingState.email = "f@zenc.io";
+  authenticatingState.password = "test!$Yes1";
+  await authenticatingState.submit();
+
+  const authenticatedState = app.state;
+  if (authenticatedState.kind !== "authenticated-client") {
+    throw expect(app.state).toMatchObject({
+      kind: "authenticated-client",
+    });
+  }
 
   // Load the first page of all apartments.
-  const firstPage = app.state.listApartments();
+  const firstPage = authenticatedState.listApartments();
+  const listingApartments = authenticatedState.state;
+  if (listingApartments.kind !== "listing-apartments") {
+    throw expect(app.state).toMatchObject({
+      kind: "listing-apartments",
+    });
+  }
   expect(app.state).toMatchObject({
     kind: "authenticated-client",
     state: {
@@ -55,10 +71,10 @@ test("client listing apartments", async () => {
       total: 68,
     },
   });
-  expect(app.state.state.apartments.length).toBe(20);
+  expect(listingApartments.apartments.length).toBe(20);
 
   // Load the second page.
-  const nextPage = app.state.state.loadMore();
+  const nextPage = listingApartments.loadMore();
   expect(app.state).toMatchObject({
     kind: "authenticated-client",
     state: {
@@ -76,16 +92,16 @@ test("client listing apartments", async () => {
       total: 68,
     },
   });
-  expect(app.state.state.apartments.length).toBe(40);
+  expect(listingApartments.apartments.length).toBe(40);
 
   // Tweak the filters.
-  app.state.state.filter.numberOfRooms = {
+  listingApartments.filter.numberOfRooms = {
     min: 5,
     max: 50,
   };
 
   // Load the first page of filtered results.
-  const filteredFirstPage = app.state.state.loadFresh();
+  const filteredFirstPage = listingApartments.loadFresh();
   expect(app.state).toMatchObject({
     kind: "authenticated-client",
     state: {
@@ -103,10 +119,10 @@ test("client listing apartments", async () => {
       total: 30,
     },
   });
-  expect(app.state.state.apartments.length).toBe(20);
+  expect(listingApartments.apartments.length).toBe(20);
 
   // Load the second page.
-  const filteredSecondPage = app.state.state.loadMore();
+  const filteredSecondPage = listingApartments.loadMore();
   expect(app.state).toMatchObject({
     kind: "authenticated-client",
     state: {
@@ -124,5 +140,5 @@ test("client listing apartments", async () => {
       total: 30,
     },
   });
-  expect(app.state.state.apartments.length).toBe(30);
+  expect(listingApartments.apartments.length).toBe(30);
 });
