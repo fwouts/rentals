@@ -23,15 +23,12 @@ beforeEach(async () => {
   await createTestApartments();
 });
 
-const LOTS_OF_APARTMENTS_PER_PAGE = 500;
-
 test("guests cannot see apartments", async () => {
   const response = await listApartments(
     {
       Authorization: "",
     },
     {},
-    LOTS_OF_APARTMENTS_PER_PAGE,
   );
   expect(response).toEqual({
     results: [],
@@ -44,7 +41,6 @@ test("clients can only see rentable apartments", async () => {
   const response = await listApartments(
     await authHeaders(CLIENT_BRIAN, BRIAN_PASSWORD),
     {},
-    LOTS_OF_APARTMENTS_PER_PAGE,
   );
   expect(response.totalResults).toBe(68);
   expect(response.pageCount).toBe(1);
@@ -59,7 +55,6 @@ test("clients can only see rentable apartments", async () => {
         rented: false,
       },
     },
-    LOTS_OF_APARTMENTS_PER_PAGE,
   );
   expect(responseWithRentedFalseFilter).toEqual(response);
 
@@ -70,7 +65,6 @@ test("clients can only see rentable apartments", async () => {
         rented: true,
       },
     },
-    LOTS_OF_APARTMENTS_PER_PAGE,
   );
   expect(responseWithRentedTrueFilter).toEqual({
     totalResults: 0,
@@ -88,7 +82,6 @@ test("clients can use realtor filter", async () => {
         realtorId: realtor.userId,
       },
     },
-    LOTS_OF_APARTMENTS_PER_PAGE,
   );
   expect(response.totalResults).toBe(34);
 
@@ -99,7 +92,6 @@ test("clients can use realtor filter", async () => {
         realtorId: "missing",
       },
     },
-    LOTS_OF_APARTMENTS_PER_PAGE,
   );
   expect(responseMissingRealtorId.totalResults).toBe(0);
 });
@@ -115,7 +107,6 @@ test("clients can use size range filter", async () => {
         },
       },
     },
-    LOTS_OF_APARTMENTS_PER_PAGE,
   );
   expect(responseRange1.totalResults).toBe(2);
 
@@ -129,7 +120,6 @@ test("clients can use size range filter", async () => {
         },
       },
     },
-    LOTS_OF_APARTMENTS_PER_PAGE,
   );
   expect(responseRange2.totalResults).toBe(62);
 
@@ -143,7 +133,6 @@ test("clients can use size range filter", async () => {
         },
       },
     },
-    LOTS_OF_APARTMENTS_PER_PAGE,
   );
   expect(responseRange3.totalResults).toBe(14);
 });
@@ -159,7 +148,6 @@ test("clients can use price range filter", async () => {
         },
       },
     },
-    LOTS_OF_APARTMENTS_PER_PAGE,
   );
   expect(responseRange1.totalResults).toBe(4);
 
@@ -173,7 +161,6 @@ test("clients can use price range filter", async () => {
         },
       },
     },
-    LOTS_OF_APARTMENTS_PER_PAGE,
   );
   expect(responseRange2.totalResults).toBe(34);
 
@@ -187,7 +174,6 @@ test("clients can use price range filter", async () => {
         },
       },
     },
-    LOTS_OF_APARTMENTS_PER_PAGE,
   );
   expect(responseRange3.totalResults).toBe(14);
 });
@@ -203,7 +189,6 @@ test("clients can use number of rooms filter", async () => {
         },
       },
     },
-    LOTS_OF_APARTMENTS_PER_PAGE,
   );
   expect(responseRange1.totalResults).toBe(2);
 
@@ -217,7 +202,6 @@ test("clients can use number of rooms filter", async () => {
         },
       },
     },
-    LOTS_OF_APARTMENTS_PER_PAGE,
   );
   expect(responseRange2.totalResults).toBe(12);
 
@@ -231,7 +215,6 @@ test("clients can use number of rooms filter", async () => {
         },
       },
     },
-    LOTS_OF_APARTMENTS_PER_PAGE,
   );
   expect(responseRange3.totalResults).toBe(6);
 });
@@ -257,7 +240,6 @@ test("clients can combine filters", async () => {
         },
       },
     },
-    LOTS_OF_APARTMENTS_PER_PAGE,
   );
   expect(response.totalResults).toBe(2);
 });
@@ -271,7 +253,6 @@ test("realtors can see all their own apartments", async () => {
         realtorId: realtor.userId,
       },
     },
-    LOTS_OF_APARTMENTS_PER_PAGE,
   );
   const rentedApartments = response.results.filter((a) => a.info.rented).length;
   const rentableApartments = response.results.length - rentedApartments;
@@ -289,7 +270,6 @@ test("realtors can only see other realtors' rentable apartments", async () => {
         realtorId: otherRealtor.userId,
       },
     },
-    LOTS_OF_APARTMENTS_PER_PAGE,
   );
   const rentedApartments = response.results.filter((a) => a.info.rented).length;
   const rentableApartments = response.results.length - rentedApartments;
@@ -305,7 +285,6 @@ test("realtors can only see other realtors' rentable apartments", async () => {
         rented: true,
       },
     },
-    LOTS_OF_APARTMENTS_PER_PAGE,
   );
   expect(responseWithRentedTrueFilter.totalResults).toBe(0);
 
@@ -317,7 +296,6 @@ test("realtors can only see other realtors' rentable apartments", async () => {
         rented: false,
       },
     },
-    LOTS_OF_APARTMENTS_PER_PAGE,
   );
   expect(responseWithRentedFalseFilter).toEqual(response);
 });
@@ -343,7 +321,6 @@ test("realtors can combine filters", async () => {
         },
       },
     },
-    LOTS_OF_APARTMENTS_PER_PAGE,
   );
   expect(response.totalResults).toBe(2);
 });
@@ -352,7 +329,6 @@ test("admins can see all apartments", async () => {
   const response = await listApartments(
     await authHeaders(ADMIN_FRANK, FRANK_PASSWORD),
     {},
-    LOTS_OF_APARTMENTS_PER_PAGE,
   );
   expect(response.totalResults).toBe(200);
 });
@@ -379,7 +355,6 @@ test("admins can combine filters", async () => {
         rented: true,
       },
     },
-    LOTS_OF_APARTMENTS_PER_PAGE,
   );
   expect(response.totalResults).toBe(4);
 });
@@ -389,33 +364,24 @@ test("apartments pagination without filters", async () => {
   // per page.
   const apartmentsPerPage = 30;
   const headers = await authHeaders(CLIENT_BRIAN, BRIAN_PASSWORD);
-  const page1 = await listApartments(
-    headers,
-    {
-      page: 1,
-    },
-    apartmentsPerPage,
-  );
+  const page1 = await listApartments(headers, {
+    maxPerPage: apartmentsPerPage,
+    page: 1,
+  });
   expect(page1.totalResults).toBe(68);
   expect(page1.results.length).toBe(30);
   expect(page1.pageCount).toBe(3);
-  const page2 = await listApartments(
-    headers,
-    {
-      page: 2,
-    },
-    apartmentsPerPage,
-  );
+  const page2 = await listApartments(headers, {
+    maxPerPage: apartmentsPerPage,
+    page: 2,
+  });
   expect(page2.totalResults).toBe(68);
   expect(page2.results.length).toBe(30);
   expect(page2.pageCount).toBe(3);
-  const page3 = await listApartments(
-    headers,
-    {
-      page: 3,
-    },
-    apartmentsPerPage,
-  );
+  const page3 = await listApartments(headers, {
+    maxPerPage: apartmentsPerPage,
+    page: 3,
+  });
   expect(page3.totalResults).toBe(68);
   expect(page3.results.length).toBe(8);
   expect(page3.pageCount).toBe(3);
@@ -425,8 +391,8 @@ test("apartments pagination stops exactly when required", async () => {
   // There is a total of 68 apartments. We expect one page when requesting 68,
   // but two pages when requesting 67.
   const headers = await authHeaders(CLIENT_BRIAN, BRIAN_PASSWORD);
-  const requesting67 = await listApartments(headers, {}, 67);
-  const requesting68 = await listApartments(headers, {}, 68);
+  const requesting67 = await listApartments(headers, { maxPerPage: 67 });
+  const requesting68 = await listApartments(headers, { maxPerPage: 68 });
   expect(requesting67.totalResults).toBe(68);
   expect(requesting68.totalResults).toBe(68);
   expect(requesting67.pageCount).toBe(2);
@@ -445,9 +411,9 @@ test("apartments pagination with filters", async () => {
           max: 20,
         },
       },
+      maxPerPage: apartmentsPerPage,
       page: 1,
     },
-    apartmentsPerPage,
   );
   expect(page1.totalResults).toBe(6);
   expect(page1.results.length).toBe(5);
@@ -461,9 +427,9 @@ test("apartments pagination with filters", async () => {
           max: 20,
         },
       },
+      maxPerPage: apartmentsPerPage,
       page: 2,
     },
-    apartmentsPerPage,
   );
   expect(page2.totalResults).toBe(6);
   expect(page2.results.length).toBe(1);

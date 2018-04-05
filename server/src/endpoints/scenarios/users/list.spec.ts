@@ -95,6 +95,18 @@ test("users filtering", async () => {
   expect(admins.results.length).toBe(2);
   expect(admins.results.map((u) => u.role)).toEqual(["admin", "admin"]);
   expect(admins.totalResults).toBe(2);
+
+  const filteredNames = await listUsers(
+    await authHeaders(ADMIN_FRANK, FRANK_PASSWORD),
+    {
+      filter: {
+        name: "na",
+      },
+    },
+  );
+  expect(filteredNames.results.length).toBe(2);
+  expect(filteredNames.results.map((u) => u.name)).toEqual(["Anna", "Helena"]);
+  expect(filteredNames.totalResults).toBe(2);
 });
 
 test("users pagination", async () => {
@@ -102,9 +114,9 @@ test("users pagination", async () => {
   const page1 = await listUsers(
     await authHeaders(ADMIN_FRANK, FRANK_PASSWORD),
     {
+      maxPerPage: usersPerPage,
       page: 1,
     },
-    usersPerPage,
   );
   expect(page1.results.length).toBe(3);
   expect(page1.totalResults).toBe(6);
@@ -112,9 +124,9 @@ test("users pagination", async () => {
   const page2 = await listUsers(
     await authHeaders(ADMIN_FRANK, FRANK_PASSWORD),
     {
+      maxPerPage: usersPerPage,
       page: 2,
     },
-    usersPerPage,
   );
   expect(page2.results.length).toBe(3);
   expect(page2.totalResults).toBe(6);

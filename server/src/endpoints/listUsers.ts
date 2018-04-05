@@ -13,8 +13,10 @@ const MAX_RESULTS_PER_PAGE = 100;
 export async function listUsers(
   headers: AuthRequired,
   request: ListUsersRequest,
-  maxResultsPerPage = MAX_RESULTS_PER_PAGE,
 ): Promise<ListUsersResponse> {
+  const maxResultsPerPage = request.maxPerPage
+    ? Math.min(MAX_RESULTS_PER_PAGE, request.maxPerPage)
+    : MAX_RESULTS_PER_PAGE;
   let currentUser = {
     role: "unknown",
   };
@@ -30,21 +32,31 @@ export async function listUsers(
       pageCount: 0,
     };
   }
+  const whereQueries: string[] = [];
+  const whereArgs: { [arg: string]: string } = {};
+  if (request.filter) {
+    if (request.filter.role) {
+      whereQueries.push(`(user.role = :role)`);
+      whereArgs.role = request.filter.role;
+    }
+    if (request.filter.name) {
+      whereQueries.push(`(user.name LIKE :name)`);
+      whereArgs.name = "%" + request.filter.name + "%";
+    }
+  }
   let skip;
   if (request.page) {
     skip = (request.page - 1) * maxResultsPerPage;
   } else {
     skip = 0;
   }
-  const [results, totalCount] = await connection.manager.findAndCount(User, {
-    where: {
-      ...(request.filter && {
-        role: request.filter.role,
-      }),
-    },
-    skip,
-    take: maxResultsPerPage,
-  });
+  const [results, totalCount] = await connection.manager
+    .getRepository(User)
+    .createQueryBuilder("user")
+    .where(whereQueries.join(" AND "), whereArgs)
+    .skip(skip)
+    .take(maxResultsPerPage)
+    .getManyAndCount();
   return {
     results: results.map(toUserDetails),
     totalResults: totalCount,

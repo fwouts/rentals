@@ -98,8 +98,10 @@ endpoint listUsers: POST /users/list ListUsersRequest -> ListUsersResponse
 
 type ListUsersRequest = {
   filter?: {
-    role: Role
+    role?: Role
+    name?: string
   }
+  maxPerPage?: int
   page?: int
 }
 
@@ -188,6 +190,7 @@ endpoint listApartments: POST /apartments/list ListApartmentsRequest -> ListApar
 
 type ListApartmentsRequest = {
   filter?: ListApartmentsFilter
+  maxPerPage?: int
   page?: int
 }
 

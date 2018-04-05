@@ -7,13 +7,15 @@ import {
   ListApartmentsResponse,
 } from "../api";
 
-const MAX_RESULTS_PER_PAGE = 20;
+const MAX_RESULTS_PER_PAGE = 500;
 
 export async function listApartments(
   headers: AuthRequired,
   request: ListApartmentsRequest,
-  maxResultsPerPage = MAX_RESULTS_PER_PAGE,
 ): Promise<ListApartmentsResponse> {
+  const maxResultsPerPage = request.maxPerPage
+    ? Math.min(MAX_RESULTS_PER_PAGE, request.maxPerPage)
+    : MAX_RESULTS_PER_PAGE;
   let currentUser;
   try {
     currentUser = await authenticate(headers.Authorization);
