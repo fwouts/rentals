@@ -16,5 +16,12 @@
   .list {
     flex-grow: 1;
     padding: 16px 0;
+
+    .pagination {
+      display: flex;
+      margin: 16px;
+      flex-direction: column;
+      align-items: center;
+    }
   }
 }

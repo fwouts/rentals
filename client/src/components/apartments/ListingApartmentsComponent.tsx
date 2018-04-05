@@ -1,4 +1,4 @@
-import { Alert, Button, Card, Checkbox, Form, InputNumber, Loading, Select, Table } from "element-react";
+import { Alert, Button, Card, Checkbox, Form, InputNumber, Loading, Pagination, Select, Table } from "element-react";
 import { observer } from "mobx-react";
 import moment from "moment";
 import * as React from "react";
@@ -96,6 +96,16 @@ export class ListingApartmentsComponent extends React.Component<{
             stripe={true}
             {...({emptyText: "No apartments to show."}) as any}
           />
+          <div className="pagination">
+            <Pagination
+              layout="prev, pager, next"
+              pageCount={this.props.controller.pageCount}
+              currentPage={this.props.controller.currentPage}
+              onCurrentChange={(page) => {
+                this.props.controller.loadPage(page!);
+              }}
+            />
+          </div>
         </Loading>
       </div>
     );
