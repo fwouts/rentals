@@ -1,0 +1,16 @@
+.ListingApartmentsComponent {
+  display: flex;
+  flex-direction: row;
+
+  .filter-panel {
+    box-sizing: border-box;
+    width: 300px;
+    flex-shrink: 0;
+    padding: 16px 16px 16px 0;
+  }
+
+  .list {
+    flex-grow: 1;
+    padding: 16px 0;
+  }
+}
