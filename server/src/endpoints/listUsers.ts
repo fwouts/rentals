@@ -1,4 +1,4 @@
-import { decodeJwt } from "@/auth/jwt";
+import { authenticate } from "@/auth/jwt";
 import { connection } from "@/db/connections";
 import { User } from "@/db/entities/user";
 import {
@@ -15,13 +15,15 @@ export async function listUsers(
   request: ListUsersRequest,
   maxResultsPerPage = MAX_RESULTS_PER_PAGE,
 ): Promise<ListUsersResponse> {
-  let role = "unknown";
+  let currentUser = {
+    role: "unknown",
+  };
   try {
-    ({ role } = decodeJwt(headers.Authorization));
+    currentUser = await authenticate(headers.Authorization);
   } catch {
     // Ignore.
   }
-  if (role !== "admin") {
+  if (currentUser.role !== "admin") {
     return {
       results: [],
       totalResults: 0,

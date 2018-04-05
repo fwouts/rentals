@@ -1,4 +1,4 @@
-import { decodeJwt } from "@/auth/jwt";
+import { authenticate } from "@/auth/jwt";
 import { passwordValid } from "@/auth/salting";
 import { connection } from "@/db/connections";
 import { User } from "@/db/entities/user";
@@ -10,7 +10,7 @@ export async function updateUser(
   updateUserId: string,
   request: UpdateUserRequest,
 ): Promise<UpdateUserResponse> {
-  const { userId, role } = decodeJwt(headers.Authorization);
+  const currentUser = await authenticate(headers.Authorization);
   const user = await connection.manager.findOne(User, {
     userId: updateUserId,
   });
@@ -20,7 +20,7 @@ export async function updateUser(
       message: "No such user.",
     };
   }
-  if (userId === updateUserId) {
+  if (currentUser.userId === updateUserId) {
     if (!request.currentPassword) {
       return {
         status: "error",
@@ -45,7 +45,7 @@ export async function updateUser(
     updateUserProps(user, request);
     return saveUser(user, "Your account was updated successfully.");
   } else {
-    if (role === "admin") {
+    if (currentUser.role === "admin") {
       updateUserProps(user, request);
       return saveUser(user, "The account was updated successfully.");
     } else {

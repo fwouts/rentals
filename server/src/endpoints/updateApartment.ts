@@ -1,4 +1,4 @@
-import { decodeJwt } from "@/auth/jwt";
+import { authenticate } from "@/auth/jwt";
 import { connection } from "@/db/connections";
 import { Apartment } from "@/db/entities/apartment";
 import { User } from "@/db/entities/user";
@@ -13,7 +13,7 @@ export async function updateApartment(
   apartmentId: string,
   request: UpdateApartmentRequest,
 ): Promise<UpdateApartmentResponse> {
-  const { userId, role } = decodeJwt(headers.Authorization);
+  const currentUser = await authenticate(headers.Authorization);
   const apartment = await connection.manager.findOne(Apartment, {
     where: {
       apartmentId,
@@ -25,14 +25,14 @@ export async function updateApartment(
       message: "No such apartment.",
     };
   }
-  switch (role) {
+  switch (currentUser.role) {
     case "client":
       return {
         status: "error",
         message: "Clients cannot update apartment listings.",
       };
     case "realtor":
-      if (apartment.realtor.userId !== userId) {
+      if (apartment.realtor.userId !== currentUser.userId) {
         return {
           status: "error",
           message: "Realtors cannot update other realtors' apartment listings.",
@@ -61,6 +61,6 @@ export async function updateApartment(
         message: "The apartment listing was updated successfully.",
       };
     default:
-      throw new Error(`Unknown role: ${role}.`);
+      throw new Error(`Unknown role: ${currentUser.role}.`);
   }
 }

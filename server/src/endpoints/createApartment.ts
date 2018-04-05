@@ -1,4 +1,4 @@
-import { decodeJwt } from "@/auth/jwt";
+import { authenticate } from "@/auth/jwt";
 import { connection } from "@/db/connections";
 import { Apartment } from "@/db/entities/apartment";
 import {
@@ -11,22 +11,22 @@ export async function createApartment(
   headers: AuthRequired,
   request: CreateApartmentRequest,
 ): Promise<CreateApartmentResponse> {
-  const { userId, role } = decodeJwt(headers.Authorization);
+  const currentUser = await authenticate(headers.Authorization);
   let realtorId;
-  switch (role) {
+  switch (currentUser.role) {
     case "client":
       return {
         status: "error",
         message: "Clients cannot create apartment listings.",
       };
     case "realtor":
-      realtorId = userId;
+      realtorId = currentUser.userId;
       break;
     case "admin":
-      realtorId = request.realtorId || userId;
+      realtorId = request.realtorId || currentUser.userId;
       break;
     default:
-      throw new Error(`Unknown role: ${role}.`);
+      throw new Error(`Unknown role: ${currentUser.role}.`);
   }
   const apartment = Apartment.create(request.info, realtorId);
   await connection.manager.save(apartment);

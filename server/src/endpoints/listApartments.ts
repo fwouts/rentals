@@ -1,4 +1,4 @@
-import { decodeJwt } from "@/auth/jwt";
+import { authenticate } from "@/auth/jwt";
 import { connection } from "@/db/connections";
 import { Apartment } from "@/db/entities/apartment";
 import {
@@ -14,10 +14,9 @@ export async function listApartments(
   request: ListApartmentsRequest,
   maxResultsPerPage = MAX_RESULTS_PER_PAGE,
 ): Promise<ListApartmentsResponse> {
-  let userId;
-  let role;
+  let currentUser;
   try {
-    ({ userId, role } = decodeJwt(headers.Authorization));
+    currentUser = await authenticate(headers.Authorization);
   } catch (e) {
     return {
       results: [],
@@ -26,7 +25,7 @@ export async function listApartments(
     };
   }
   const requestFilter = request.filter || {};
-  if (role === "client") {
+  if (currentUser.role === "client") {
     if (requestFilter.rented) {
       // Don't show rented apartments to clients.
       return {
@@ -38,8 +37,11 @@ export async function listApartments(
       requestFilter.rented = false;
     }
   }
-  if (role === "realtor") {
-    if (requestFilter.realtorId && requestFilter.realtorId !== userId) {
+  if (currentUser.role === "realtor") {
+    if (
+      requestFilter.realtorId &&
+      requestFilter.realtorId !== currentUser.userId
+    ) {
       // Don't show other realtors' rented apartments to realtors.
       if (requestFilter.rented) {
         return {

@@ -1,4 +1,4 @@
-import { decodeJwt } from "@/auth/jwt";
+import { authenticate } from "@/auth/jwt";
 import { passwordValid } from "@/auth/salting";
 import { connection } from "@/db/connections";
 import { User } from "@/db/entities/user";
@@ -9,7 +9,7 @@ export async function deleteUser(
   deleteUserId: string,
   request: DeleteUserRequest,
 ): Promise<DeleteUserResponse> {
-  const { userId, role } = decodeJwt(headers.Authorization);
+  const currentUser = await authenticate(headers.Authorization);
   const user = await connection.manager.findOne(User, {
     userId: deleteUserId,
   });
@@ -19,7 +19,7 @@ export async function deleteUser(
       message: "No such user.",
     };
   }
-  if (userId === deleteUserId) {
+  if (currentUser.userId === deleteUserId) {
     if (!request.password) {
       return {
         status: "error",
@@ -32,15 +32,13 @@ export async function deleteUser(
         message: "Incorrect password.",
       };
     }
-    await connection.manager.delete(User, {
-      userId,
-    });
+    await connection.manager.delete(User, currentUser);
     return {
       status: "success",
       message: "Your account was deleted successfully. Bye bye.",
     };
   } else {
-    if (role === "admin") {
+    if (currentUser.role === "admin") {
       await connection.manager.delete(User, {
         userId: deleteUserId,
       });

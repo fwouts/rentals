@@ -1,14 +1,13 @@
-import { decodeJwt } from "@/auth/jwt";
+import { authenticate } from "@/auth/jwt";
 import { connection } from "@/db/connections";
 import { Apartment } from "@/db/entities/apartment";
-import { User } from "@/db/entities/user";
 import { AuthRequired, DeleteApartmentResponse } from "../api";
 
 export async function deleteApartment(
   headers: AuthRequired,
   apartmentId: string,
 ): Promise<DeleteApartmentResponse> {
-  const { userId, role } = decodeJwt(headers.Authorization);
+  const currentUser = await authenticate(headers.Authorization);
   const apartment = await connection.manager.findOne(Apartment, {
     apartmentId,
   });
@@ -18,14 +17,14 @@ export async function deleteApartment(
       message: "No such apartment.",
     };
   }
-  switch (role) {
+  switch (currentUser.role) {
     case "client":
       return {
         status: "error",
         message: "Clients cannot delete apartment listings.",
       };
     case "realtor":
-      if (apartment.realtor.userId !== userId) {
+      if (apartment.realtor.userId !== currentUser.userId) {
         return {
           status: "error",
           message: "Realtors cannot delete other realtors' apartment listings.",
@@ -33,7 +32,7 @@ export async function deleteApartment(
       }
       await connection.manager.delete(Apartment, {
         apartmentId,
-        realtor: new User(userId),
+        realtor: currentUser,
       });
       return {
         status: "success",
@@ -48,6 +47,6 @@ export async function deleteApartment(
         message: "The apartment listing was deleted successfully.",
       };
     default:
-      throw new Error(`Unknown role: ${role}.`);
+      throw new Error(`Unknown role: ${currentUser.role}.`);
   }
 }

@@ -1,4 +1,4 @@
-import { encodeJwt } from "@/auth/jwt";
+import { safeToken } from "@/auth/jwt";
 import { passwordValid } from "@/auth/salting";
 import { LoginUserRequest, LoginUserResponse } from "../api";
 import { connection } from "../db/connections";
@@ -25,9 +25,8 @@ export async function loginUser(
   const confirmedUser = potentialUser;
   return {
     status: "success",
-    jwtToken: encodeJwt({
+    jwtToken: safeToken({
       userId: confirmedUser.userId,
-      role: confirmedUser.role,
     }),
     role: confirmedUser.role,
     userId: confirmedUser.userId,

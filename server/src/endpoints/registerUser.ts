@@ -1,4 +1,4 @@
-import { decodeJwt } from "@/auth/jwt";
+import { authenticate } from "@/auth/jwt";
 import owasp from "owasp-password-strength-test";
 import {
   AuthOptional,
@@ -14,8 +14,8 @@ export async function registerUser(
 ): Promise<RegisterUserResponse> {
   let isAdmin = false;
   if (headers.Authorization) {
-    const token = decodeJwt(headers.Authorization);
-    isAdmin = token.role === "admin";
+    const currentUser = await authenticate(headers.Authorization);
+    isAdmin = currentUser.role === "admin";
   }
   if (request.role === "admin" && !isAdmin) {
     return {
