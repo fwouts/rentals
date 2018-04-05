@@ -187,23 +187,25 @@ type DeleteApartmentResponse = {
 endpoint listApartments: GET /apartments ListApartmentsRequest -> ListApartmentsResponse
 
 type ListApartmentsRequest = {
-  filter?: {
-    realtorId?: string
-    rented?: bool
-    sizeRange?: {
-      min: int
-      max: int
-    }
-    priceRange?: {
-      min: int
-      max: int
-    }
-    numberOfRooms?: {
-      min: int
-      max: int
-    }
-  }
+  filter?: ListApartmentsFilter
   pageToken?: string
+}
+
+type ListApartmentsFilter = {
+  realtorId?: string
+  rented?: bool
+  sizeRange?: {
+    min: int
+    max: int
+  }
+  priceRange?: {
+    min: int
+    max: int
+  }
+  numberOfRooms?: {
+    min: int
+    max: int
+  }
 }
 
 type ListApartmentsResponse = {

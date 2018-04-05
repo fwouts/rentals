@@ -7,8 +7,9 @@
     "build": "react-scripts-ts build",
     "lint": "tslint --project tsconfig.json --fix",
     "test": "react-scripts-ts test --env=jsdom",
+    "test:once": "yarn test --watchAll false",
     "eject": "react-scripts-ts eject",
-    "precommit": "yarn build && lint-staged"
+    "precommit": "lint-staged && yarn build && yarn test:once"
   },
   "dependencies": {
     "@types/axios": "^0.14.0",
@@ -27,7 +28,7 @@
     "typescript": "^2.8.1"
   },
   "lint-staged": {
-    "*.ts": [
+    "*.{ts,tsx}": [
       "tslint --project tsconfig.json --fix",
       "git add"
     ]

@@ -110,23 +110,25 @@ export interface DeleteApartmentResponse {
 }
 
 export interface ListApartmentsRequest {
-  filter?: {
-    realtorId?: string;
-    rented?: boolean;
-    sizeRange?: {
-      min: number;
-      max: number;
-    };
-    priceRange?: {
-      min: number;
-      max: number;
-    };
-    numberOfRooms?: {
-      min: number;
-      max: number;
-    };
-  };
+  filter?: ListApartmentsFilter;
   pageToken?: string;
+}
+
+export interface ListApartmentsFilter {
+  realtorId?: string;
+  rented?: boolean;
+  sizeRange?: {
+    min: number;
+    max: number;
+  };
+  priceRange?: {
+    min: number;
+    max: number;
+  };
+  numberOfRooms?: {
+    min: number;
+    max: number;
+  };
 }
 
 export interface ListApartmentsResponse {

@@ -23,7 +23,16 @@ app.use(bodyParser.json());
 // TODO: Change CORS configuration.
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: (origin, callback) => {
+      if (
+        origin === "http://localhost" ||
+        origin.startsWith("http://localhost:")
+      ) {
+        callback(null, true);
+      } else {
+        callback(new Error(`Access is not allowed from ${origin}.`));
+      }
+    },
   }),
 );
 

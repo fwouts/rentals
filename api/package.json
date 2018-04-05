@@ -8,6 +8,7 @@
     "generate-server": "apidef generate typescript rentals.api ../server/src -s"
   },
   "devDependencies": {
-    "@zenclabs/api": "^0.0.11"
+    "@zenclabs/api": "^0.0.11",
+    "uuid": "^3.2.1"
   }
 }
