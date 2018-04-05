@@ -58,13 +58,13 @@ export interface ListUsersRequest {
   filter?: {
     role: Role;
   };
-  pageToken?: string;
+  page?: number;
 }
 
 export interface ListUsersResponse {
   results: UserDetails[];
   totalResults: number;
-  nextPageToken?: string;
+  pageCount: number;
 }
 
 export interface UserDetails {
@@ -107,7 +107,7 @@ export interface DeleteApartmentResponse {
 
 export interface ListApartmentsRequest {
   filter?: ListApartmentsFilter;
-  pageToken?: string;
+  page?: number;
 }
 
 export interface ListApartmentsFilter {
@@ -130,7 +130,7 @@ export interface ListApartmentsFilter {
 export interface ListApartmentsResponse {
   results: ApartmentDetails[];
   totalResults: number;
-  nextPageToken?: string;
+  pageCount: number;
 }
 
 export interface ApartmentDetails {

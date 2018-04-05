@@ -25,19 +25,12 @@ export async function listUsers(
     return {
       results: [],
       totalResults: 0,
+      pageCount: 0,
     };
   }
   let skip;
-  if (request.pageToken) {
-    try {
-      const token = JSON.parse(atob(request.pageToken));
-      skip = parseInt(token.skip, 10);
-    } catch (e) {
-      // Ignore any error, but log it for debugging purposes.
-      // tslint:disable-next-line no-console
-      console.warn(e);
-      skip = 0;
-    }
+  if (request.page) {
+    skip = (request.page - 1) * maxResultsPerPage;
   } else {
     skip = 0;
   }
@@ -53,13 +46,7 @@ export async function listUsers(
   return {
     results: results.map(toUserDetails),
     totalResults: totalCount,
-    ...(skip + results.length < totalCount && {
-      nextPageToken: btoa(
-        JSON.stringify({
-          skip: skip + maxResultsPerPage,
-        }),
-      ),
-    }),
+    pageCount: Math.ceil(totalCount / maxResultsPerPage),
   };
 }
 

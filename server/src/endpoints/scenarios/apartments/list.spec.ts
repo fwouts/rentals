@@ -36,6 +36,7 @@ test("guests cannot see apartments", async () => {
   expect(response).toEqual({
     results: [],
     totalResults: 0,
+    pageCount: 0,
   });
 });
 
@@ -46,7 +47,7 @@ test("clients can only see rentable apartments", async () => {
     LOTS_OF_APARTMENTS_PER_PAGE,
   );
   expect(response.totalResults).toBe(68);
-  expect(response.nextPageToken).toBeUndefined();
+  expect(response.pageCount).toBe(1);
   response.results.forEach((apartment) =>
     expect(apartment.info.rented).toBeFalsy(),
   );
@@ -74,6 +75,7 @@ test("clients can only see rentable apartments", async () => {
   expect(responseWithRentedTrueFilter).toEqual({
     totalResults: 0,
     results: [],
+    pageCount: 0,
   });
 });
 
@@ -387,30 +389,36 @@ test("apartments pagination without filters", async () => {
   // per page.
   const apartmentsPerPage = 30;
   const headers = await authHeaders(CLIENT_BRIAN, BRIAN_PASSWORD);
-  const page1 = await listApartments(headers, {}, apartmentsPerPage);
+  const page1 = await listApartments(
+    headers,
+    {
+      page: 1,
+    },
+    apartmentsPerPage,
+  );
   expect(page1.totalResults).toBe(68);
   expect(page1.results.length).toBe(30);
-  expect(page1.nextPageToken).toBeTruthy();
+  expect(page1.pageCount).toBe(3);
   const page2 = await listApartments(
     headers,
     {
-      pageToken: page1.nextPageToken,
+      page: 2,
     },
     apartmentsPerPage,
   );
   expect(page2.totalResults).toBe(68);
   expect(page2.results.length).toBe(30);
-  expect(page2.nextPageToken).toBeTruthy();
+  expect(page2.pageCount).toBe(3);
   const page3 = await listApartments(
     headers,
     {
-      pageToken: page2.nextPageToken,
+      page: 3,
     },
     apartmentsPerPage,
   );
   expect(page3.totalResults).toBe(68);
   expect(page3.results.length).toBe(8);
-  expect(page3.nextPageToken).toBeUndefined();
+  expect(page3.pageCount).toBe(3);
 });
 
 test("apartments pagination stops exactly when required", async () => {
@@ -421,8 +429,8 @@ test("apartments pagination stops exactly when required", async () => {
   const requesting68 = await listApartments(headers, {}, 68);
   expect(requesting67.totalResults).toBe(68);
   expect(requesting68.totalResults).toBe(68);
-  expect(requesting67.nextPageToken).toBeTruthy();
-  expect(requesting68.nextPageToken).toBeUndefined();
+  expect(requesting67.pageCount).toBe(2);
+  expect(requesting68.pageCount).toBe(1);
 });
 
 test("apartments pagination with filters", async () => {
@@ -437,12 +445,13 @@ test("apartments pagination with filters", async () => {
           max: 20,
         },
       },
+      page: 1,
     },
     apartmentsPerPage,
   );
   expect(page1.totalResults).toBe(6);
   expect(page1.results.length).toBe(5);
-  expect(page1.nextPageToken).toBeTruthy();
+  expect(page1.pageCount).toBe(2);
   const page2 = await listApartments(
     await authHeaders(CLIENT_BRIAN, BRIAN_PASSWORD),
     {
@@ -452,11 +461,11 @@ test("apartments pagination with filters", async () => {
           max: 20,
         },
       },
-      pageToken: page1.nextPageToken,
+      page: 2,
     },
     apartmentsPerPage,
   );
   expect(page2.totalResults).toBe(6);
   expect(page2.results.length).toBe(1);
-  expect(page2.nextPageToken).toBeUndefined();
+  expect(page2.pageCount).toBe(2);
 });

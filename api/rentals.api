@@ -100,13 +100,13 @@ type ListUsersRequest = {
   filter?: {
     role: Role
   }
-  pageToken?: string
+  page?: int
 }
 
 type ListUsersResponse = {
   results: UserDetails[]
   totalResults: int
-  nextPageToken?: string
+  pageCount: int
 }
 
 type UserDetails = {
@@ -188,7 +188,7 @@ endpoint listApartments: POST /apartments/list ListApartmentsRequest -> ListApar
 
 type ListApartmentsRequest = {
   filter?: ListApartmentsFilter
-  pageToken?: string
+  page?: int
 }
 
 type ListApartmentsFilter = {
@@ -211,7 +211,7 @@ type ListApartmentsFilter = {
 type ListApartmentsResponse = {
   results: ApartmentDetails[]
   totalResults: int
-  nextPageToken?: string
+  pageCount: int
 }
 
 type ApartmentDetails = {

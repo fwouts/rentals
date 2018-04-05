@@ -23,6 +23,7 @@ export async function listApartments(
     return {
       results: [],
       totalResults: 0,
+      pageCount: 0,
     };
   }
   const requestFilter = request.filter || {};
@@ -60,6 +61,7 @@ export async function listApartments(
       return {
         results: [],
         totalResults: 0,
+        pageCount: 0,
       };
     } else {
       where.rented = false;
@@ -72,6 +74,7 @@ export async function listApartments(
         return {
           results: [],
           totalResults: 0,
+          pageCount: 0,
         };
       } else {
         where.rented = false;
@@ -79,18 +82,8 @@ export async function listApartments(
     }
   }
   let skip;
-  if (request.pageToken) {
-    try {
-      const token = JSON.parse(
-        Buffer.from(request.pageToken, "base64").toString(),
-      );
-      skip = parseInt(token.skip, 10);
-    } catch (e) {
-      // Ignore any error, but log it for debugging purposes.
-      // tslint:disable-next-line no-console
-      console.warn(e);
-      skip = 0;
-    }
+  if (request.page) {
+    skip = (request.page - 1) * maxResultsPerPage;
   } else {
     skip = 0;
   }
@@ -105,12 +98,6 @@ export async function listApartments(
   return {
     results: results.map(Apartment.toApi),
     totalResults: totalCount,
-    ...(skip + results.length < totalCount && {
-      nextPageToken: Buffer.from(
-        JSON.stringify({
-          skip: skip + maxResultsPerPage,
-        }),
-      ).toString("base64"),
-    }),
+    pageCount: Math.ceil(totalCount / maxResultsPerPage),
   };
 }

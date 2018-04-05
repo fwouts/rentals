@@ -17,9 +17,10 @@ export class ListingApartments {
   };
   @observable public apartments: ApartmentDetails[] = [];
   @observable public total = 0;
+  @observable public pageCount = 0;
+  @observable public currentPage = 1;
 
-  private currentResultsFilter: Filter = this.filter;
-  private nextPageToken: string | null = null;
+  private appliedFilter = this.filter;
   private readonly authenticated: Authenticated;
 
   public constructor(authenticated: Authenticated) {
@@ -27,44 +28,30 @@ export class ListingApartments {
   }
 
   public loadFresh = async () => {
+    this.apartments = [];
+    this.total = 0;
+    this.pageCount = 0;
+    this.currentPage = 1;
+    this.appliedFilter = this.filter;
+    await this.loadPage(1);
+  }
+
+  public loadPage = async (pageNumber: number) => {
     try {
       this.loading = true;
-      const filter = this.filter;
       const response = await listApartments(
         {
           Authorization: this.authenticated.jwtToken,
         },
         {
-          filter: toRequestFilter(filter),
+          filter: toRequestFilter(this.appliedFilter),
+          page: pageNumber,
         },
       );
       this.apartments = response.results;
       this.total = response.totalResults;
-      this.currentResultsFilter = filter;
-      this.nextPageToken = response.nextPageToken || null;
-    } finally {
-      this.loading = false;
-    }
-  }
-
-  public loadMore = async () => {
-    if (!this.nextPageToken) {
-      return false;
-    }
-    try {
-      this.loading = true;
-      const response = await listApartments(
-        {
-          Authorization: this.authenticated.jwtToken,
-        },
-        {
-          filter: toRequestFilter(this.currentResultsFilter),
-          pageToken: this.nextPageToken,
-        },
-      );
-      this.apartments = this.apartments.concat(response.results);
-      this.total = response.totalResults;
-      this.nextPageToken = response.nextPageToken || null;
+      this.pageCount = response.pageCount;
+      this.currentPage = pageNumber;
       return true;
     } finally {
       this.loading = false;

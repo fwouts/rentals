@@ -31,18 +31,21 @@ test("non-admins cannot list users", async () => {
   ).toEqual({
     results: [],
     totalResults: 0,
+    pageCount: 0,
   });
   expect(
     await listUsers(await authHeaders(CLIENT_BRIAN, BRIAN_PASSWORD), {}),
   ).toEqual({
     results: [],
     totalResults: 0,
+    pageCount: 0,
   });
   expect(
     await listUsers(await authHeaders(REALTOR_HELENA, HELENA_PASSWORD), {}),
   ).toEqual({
     results: [],
     totalResults: 0,
+    pageCount: 0,
   });
 });
 
@@ -53,7 +56,7 @@ test("admins can list users", async () => {
   );
   expect(response.results.length).toBe(6);
   expect(response.totalResults).toBe(6);
-  expect(response.nextPageToken).toBeUndefined();
+  expect(response.pageCount).toBe(1);
 });
 
 test("users filtering", async () => {
@@ -98,20 +101,22 @@ test("users pagination", async () => {
   const usersPerPage = 3;
   const page1 = await listUsers(
     await authHeaders(ADMIN_FRANK, FRANK_PASSWORD),
-    {},
+    {
+      page: 1,
+    },
     usersPerPage,
   );
   expect(page1.results.length).toBe(3);
   expect(page1.totalResults).toBe(6);
-  expect(page1.nextPageToken).toBeTruthy();
+  expect(page1.pageCount).toBe(2);
   const page2 = await listUsers(
     await authHeaders(ADMIN_FRANK, FRANK_PASSWORD),
     {
-      pageToken: page1.nextPageToken,
+      page: 2,
     },
     usersPerPage,
   );
   expect(page2.results.length).toBe(3);
   expect(page2.totalResults).toBe(6);
-  expect(page2.nextPageToken).toBeUndefined();
+  expect(page2.pageCount).toBe(2);
 });
