@@ -8,7 +8,7 @@
     "lint": "tslint --project tsconfig.json --fix",
     "test": "node scripts/test.js --env=jsdom",
     "test:once": "yarn test --watchAll false",
-    "precommit": "lint-staged && yarn build && yarn test:once"
+    "precommit": "lint-staged && concurrently \"yarn build\" \"yarn test:once\""
   },
   "dependencies": {
     "@types/axios": "^0.14.0",
@@ -63,6 +63,7 @@
     "whatwg-fetch": "2.0.3"
   },
   "devDependencies": {
+    "concurrently": "^3.5.1",
     "lint-staged": "^7.0.2",
     "node-sass": "^4.8.3",
     "sass-loader": "^6.0.7",

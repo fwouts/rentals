@@ -8,7 +8,7 @@
     "build": "tsc",
     "lint": "tslint --project tsconfig.json --fix",
     "test": "jest --runInBand",
-    "precommit": "yarn build && lint-staged && yarn test"
+    "precommit": "lint-staged && concurrently \"yarn build\" \"yarn test\""
   },
   "_moduleAliases": {
     "@": "build"
@@ -33,6 +33,7 @@
   "devDependencies": {
     "@types/express": "^4.11.1",
     "@types/jest": "^22.2.2",
+    "concurrently": "^3.5.1",
     "express": "^4.16.3",
     "jest": "^22.4.3",
     "lint-staged": "^7.0.2",

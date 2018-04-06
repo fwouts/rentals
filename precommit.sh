@@ -2,12 +2,8 @@
 
 set -e
 
-echo "Precommit for client package..."
-cd client
-yarn precommit
-cd -
-echo "Precommit for server package..."
-cd server
-yarn precommit
-cd -
+concurrently \
+  "cd client ; yarn precommit" \
+  "cd server ; yarn precommit"
+
 echo "Ready to commit!"

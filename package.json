@@ -3,6 +3,7 @@
   "author": "Francois Wouts <f@zenc.io>",
   "private": true,
   "devDependencies": {
+    "concurrently": "^3.5.1",
     "husky": "^0.15.0-rc.13",
     "prettier": "^1.11.1"
   },
