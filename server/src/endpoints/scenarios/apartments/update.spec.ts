@@ -60,8 +60,6 @@ test("realtors can update their own apartments", async () => {
     floorArea: 109,
     pricePerMonth: 1990,
     numberOfRooms: 99,
-    latitude: 20,
-    longitude: 30,
     realtor: {
       email: REALTOR_JOHN,
       role: "realtor",
@@ -162,8 +160,6 @@ test("admins can update all apartments", async () => {
     floorArea: 109,
     pricePerMonth: 1990,
     numberOfRooms: 99,
-    latitude: 20,
-    longitude: 30,
     realtor: {
       email: REALTOR_JOHN,
       role: "realtor",
@@ -211,8 +207,6 @@ test("admins can change apartment realtors", async () => {
     floorArea: 109,
     pricePerMonth: 1990,
     numberOfRooms: 99,
-    latitude: 20,
-    longitude: 30,
     realtor: {
       email: REALTOR_JOHN,
       role: "realtor",

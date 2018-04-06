@@ -195,18 +195,18 @@ export class ListingApartmentsComponent extends React.Component<{
                 stripe={true}
                 {...({emptyText: "No apartments to show."}) as any}
               />
-              <div className="pagination">
-                <Pagination
-                  layout="prev, pager, next"
-                  pageCount={this.props.controller.pageCount}
-                  currentPage={this.props.controller.currentPage}
-                  onCurrentChange={(page) => {
-                    this.props.controller.loadPage(page!);
-                  }}
-                />
-              </div>
             </Tabs.Pane>
           </Tabs>
+          <div className="pagination">
+            <Pagination
+              layout="prev, pager, next"
+              pageCount={this.props.controller.pageCount}
+              currentPage={this.props.controller.currentPage}
+              onCurrentChange={(page) => {
+                this.props.controller.loadPage(page!);
+              }}
+            />
+          </div>
         </Loading>
       </div>
     );

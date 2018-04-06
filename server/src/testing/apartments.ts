@@ -43,8 +43,8 @@ export async function createTestApartments(): Promise<void> {
             pricePerMonth: 1000 + i * 10,
             numberOfRooms: i,
             coordinates: {
-              latitude: 20,
-              longitude: 30,
+              latitude: Math.random() * 180 - 90,
+              longitude: Math.random() * 360 - 180,
             },
             // One third of the apartments will be rentable.
             rented: i % 3 > 0,
