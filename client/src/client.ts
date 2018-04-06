@@ -29,6 +29,18 @@ export async function loginUser(
   return response.data;
 }
 
+export async function checkAuth(
+  headers: api.AuthRequired,
+): Promise<api.LoginUserResponse> {
+  const url = `${URL}/users/auth`;
+  const response = await axios({
+    url,
+    method: "POST",
+    headers,
+  });
+  return response.data;
+}
+
 export async function updateUser(
   headers: api.AuthRequired,
   id: string,

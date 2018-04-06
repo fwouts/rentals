@@ -1,6 +1,7 @@
 import "module-alias/register";
 
 import { initDatabase } from "@/db";
+import { checkAuth } from "@/endpoints/checkAuth";
 import bodyParser from "body-parser";
 import cors from "cors";
 import express from "express";
@@ -55,6 +56,18 @@ app.post("/users/login", async (req, res, next) => {
   try {
     const request: api.LoginUserRequest = req.body;
     const response: api.LoginUserResponse = await loginUser(request);
+    res.json(response);
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.post("/users/auth", async (req, res, next) => {
+  try {
+    const headers: api.AuthRequired = {
+      Authorization: req.header("Authorization") || "",
+    };
+    const response: api.LoginUserResponse = await checkAuth(headers);
     res.json(response);
   } catch (err) {
     next(err);

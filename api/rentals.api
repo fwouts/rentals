@@ -50,6 +50,12 @@ type LoginUserResponse = {
   role: Role
 }
 
+// Endpoint to verify current authentication status.
+//
+// Used by clients, realtors and admins.
+@headers(AuthRequired)
+endpoint checkAuth: POST /users/auth void -> LoginUserResponse
+
 // Endpoint to update users.
 //
 // Restrictions:
