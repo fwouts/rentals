@@ -1,5 +1,4 @@
 import {observer} from "mobx-react";
-import DevTools from "mobx-react-devtools";
 import * as React from "react";
 import { AuthenticatedAdminPage } from "./pages/AuthenticatedAdminPage";
 import { AuthenticatingPage } from "./pages/AuthenticatingPage";
@@ -10,15 +9,6 @@ import { AppController } from "./state/app";
 @observer
 class App extends React.Component<{controller: AppController}> {
   public render() {
-    return (
-      <div>
-        {this.renderPage()}
-        {process.env.NODE_ENV === "development" && <DevTools />}
-      </div>
-    );
-  }
-
-  private renderPage() {
     switch (this.props.controller.state.kind) {
       case "unauthenticated":
         return <UnauthenticatedPage controller={this.props.controller.state} />;
