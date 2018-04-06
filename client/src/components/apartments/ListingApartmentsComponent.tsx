@@ -1,5 +1,4 @@
 import {
-  Alert,
   Button,
   Card,
   Checkbox,
@@ -178,49 +177,44 @@ export class ListingApartmentsComponent extends React.Component<{
             <Button type="primary" onClick={() => this.props.controller.deletingApartment!.confirm()}>Confirm</Button>
           </Dialog.Footer>
         </Dialog>
-        <Loading className="list" loading={this.props.controller.loading}>
-          {this.props.controller.total > 0 && <>
-            <Alert
-              title={`We found ${this.props.controller.total} result${this.props.controller.total !== 1 ? "s" : ""}.`}
-              closable={false}
-            />
-            <br />
-          </>}
-          <Tabs
-            activeName={this.props.controller.tab}
-            onTabClick={(tab) => this.props.controller.tab = tab.props.name}
-          >
-            <Tabs.Pane name="map" label="Map view">
-              <MapComponent
-                googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${
-                  process.env.REACT_APP_GOOGLE_MAPS_API_KEY
-                }&v=3.exp&libraries=geometry,drawing,places`}
-                loadingElement={<div />}
-                containerElement={<div />}
-                mapElement={<div className="map-container" />}
-                apartments={this.props.controller.apartments}
+        <Card className="list">
+          <Loading loading={this.props.controller.loading}>
+            <Tabs
+              activeName={this.props.controller.tab}
+              onTabClick={(tab) => this.props.controller.tab = tab.props.name}
+            >
+              <Tabs.Pane name="map" label="Map view">
+                <MapComponent
+                  googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${
+                    process.env.REACT_APP_GOOGLE_MAPS_API_KEY
+                  }&v=3.exp&libraries=geometry,drawing,places`}
+                  loadingElement={<div />}
+                  containerElement={<div />}
+                  mapElement={<div className="map-container" />}
+                  apartments={this.props.controller.apartments}
+                />
+              </Tabs.Pane>
+              <Tabs.Pane name="list" label="List view">
+                <Table
+                  columns={columns}
+                  data={this.props.controller.apartments.map(this.formatRow)}
+                  stripe={true}
+                  {...({emptyText: "No apartments to show."}) as any}
+                />
+              </Tabs.Pane>
+            </Tabs>
+            <div className="pagination">
+              <Pagination
+                layout="prev, pager, next"
+                pageCount={this.props.controller.pageCount}
+                currentPage={this.props.controller.currentPage}
+                onCurrentChange={(page) => {
+                  this.props.controller.loadPage(page!);
+                }}
               />
-            </Tabs.Pane>
-            <Tabs.Pane name="list" label="List view">
-              <Table
-                columns={columns}
-                data={this.props.controller.apartments.map(this.formatRow)}
-                stripe={true}
-                {...({emptyText: "No apartments to show."}) as any}
-              />
-            </Tabs.Pane>
-          </Tabs>
-          <div className="pagination">
-            <Pagination
-              layout="prev, pager, next"
-              pageCount={this.props.controller.pageCount}
-              currentPage={this.props.controller.currentPage}
-              onCurrentChange={(page) => {
-                this.props.controller.loadPage(page!);
-              }}
-            />
-          </div>
-        </Loading>
+            </div>
+          </Loading>
+        </Card>
       </div>
     );
   }

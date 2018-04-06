@@ -1,5 +1,4 @@
 import {
-  Alert,
   Button,
   Card,
   Form,
@@ -73,7 +72,13 @@ export class AdminListingUsersComponent extends React.Component<{
     return (
       <div className="AdminListingUsersComponent">
         <div className="filter-panel">
-          <Card>
+          <Card
+              header={
+                <h3>
+                  Filter users
+                </h3>
+              }
+          >
             <Form model={this.props.controller.filter} {...{onSubmit: this.onSubmit} as any}>
               {this.renderRoleFilter()}
               <Form.Item>
@@ -82,31 +87,26 @@ export class AdminListingUsersComponent extends React.Component<{
             </Form>
           </Card>
         </div>
-        <Loading className="list" loading={this.props.controller.loading}>
-          {this.props.controller.total > 0 && <>
-            <Alert
-              title={`We found ${this.props.controller.total} user${this.props.controller.total !== 1 ? "s" : ""}.`}
-              closable={false}
+        <Card className="list">
+          <Loading loading={this.props.controller.loading}>
+            <Table
+              columns={columns}
+              data={this.props.controller.users.map(this.formatRow)}
+              stripe={true}
+              {...({emptyText: "No users to show."}) as any}
             />
-            <br />
-          </>}
-          <Table
-            columns={columns}
-            data={this.props.controller.users.map(this.formatRow)}
-            stripe={true}
-            {...({emptyText: "No users to show."}) as any}
-          />
-          <div className="pagination">
-            <Pagination
-              layout="prev, pager, next"
-              pageCount={this.props.controller.pageCount}
-              currentPage={this.props.controller.currentPage}
-              onCurrentChange={(page) => {
-                this.props.controller.loadPage(page!);
-              }}
-            />
-          </div>
-        </Loading>
+            <div className="pagination">
+              <Pagination
+                layout="prev, pager, next"
+                pageCount={this.props.controller.pageCount}
+                currentPage={this.props.controller.currentPage}
+                onCurrentChange={(page) => {
+                  this.props.controller.loadPage(page!);
+                }}
+              />
+            </div>
+          </Loading>
+        </Card>
       </div>
     );
   }

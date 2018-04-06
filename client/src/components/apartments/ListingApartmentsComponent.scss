@@ -6,7 +6,7 @@
     box-sizing: border-box;
     width: 300px;
     flex-shrink: 0;
-    padding: 16px 16px 16px 0;
+    margin: 16px 16px 16px 0;
 
     .filter-section {
       &.spaced {
@@ -15,6 +15,10 @@
 
       .el-form-item {
         margin-bottom: 0;
+      }
+
+      .el-select {
+        width: 100%;
       }
 
       .el-card {
@@ -37,7 +41,7 @@
 
   .list {
     flex-grow: 1;
-    padding: 16px 0;
+    margin: 16px 0 16px 0;
 
     .map-container {
       height: 500px;
