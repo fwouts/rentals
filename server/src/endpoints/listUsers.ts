@@ -40,7 +40,7 @@ export async function listUsers(
       whereArgs.role = request.filter.role;
     }
     if (request.filter.name) {
-      whereQueries.push(`(user.name LIKE :name)`);
+      whereQueries.push(`(user.name ILIKE :name)`);
       whereArgs.name = "%" + request.filter.name + "%";
     }
   }
