@@ -10,25 +10,17 @@ useTestingDatabase();
 test("weak passwords are rejected", async () => {
   await expectRejected(
     "short",
-    `Password too weak:
-The password must be at least 8 characters long.
-The password must contain at least one uppercase letter.
-The password must contain at least one number.
-The password must contain at least one special character.`,
+    "Password too weak: The password must be at least 8 characters long.",
   );
   await expectRejected(
     "password",
-    `Password too weak:
-The password must contain at least one uppercase letter.
-The password must contain at least one number.
-The password must contain at least one special character.`,
+    "Password too weak: The password must contain at least one uppercase letter.",
   );
   await expectRejected(
     "passw0rd",
-    `Password too weak:
-The password must contain at least one uppercase letter.
-The password must contain at least one special character.`,
+    "Password too weak: The password must contain at least one uppercase letter.",
   );
+  await expectAccepted("pAssw0rd");
   await expectAccepted("Passw0rd!");
 });
 

@@ -6,6 +6,7 @@ import uuid from "uuid";
 
 owasp.config({
   minLength: 8,
+  minOptionalTestsToPass: 3,
 });
 
 @Entity()
@@ -68,8 +69,8 @@ export class User {
 
   public setPassword(password: string) {
     const passwordTest = owasp.test(password);
-    if (passwordTest.errors.length > 0) {
-      throw new Error("Password too weak:\n" + passwordTest.errors.join("\n"));
+    if (!passwordTest.strong) {
+      throw new Error("Password too weak: " + passwordTest.errors[0]);
     }
     const saltedHash = salting.saltedHash(password);
     this.salt = saltedHash.salt;

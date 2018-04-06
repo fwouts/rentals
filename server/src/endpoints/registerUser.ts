@@ -24,10 +24,10 @@ export async function registerUser(
     };
   }
   const passwordTest = owasp.test(request.password);
-  if (passwordTest.errors.length > 0) {
+  if (!passwordTest.strong) {
     return {
       status: "error",
-      message: "Password too weak:\n" + passwordTest.errors.join("\n"),
+      message: "Password too weak: " + passwordTest.errors[0],
     };
   }
   const user = User.create({
