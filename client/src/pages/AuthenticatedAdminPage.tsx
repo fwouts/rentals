@@ -4,6 +4,8 @@ import * as React from "react";
 import { CreatingApartmentComponent } from "../components/apartments/CreatingApartmentComponent";
 import { ListingApartmentsComponent } from "../components/apartments/ListingApartmentsComponent";
 import { UpdatingApartmentComponent } from "../components/apartments/UpdatingApartmentComponent";
+import { AdminDeletingOtherComponent } from "../components/users/AdminDeletingOtherComponent";
+import { AdminUpdatingOtherComponent } from "../components/users/AdminUpdatingOtherComponent";
 import { DeletingSelfComponent } from "../components/users/DeletingSelfComponent";
 import { UpdatingSelfComponent } from "../components/users/UpdatingSelfComponent";
 import { AuthenticatedAdmin } from "../state/authenticated/admin";
@@ -55,8 +57,22 @@ export class AuthenticatedAdminPage extends React.Component<{controller: Authent
           />
         );
         break;
+      case "admin-updating-other":
+        element = (
+          <AdminUpdatingOtherComponent
+            controller={this.props.controller.state}
+          />
+        );
+        break;
+      case "admin-deleting-other":
+        element = (
+          <AdminDeletingOtherComponent
+            controller={this.props.controller.state}
+          />
+        );
+        break;
       default:
-        throw new Error(`Unsupported state: ${this.props.controller.state.kind}.`);
+        throw new Error(`Unsupported state: ${JSON.stringify(this.props.controller.state)}.`);
     }
     return (
       <div>
