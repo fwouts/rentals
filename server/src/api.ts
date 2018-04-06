@@ -55,12 +55,14 @@ export interface DeleteUserResponse {
 }
 
 export interface ListUsersRequest {
-  filter?: {
-    role?: Role;
-    name?: string;
-  };
+  filter?: ListUsersFilter;
   maxPerPage?: number;
   page?: number;
+}
+
+export interface ListUsersFilter {
+  role?: Role;
+  name?: string;
 }
 
 export interface ListUsersResponse {

@@ -103,12 +103,14 @@ type DeleteUserResponse = {
 endpoint listUsers: POST /users/list ListUsersRequest -> ListUsersResponse
 
 type ListUsersRequest = {
-  filter?: {
-    role?: Role
-    name?: string
-  }
+  filter?: ListUsersFilter
   maxPerPage?: int
   page?: int
+}
+
+type ListUsersFilter = {
+  role?: Role
+  name?: string
 }
 
 type ListUsersResponse = {
