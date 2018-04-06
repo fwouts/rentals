@@ -17,6 +17,10 @@
     flex-grow: 1;
     padding: 16px 0;
 
+    .map-container {
+      height: 500px;
+    }
+
     .pagination {
       display: flex;
       margin: 16px;

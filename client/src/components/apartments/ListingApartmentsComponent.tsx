@@ -10,10 +10,17 @@ import {
   Pagination,
   Select,
   Table,
+  Tabs,
 } from "element-react";
 import { observer } from "mobx-react";
 import moment from "moment";
 import * as React from "react";
+import {
+  GoogleMap,
+  Marker,
+  withGoogleMap,
+  withScriptjs,
+} from "react-google-maps";
 import { ApartmentDetails } from "../../api";
 import { ListingApartments } from "../../state/authenticated/states/apartments/listing";
 import { UserPicker } from "../../state/components/userpicker";
@@ -166,22 +173,40 @@ export class ListingApartmentsComponent extends React.Component<{
             />
             <br />
           </>}
-          <Table
-            columns={columns}
-            data={this.props.controller.apartments.map(this.formatRow)}
-            stripe={true}
-            {...({emptyText: "No apartments to show."}) as any}
-          />
-          <div className="pagination">
-            <Pagination
-              layout="prev, pager, next"
-              pageCount={this.props.controller.pageCount}
-              currentPage={this.props.controller.currentPage}
-              onCurrentChange={(page) => {
-                this.props.controller.loadPage(page!);
-              }}
-            />
-          </div>
+          <Tabs
+            activeName={this.props.controller.tab}
+            onTabClick={(tab) => this.props.controller.tab = tab.props.name}
+          >
+            <Tabs.Pane name="map" label="Map view">
+              <MapComponent
+                googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${
+                  process.env.REACT_APP_GOOGLE_MAPS_API_KEY
+                }&v=3.exp&libraries=geometry,drawing,places`}
+                loadingElement={<div />}
+                containerElement={<div />}
+                mapElement={<div className="map-container" />}
+                apartments={this.props.controller.apartments}
+              />
+            </Tabs.Pane>
+            <Tabs.Pane name="list" label="List view">
+              <Table
+                columns={columns}
+                data={this.props.controller.apartments.map(this.formatRow)}
+                stripe={true}
+                {...({emptyText: "No apartments to show."}) as any}
+              />
+              <div className="pagination">
+                <Pagination
+                  layout="prev, pager, next"
+                  pageCount={this.props.controller.pageCount}
+                  currentPage={this.props.controller.currentPage}
+                  onCurrentChange={(page) => {
+                    this.props.controller.loadPage(page!);
+                  }}
+                />
+              </div>
+            </Tabs.Pane>
+          </Tabs>
         </Loading>
       </div>
     );
@@ -298,3 +323,24 @@ export class ListingApartmentsComponent extends React.Component<{
     e.preventDefault();
   }
 }
+
+const MapComponent = withScriptjs(withGoogleMap((props: {
+  apartments: ApartmentDetails[],
+}) => (
+  <GoogleMap
+    defaultZoom={3}
+    defaultCenter={{ lat: -33.8688, lng: 151.2093 }}
+  >
+    {props.apartments.map((apartment) => (
+      <Marker
+        key={apartment.apartmentId}
+        position={{
+          lat: apartment.info.coordinates.latitude,
+          lng: apartment.info.coordinates.longitude,
+        }}
+        title={apartment.realtor.name}
+      />
+    ))}
+  </GoogleMap>
+),
+));

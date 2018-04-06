@@ -23,6 +23,7 @@ export class ListingApartments {
     priceRange: null,
     numberOfRooms: null,
   };
+  @observable public tab: "list" | "map" = "map";
   @observable public apartments: ApartmentDetails[] = [];
   @observable public total = 0;
   @observable public pageCount = 0;
