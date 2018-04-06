@@ -304,9 +304,9 @@ export class ListingApartmentsComponent extends React.Component<{
               }
             }}
           >
-            <Select.Option key="show-all" label="Show all apartments" value="show-all" />
-            <Select.Option key="only-rented" label="Show only rented apartments" value="only-rented" />
-            <Select.Option key="only-rentable" label="Show only rentable apartments" value="only-rentable" />
+            <Select.Option label="Show all apartments" value="show-all" />
+            <Select.Option label="Show only rented apartments" value="only-rented" />
+            <Select.Option label="Show only rentable apartments" value="only-rentable" />
           </Select>
         </Form.Item>
       </div>

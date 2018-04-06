@@ -128,10 +128,10 @@ export class AdminListingUsersComponent extends React.Component<{
             }
           }}
         >
-          <Select.Option key="show-all" label="Show all users" value="show-all" />
-          <Select.Option key="client" label="Show only clients" value="client" />
-          <Select.Option key="realtor" label="Show only realtors" value="realtor" />
-          <Select.Option key="admin" label="Show only admins" value="admin" />
+          <Select.Option label="Show all users" value="show-all" />
+          <Select.Option label="Show only clients" value="client" />
+          <Select.Option label="Show only realtors" value="realtor" />
+          <Select.Option label="Show only admins" value="admin" />
         </Select>
       </Form.Item>
     );
