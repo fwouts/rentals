@@ -4,6 +4,8 @@ import * as React from "react";
 import { CreatingApartmentComponent } from "../components/apartments/CreatingApartmentComponent";
 import { ListingApartmentsComponent } from "../components/apartments/ListingApartmentsComponent";
 import { UpdatingApartmentComponent } from "../components/apartments/UpdatingApartmentComponent";
+import { DeletingSelfComponent } from "../components/users/DeletingSelfComponent";
+import { UpdatingSelfComponent } from "../components/users/UpdatingSelfComponent";
 import { AuthenticatedRealtor } from "../state/authenticated/realtor";
 
 @observer
@@ -40,6 +42,20 @@ export class AuthenticatedRealtorPage extends React.Component<{controller: Authe
           />
         );
         break;
+      case "updating-user-self":
+        element = (
+          <UpdatingSelfComponent
+            controller={this.props.controller.state}
+          />
+        );
+        break;
+      case "deleting-user-self":
+        element = (
+          <DeletingSelfComponent
+            controller={this.props.controller.state}
+          />
+        );
+        break;
     }
     return (
       <div>
@@ -48,9 +64,11 @@ export class AuthenticatedRealtorPage extends React.Component<{controller: Authe
             <Menu.Item index="apartments-list">Browse apartments</Menu.Item>
             <Menu.Item index="apartments-create">Create an apartment listing</Menu.Item>
           </Menu.SubMenu>
-          <Menu.Item index="signout">
-            Sign out
-          </Menu.Item>
+          <Menu.SubMenu index="account" title="Account">
+            <Menu.Item index="account-update">Update my account</Menu.Item>
+            <Menu.Item index="account-delete">Delete my account</Menu.Item>
+            <Menu.Item index="account-signout">Sign out</Menu.Item>
+          </Menu.SubMenu>
         </Menu>
         {element}
       </div>
@@ -59,8 +77,14 @@ export class AuthenticatedRealtorPage extends React.Component<{controller: Authe
 
   private onMenuSelect = (index: string) => {
     switch (index) {
-      case "signout":
+      case "account-signout":
         this.props.controller.signOut();
+        break;
+      case "account-update":
+        this.props.controller.updateUser();
+        break;
+      case "account-delete":
+        this.props.controller.deleteUser();
         break;
       case "apartments-list":
         this.props.controller.listApartments();

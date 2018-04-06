@@ -9,6 +9,7 @@ export class AdminUpdatingOther {
   @observable public email = "";
   @observable public name = "";
   @observable public newPassword = "";
+  @observable public confirmNewPassword = "";
   @observable public error: string | null = null;
   @observable public pending = false;
 
@@ -25,7 +26,11 @@ export class AdminUpdatingOther {
     this.userId = userId;
   }
 
-  public confirm = async () => {
+  public update = async () => {
+    if (this.newPassword !== this.confirmNewPassword) {
+      this.error = "Passwords do not match.";
+      return;
+    }
     try {
       this.pending = true;
       const response = await updateUser(

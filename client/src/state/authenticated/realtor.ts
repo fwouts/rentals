@@ -58,7 +58,7 @@ export class AuthenticatedRealtor {
 
   public deleteUser = () => {
     this.state = new DeletingSelf(this.authenticated, {
-      onDone: this.listApartments,
+      onDone: this.signOut,
       onCancel: this.listApartments,
     });
   }

@@ -9,6 +9,7 @@ export class UpdatingSelf {
   @observable public name = "";
   @observable public currentPassword = "";
   @observable public newPassword = "";
+  @observable public confirmNewPassword = "";
   @observable public error: string | null = null;
   @observable public pending = false;
 
@@ -20,7 +21,11 @@ export class UpdatingSelf {
     this.callbacks = callbacks;
   }
 
-  public confirm = async () => {
+  public update = async () => {
+    if (this.newPassword !== this.confirmNewPassword) {
+      this.error = "Passwords do not match.";
+      return;
+    }
     try {
       this.pending = true;
       const response = await updateUser(

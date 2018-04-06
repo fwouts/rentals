@@ -1,5 +1,4 @@
 import { observable } from "mobx";
-import { UserDetails } from "../../api";
 import { Authenticated } from "../authenticating";
 import { ListingApartments } from "./states/apartments/listing";
 import { DeletingSelf } from "./states/users/deleting-self";
@@ -31,9 +30,9 @@ export class AuthenticatedClient {
     });
   }
 
-  public deleteUser = (user: UserDetails) => {
+  public deleteUser = () => {
     this.state = new DeletingSelf(this.authenticated, {
-      onDone: this.listApartments,
+      onDone: this.signOut,
       onCancel: this.listApartments,
     });
   }

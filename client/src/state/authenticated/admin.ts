@@ -55,8 +55,12 @@ export class AuthenticatedAdmin {
     // TODO: Implement.
   }
 
-  public updateUser = (userId: string) => {
-    if (this.authenticated.userId === userId) {
+  public createUser = () => {
+    // TODO: Implement.
+  }
+
+  public updateUser = (userId?: string) => {
+    if (!userId || this.authenticated.userId === userId) {
       this.state = new UpdatingSelf(this.authenticated, {
         onDone: this.listUsers,
         onCancel: this.listUsers,
@@ -73,10 +77,10 @@ export class AuthenticatedAdmin {
     }
   }
 
-  public deleteUser = (userId: string) => {
-    if (this.authenticated.userId === userId) {
+  public deleteUser = (userId?: string) => {
+    if (!userId || this.authenticated.userId === userId) {
       this.state = new DeletingSelf(this.authenticated, {
-        onDone: this.listUsers,
+        onDone: this.signOut,
         onCancel: this.listUsers,
       });
     } else {
