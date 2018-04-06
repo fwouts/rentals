@@ -4,6 +4,8 @@ import { listApartments } from "../../../../client";
 import { Authenticated } from "../../../authenticating";
 import { DeletingApartment } from "./deleting";
 
+const MAX_PER_PAGE = 10;
+
 export class ListingApartments {
   public readonly kind = "listing-apartments";
 
@@ -48,6 +50,7 @@ export class ListingApartments {
         },
         {
           filter: toRequestFilter(this.appliedFilter),
+          maxPerPage: MAX_PER_PAGE,
           page: pageNumber,
         },
       );

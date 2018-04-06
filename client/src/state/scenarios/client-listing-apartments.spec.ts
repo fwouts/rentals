@@ -71,10 +71,10 @@ test("client listing apartments", async () => {
       loading: false,
       total: 68,
       currentPage: 1,
-      pageCount: 4,
+      pageCount: 7,
     },
   });
-  expect(listingApartments.apartments.length).toBe(20);
+  expect(listingApartments.apartments.length).toBe(10);
 
   // Load the second page.
   const nextPage = listingApartments.loadPage(2);
@@ -85,7 +85,7 @@ test("client listing apartments", async () => {
       loading: true,
       total: 68,
       currentPage: 1,
-      pageCount: 4,
+      pageCount: 7,
     },
   });
   await nextPage;
@@ -96,14 +96,14 @@ test("client listing apartments", async () => {
       loading: false,
       total: 68,
       currentPage: 2,
-      pageCount: 4,
+      pageCount: 7,
     },
   });
-  expect(listingApartments.apartments.length).toBe(20);
+  expect(listingApartments.apartments.length).toBe(10);
 
   // Tweak the filters.
   listingApartments.filter.numberOfRooms = {
-    min: 5,
+    min: 7,
     max: 50,
   };
 
@@ -125,35 +125,35 @@ test("client listing apartments", async () => {
     state: {
       kind: "listing-apartments",
       loading: false,
-      total: 30,
+      total: 28,
       currentPage: 1,
-      pageCount: 2,
+      pageCount: 3,
     },
   });
-  expect(listingApartments.apartments.length).toBe(20);
+  expect(listingApartments.apartments.length).toBe(10);
 
-  // Load the second page.
-  const filteredSecondPage = listingApartments.loadPage(2);
+  // Load the third page.
+  const filteredThirdPage = listingApartments.loadPage(3);
   expect(app.state).toMatchObject({
     kind: "authenticated-client",
     state: {
       kind: "listing-apartments",
       loading: true,
-      total: 30,
+      total: 28,
       currentPage: 1,
-      pageCount: 2,
+      pageCount: 3,
     },
   });
-  await filteredSecondPage;
+  await filteredThirdPage;
   expect(app.state).toMatchObject({
     kind: "authenticated-client",
     state: {
       kind: "listing-apartments",
       loading: false,
-      total: 30,
-      currentPage: 2,
-      pageCount: 2,
+      total: 28,
+      currentPage: 3,
+      pageCount: 3,
     },
   });
-  expect(listingApartments.apartments.length).toBe(10);
+  expect(listingApartments.apartments.length).toBe(8);
 });
