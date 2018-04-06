@@ -8,6 +8,28 @@
     flex-shrink: 0;
     padding: 16px 16px 16px 0;
 
+    .filter-section {
+      &.spaced {
+        margin: 16px 0;
+      }
+
+      .el-form-item {
+        margin-bottom: 0;
+      }
+
+      .el-card {
+        margin-bottom: 16px;
+
+        .el-card__header {
+          padding: 8px;
+        }
+
+        .el-form-item__label {
+          width: 60px;
+        }
+      }
+    }
+
     .el-card {
       overflow: visible;
     }

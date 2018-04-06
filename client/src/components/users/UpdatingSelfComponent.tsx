@@ -1,4 +1,4 @@
-import { Button, Form, Input } from "element-react";
+import { Button, Card, Form, Input } from "element-react";
 import { observer } from "mobx-react";
 import * as React from "react";
 import { UpdatingSelf } from "../../state/authenticated/states/users/updating-self";
@@ -7,10 +7,12 @@ import { UpdatingSelf } from "../../state/authenticated/states/users/updating-se
 export class UpdatingSelfComponent extends React.Component<{controller: UpdatingSelf}> {
   public render() {
     return (
-      <div>
-        <h1>
+      <Card
+        className="container-small"
+        header={<h1>
           Update your account
-        </h1>
+        </h1>}
+      >
         <Form model={this.props.controller} {...{onSubmit: this.onSubmit} as any}>
           <Form.Item label="Name">
             <Input
@@ -50,7 +52,7 @@ export class UpdatingSelfComponent extends React.Component<{controller: Updating
             <Button loading={this.props.controller.pending} type="primary" nativeType="submit">Update</Button>
           </Form.Item>
         </Form>
-      </div>
+      </Card>
     );
   }
 

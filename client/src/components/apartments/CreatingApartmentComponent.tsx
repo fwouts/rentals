@@ -1,4 +1,4 @@
-import { Button, Checkbox, Form, InputNumber } from "element-react";
+import { Button, Card, Checkbox, Form, InputNumber } from "element-react";
 import { observer } from "mobx-react";
 import * as React from "react";
 import { CreatingApartment } from "../../state/authenticated/states/apartments/creating";
@@ -10,10 +10,12 @@ export class CreatingApartmentComponent extends React.Component<{
 }> {
   public render() {
     return (
-      <div>
-        <h1>
+      <Card
+        className="container-small"
+        header={<h1>
           Create an apartment listing
-        </h1>
+        </h1>}
+      >
         <Form
           model={this.props.controller.apartmentInfo}
           labelWidth="200"
@@ -71,7 +73,7 @@ export class CreatingApartmentComponent extends React.Component<{
             <Button loading={this.props.controller.pending} type="primary" nativeType="submit">Create</Button>
           </Form.Item>
         </Form>
-      </div>
+      </Card>
     );
   }
 

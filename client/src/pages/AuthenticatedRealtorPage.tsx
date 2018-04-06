@@ -56,9 +56,11 @@ export class AuthenticatedRealtorPage extends React.Component<{controller: Authe
           />
         );
         break;
+      default:
+        throw new Error(`Unsupported state: ${JSON.stringify(this.props.controller.state)}.`);
     }
     return (
-      <div>
+      <div className="container-large">
         <Menu theme="dark" mode="horizontal" onSelect={this.onMenuSelect}>
           <Menu.SubMenu index="apartments" title="Apartments">
             <Menu.Item index="apartments-list">Browse apartments</Menu.Item>
@@ -70,7 +72,9 @@ export class AuthenticatedRealtorPage extends React.Component<{controller: Authe
             <Menu.Item index="account-signout">Sign out</Menu.Item>
           </Menu.SubMenu>
         </Menu>
-        {element}
+        <main>
+          {element}
+        </main>
       </div>
     );
   }

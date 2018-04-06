@@ -1,0 +1,46 @@
+body {
+  margin: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+#root {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  justify-content: center;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  padding: 0;
+  margin: 0;
+  font-size: 1em;
+  font-weight: normal;
+  font-style: normal;
+}
+
+h1 {
+  font-size: 1.5em;
+}
+
+h2 {
+  font-size: 1.2em;
+}
+
+h3 {
+  font-size: 1em;
+  color: #555;
+}
+
+.container-small {
+  width: 600px;
+  margin: 16px auto;
+  text-align: center;
+}
+
+.container-large {
+  flex-grow: 1;
+
+  main {
+    margin: 0 16px 16px 16px;
+  }
+}

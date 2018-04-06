@@ -32,9 +32,11 @@ export class AuthenticatedClientPage extends React.Component<{controller: Authen
           />
         );
         break;
+      default:
+        throw new Error(`Unsupported state: ${JSON.stringify(this.props.controller.state)}.`);
     }
     return (
-      <div>
+      <div className="container-large">
         <Menu theme="dark" mode="horizontal" onSelect={this.onMenuSelect}>
           <Menu.Item index="apartments-list">Browse apartments</Menu.Item>
           <Menu.SubMenu index="account" title="Account">
@@ -43,7 +45,9 @@ export class AuthenticatedClientPage extends React.Component<{controller: Authen
             <Menu.Item index="account-signout">Sign out</Menu.Item>
           </Menu.SubMenu>
         </Menu>
-        {element}
+        <main>
+          {element}
+        </main>
       </div>
     );
   }

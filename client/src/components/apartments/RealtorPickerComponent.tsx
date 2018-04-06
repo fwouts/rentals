@@ -5,6 +5,7 @@ import {
 import { observer } from "mobx-react";
 import * as React from "react";
 import { UserPicker } from "../../state/components/userpicker";
+import "./RealtorPickerComponent.scss";
 
 @observer
 export class RealtorPickerComponent extends React.Component<{
@@ -13,7 +14,7 @@ export class RealtorPickerComponent extends React.Component<{
 }> {
   public render() {
     return (
-      <Form.Item label={this.props.label}>
+      <Form.Item className="RealtorPickerComponent" label={this.props.label}>
         <AutoComplete
           placeholder="Type the name of a realtor"
           value={this.props.userPicker.name}

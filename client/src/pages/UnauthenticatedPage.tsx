@@ -1,4 +1,4 @@
-import { Button } from "element-react";
+import { Button, Card } from "element-react";
 import { observer } from "mobx-react";
 import * as React from "react";
 import { Unauthenticated } from "../state/unauthenticated";
@@ -7,18 +7,19 @@ import { Unauthenticated } from "../state/unauthenticated";
 export class UnauthenticatedPage extends React.Component<{controller: Unauthenticated}> {
   public render() {
     return (
-      <div>
-        <h1>
-          Welcome to Rentals!
-        </h1>
-        <p>
-          Do you already have an account?
-        </p>
+      <Card
+        className="container-small"
+        header={
+          <h2>
+            Welcome to Rentals!
+          </h2>
+        }
+      >
         <div>
-          <Button type="primary" onClick={this.props.controller.register}>Register</Button>
-          <Button onClick={this.props.controller.authenticate}>Sign in</Button>
+          <Button size="large" type="primary" onClick={this.props.controller.register}>Register</Button>
+          <Button size="large" onClick={this.props.controller.authenticate}>Sign in</Button>
         </div>
-      </div>
+      </Card>
     );
   }
 }

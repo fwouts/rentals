@@ -1,4 +1,4 @@
-import { Button, Form, Input } from "element-react";
+import { Button, Card, Form, Input } from "element-react";
 import { observer } from "mobx-react";
 import * as React from "react"; import { Authenticating } from "../state/authenticating";
 
@@ -6,10 +6,14 @@ import * as React from "react"; import { Authenticating } from "../state/authent
 export class AuthenticatingPage extends React.Component<{controller: Authenticating}> {
   public render() {
     return (
-      <div>
-        <h1>
-          Sign in
-        </h1>
+      <Card
+        className="container-small"
+        header={
+          <h2>
+            Sign in
+          </h2>
+        }
+      >
         <Form model={this.props.controller} {...{onSubmit: this.onSubmit} as any}>
           <Form.Item label="Email address" required={true}>
             <Input
@@ -28,7 +32,7 @@ export class AuthenticatingPage extends React.Component<{controller: Authenticat
             <Button loading={this.props.controller.pending} type="primary" nativeType="submit">Sign in</Button>
           </Form.Item>
         </Form>
-      </div>
+      </Card>
     );
   }
 

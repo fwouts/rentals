@@ -1,4 +1,4 @@
-import { Button, Form, Input } from "element-react";
+import { Button, Card, Form, Input } from "element-react";
 import { observer } from "mobx-react";
 import * as React from "react";
 import { AdminCreatingOther } from "../../state/authenticated/states/users/admin-creating-other";
@@ -7,10 +7,12 @@ import { AdminCreatingOther } from "../../state/authenticated/states/users/admin
 export class AdminCreatingOtherComponent extends React.Component<{controller: AdminCreatingOther}> {
   public render() {
     return (
-      <div>
-        <h1>
+      <Card
+        className="container-small"
+        header={<h1>
           Create user account
-        </h1>
+        </h1>}
+      >
         <Form model={this.props.controller} {...{onSubmit: this.onSubmit} as any}>
           <Form.Item label="Name">
             <Input
@@ -42,7 +44,7 @@ export class AdminCreatingOtherComponent extends React.Component<{controller: Ad
             <Button loading={this.props.controller.pending} type="primary" nativeType="submit">Create</Button>
           </Form.Item>
         </Form>
-      </div>
+      </Card>
     );
   }
 

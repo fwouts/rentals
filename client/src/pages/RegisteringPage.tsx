@@ -1,4 +1,4 @@
-import { Button, Checkbox, Form, Input } from "element-react";
+import { Button, Card, Checkbox, Form, Input } from "element-react";
 import { observer } from "mobx-react";
 import * as React from "react";
 import { Registering } from "../state/registering";
@@ -7,10 +7,14 @@ import { Registering } from "../state/registering";
 export class RegisteringPage extends React.Component<{controller: Registering}> {
   public render() {
     return (
-      <div>
-        <h1>
-          Create an account
-        </h1>
+      <Card
+        className="container-small"
+        header={
+          <h2>
+            Create an account
+          </h2>
+        }
+      >
         <Form model={this.props.controller} {...{onSubmit: this.onSubmit} as any}>
           <Form.Item label="Name" required={true}>
             <Input
@@ -49,7 +53,7 @@ export class RegisteringPage extends React.Component<{controller: Registering}> 
             <Button loading={this.props.controller.pending} type="primary" nativeType="submit">Register</Button>
           </Form.Item>
         </Form>
-      </div>
+      </Card>
     );
   }
 

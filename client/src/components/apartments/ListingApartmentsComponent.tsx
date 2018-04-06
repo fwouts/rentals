@@ -117,10 +117,16 @@ export class ListingApartmentsComponent extends React.Component<{
     return (
       <div className="ListingApartmentsComponent">
         <div className="filter-panel">
-          <Card>
+          <Card
+            header={
+              <h3>
+                Filter apartments
+              </h3>
+            }
+          >
             <Form model={this.props.controller.filter} {...{onSubmit: this.onSubmit} as any}>
               {this.renderFilter(
-                "Filter by floor area",
+                "By floor area",
                 "Floor area (m²)",
                 0,
                 100,
@@ -128,7 +134,7 @@ export class ListingApartmentsComponent extends React.Component<{
                 (value) => this.props.controller.filter.sizeRange = value,
               )}
               {this.renderFilter(
-                "Filter by number of rooms",
+                "By number of rooms",
                 "Number of rooms",
                 1,
                 20,
@@ -136,7 +142,7 @@ export class ListingApartmentsComponent extends React.Component<{
                 (value) => this.props.controller.filter.numberOfRooms = value,
               )}
               {this.renderFilter(
-                "Filter by price",
+                "By price",
                 "Price range",
                 50,
                 20000,
@@ -144,10 +150,14 @@ export class ListingApartmentsComponent extends React.Component<{
                 (value) => this.props.controller.filter.priceRange = value,
               )}
               {this.props.enableRentedFilter && this.renderRentedFilter()}
-              {this.props.realtorFilter && <RealtorPickerComponent
-                userPicker={this.props.realtorFilter}
-                label="Filter by realtor"
-              />}
+              {this.props.realtorFilter && (
+                <div className="filter-section spaced">
+                  <RealtorPickerComponent
+                    userPicker={this.props.realtorFilter}
+                    label="By realtor"
+                  />
+                </div>
+              )}
               <Form.Item>
                 <Button type="primary" nativeType="submit">Filter</Button>
               </Form.Item>
@@ -224,7 +234,7 @@ export class ListingApartmentsComponent extends React.Component<{
     setField: (value: {min: number, max: number} | null) => void,
   ) {
     return (
-      <>
+      <div className="filter-section">
         <Form.Item>
           <Checkbox
             checked={!!field}
@@ -243,8 +253,11 @@ export class ListingApartmentsComponent extends React.Component<{
           </Checkbox>
         </Form.Item>
         {field &&
-          <>
-            <h3>{header}</h3>
+          <Card
+            header={<h4>
+              {header}
+            </h4>}
+          >
             <Form.Item label="Min">
               <InputNumber
                 defaultValue={min}
@@ -267,9 +280,9 @@ export class ListingApartmentsComponent extends React.Component<{
                 size="small"
               />
             </Form.Item>
-          </>
+          </Card>
         }
-      </>
+      </div>
     );
   }
 
@@ -277,30 +290,32 @@ export class ListingApartmentsComponent extends React.Component<{
     const filter = this.props.controller.filter;
     const currentValue = (filter.rented === null) ? "show-all" : filter.rented ? "only-rented" : "only-rentable";
     return (
-      <Form.Item label="Filter by status">
-        <Select
-          value={currentValue}
-          onChange={(value) => {
-            switch (value) {
-              case "show-all":
-                filter.rented = null;
-                break;
-              case "only-rented":
-                filter.rented = true;
-                break;
-              case "only-rentable":
-                filter.rented = false;
-                break;
-              default:
-                throw new Error(`Unknown value: ${value}.`);
-            }
-          }}
-        >
-          <Select.Option key="show-all" label="Show all apartments" value="show-all" />
-          <Select.Option key="only-rented" label="Show only rented apartments" value="only-rented" />
-          <Select.Option key="only-rentable" label="Show only rentable apartments" value="only-rentable" />
-        </Select>
-      </Form.Item>
+      <div className="filter-section spaced">
+        <Form.Item label="By status">
+          <Select
+            value={currentValue}
+            onChange={(value) => {
+              switch (value) {
+                case "show-all":
+                  filter.rented = null;
+                  break;
+                case "only-rented":
+                  filter.rented = true;
+                  break;
+                case "only-rentable":
+                  filter.rented = false;
+                  break;
+                default:
+                  throw new Error(`Unknown value: ${value}.`);
+              }
+            }}
+          >
+            <Select.Option key="show-all" label="Show all apartments" value="show-all" />
+            <Select.Option key="only-rented" label="Show only rented apartments" value="only-rented" />
+            <Select.Option key="only-rentable" label="Show only rentable apartments" value="only-rentable" />
+          </Select>
+        </Form.Item>
+      </div>
     );
   }
 

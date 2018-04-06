@@ -1,4 +1,4 @@
-import { Button, Form } from "element-react";
+import { Button, Card, Form } from "element-react";
 import { observer } from "mobx-react";
 import * as React from "react";
 import { AdminDeletingOther } from "../../state/authenticated/states/users/admin-deleting-other";
@@ -7,10 +7,12 @@ import { AdminDeletingOther } from "../../state/authenticated/states/users/admin
 export class AdminDeletingOtherComponent extends React.Component<{controller: AdminDeletingOther}> {
   public render() {
     return (
-      <div>
-        <h1>
+      <Card
+        className="container-small"
+        header={<h1>
           Delete user account
-        </h1>
+        </h1>}
+      >
         <p>
           You are about to delete the account associated with the email address: {this.props.controller.user.email}.
         </p>
@@ -23,7 +25,7 @@ export class AdminDeletingOtherComponent extends React.Component<{controller: Ad
             <Button loading={this.props.controller.pending} type="primary" nativeType="submit">Delete</Button>
           </Form.Item>
         </Form>
-      </div>
+      </Card>
     );
   }
 
