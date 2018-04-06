@@ -62,7 +62,10 @@ export class CreatingApartmentComponent extends React.Component<{
             />
           </Form.Item>
           {this.props.controller.realtorPicker && (
-            <RealtorPickerComponent userPicker={this.props.controller.realtorPicker} />
+            <RealtorPickerComponent
+              userPicker={this.props.controller.realtorPicker}
+              label="Assign to a realtor"
+            />
           )}
           <Form.Item>
             <Button loading={this.props.controller.pending} type="primary" nativeType="submit">Create</Button>

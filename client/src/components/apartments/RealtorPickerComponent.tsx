@@ -9,10 +9,11 @@ import { UserPicker } from "../../state/components/userpicker";
 @observer
 export class RealtorPickerComponent extends React.Component<{
   userPicker: UserPicker,
+  label: string,
 }> {
   public render() {
     return (
-      <Form.Item label="Filter by realtor">
+      <Form.Item label={this.props.label}>
         <AutoComplete
           placeholder="Type the name of a realtor"
           value={this.props.userPicker.name}

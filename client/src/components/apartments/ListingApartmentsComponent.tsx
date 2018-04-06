@@ -144,7 +144,10 @@ export class ListingApartmentsComponent extends React.Component<{
                 (value) => this.props.controller.filter.priceRange = value,
               )}
               {this.props.enableRentedFilter && this.renderRentedFilter()}
-              {this.props.realtorFilter && <RealtorPickerComponent userPicker={this.props.realtorFilter} />}
+              {this.props.realtorFilter && <RealtorPickerComponent
+                userPicker={this.props.realtorFilter}
+                label="Filter by realtor"
+              />}
               <Form.Item>
                 <Button type="primary" nativeType="submit">Filter</Button>
               </Form.Item>
