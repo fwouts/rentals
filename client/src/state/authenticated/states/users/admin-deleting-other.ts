@@ -1,11 +1,12 @@
 import { observable } from "mobx";
+import { UserDetails } from "../../../../api";
 import { deleteUser } from "../../../../client";
 import { Authenticated } from "../../../authenticating";
 
 export class AdminDeletingOther {
   public readonly kind = "admin-deleting-other";
 
-  @observable public userId: string;
+  @observable public user: UserDetails;
   @observable public error: string | null = null;
   @observable public pending = false;
 
@@ -15,11 +16,11 @@ export class AdminDeletingOther {
   constructor(
     authenticated: Authenticated,
     callbacks: Callbacks,
-    userId: string,
+    user: UserDetails,
   ) {
     this.authenticated = authenticated;
     this.callbacks = callbacks;
-    this.userId = userId;
+    this.user = user;
   }
 
   public confirm = async () => {
@@ -29,7 +30,7 @@ export class AdminDeletingOther {
         {
           Authorization: this.authenticated.jwtToken,
         },
-        this.userId,
+        this.user.userId,
         {},
       );
       switch (response.status) {

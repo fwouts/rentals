@@ -20,6 +20,15 @@ export async function updateUser(
       message: "No such user.",
     };
   }
+  if (request.newPassword) {
+    const passwordTest = owasp.test(request.newPassword);
+    if (!passwordTest.strong) {
+      return {
+        status: "error",
+        message: "Password too weak: " + passwordTest.errors[0],
+      };
+    }
+  }
   if (currentUser.userId === updateUserId) {
     if (!request.currentPassword) {
       return {
@@ -32,15 +41,6 @@ export async function updateUser(
         status: "error",
         message: "Incorrect password.",
       };
-    }
-    if (request.newPassword) {
-      const passwordTest = owasp.test(request.newPassword);
-      if (!passwordTest.strong) {
-        return {
-          status: "error",
-          message: "Password too weak: " + passwordTest.errors[0],
-        };
-      }
     }
     updateUserProps(user, request);
     return saveUser(user, "Your account was updated successfully.");

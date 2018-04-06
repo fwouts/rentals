@@ -5,6 +5,7 @@ import { CreatingApartmentComponent } from "../components/apartments/CreatingApa
 import { ListingApartmentsComponent } from "../components/apartments/ListingApartmentsComponent";
 import { UpdatingApartmentComponent } from "../components/apartments/UpdatingApartmentComponent";
 import { AdminDeletingOtherComponent } from "../components/users/AdminDeletingOtherComponent";
+import { AdminListingUsersComponent } from "../components/users/AdminListingUsersComponent";
 import { AdminUpdatingOtherComponent } from "../components/users/AdminUpdatingOtherComponent";
 import { DeletingSelfComponent } from "../components/users/DeletingSelfComponent";
 import { UpdatingSelfComponent } from "../components/users/UpdatingSelfComponent";
@@ -53,6 +54,13 @@ export class AuthenticatedAdminPage extends React.Component<{controller: Authent
       case "deleting-user-self":
         element = (
           <DeletingSelfComponent
+            controller={this.props.controller.state}
+          />
+        );
+        break;
+      case "admin-listing-users":
+        element = (
+          <AdminListingUsersComponent
             controller={this.props.controller.state}
           />
         );

@@ -11,6 +11,12 @@ export class AdminDeletingOtherComponent extends React.Component<{controller: Ad
         <h1>
           Delete user account
         </h1>
+        <p>
+          You are about to delete the account associated with the email address: {this.props.controller.user.email}.
+        </p>
+        <p>
+          Are you sure?
+        </p>
         {this.props.controller.pending && <Loading fullscreen={true} />}
         <Form model={this.props.controller} {...{onSubmit: this.onSubmit} as any}>
           {this.props.controller.error && <Alert title={this.props.controller.error} type="error" />}

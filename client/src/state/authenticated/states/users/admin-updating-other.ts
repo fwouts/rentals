@@ -1,4 +1,5 @@
 import { observable } from "mobx";
+import { UserDetails } from "../../../../api";
 import { updateUser } from "../../../../client";
 import { Authenticated } from "../../../authenticating";
 
@@ -6,8 +7,8 @@ export class AdminUpdatingOther {
   public readonly kind = "admin-updating-other";
 
   @observable public userId: string;
-  @observable public email = "";
-  @observable public name = "";
+  @observable public email: string;
+  @observable public name: string;
   @observable public newPassword = "";
   @observable public confirmNewPassword = "";
   @observable public error: string | null = null;
@@ -19,11 +20,13 @@ export class AdminUpdatingOther {
   constructor(
     authenticated: Authenticated,
     callbacks: Callbacks,
-    userId: string,
+    user: UserDetails,
   ) {
     this.authenticated = authenticated;
     this.callbacks = callbacks;
-    this.userId = userId;
+    this.userId = user.userId;
+    this.email = user.email;
+    this.name = user.name;
   }
 
   public update = async () => {

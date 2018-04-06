@@ -1,10 +1,11 @@
 import { observable } from "mobx";
-import { ApartmentDetails } from "../../api";
+import { ApartmentDetails, UserDetails } from "../../api";
 import { Authenticated } from "../authenticating";
 import { CreatingApartment } from "./states/apartments/creating";
 import { ListingApartments } from "./states/apartments/listing";
 import { UpdatingApartment } from "./states/apartments/updating";
 import { AdminDeletingOther } from "./states/users/admin-deleting-other";
+import { AdminListingUsers } from "./states/users/admin-listing";
 import { AdminUpdatingOther } from "./states/users/admin-updating-other";
 import { DeletingSelf } from "./states/users/deleting-self";
 import { UpdatingSelf } from "./states/users/updating-self";
@@ -19,6 +20,7 @@ export class AuthenticatedAdmin {
     | UpdatingApartment
     | UpdatingSelf
     | DeletingSelf
+    | AdminListingUsers
     | AdminUpdatingOther
     | AdminDeletingOther;
   public readonly signOut: () => void;
@@ -52,15 +54,19 @@ export class AuthenticatedAdmin {
   }
 
   public listUsers = async () => {
-    // TODO: Implement.
+    this.state = new AdminListingUsers(this.authenticated, {
+      editUser: this.updateUser,
+      deleteUser: this.deleteUser,
+    });
+    await this.state.loadFresh();
   }
 
   public createUser = () => {
     // TODO: Implement.
   }
 
-  public updateUser = (userId?: string) => {
-    if (!userId || this.authenticated.userId === userId) {
+  public updateUser = (user?: UserDetails) => {
+    if (!user || this.authenticated.userId === user.userId) {
       this.state = new UpdatingSelf(this.authenticated, {
         onDone: this.listUsers,
         onCancel: this.listUsers,
@@ -72,13 +78,13 @@ export class AuthenticatedAdmin {
           onDone: this.listUsers,
           onCancel: this.listUsers,
         },
-        userId,
+        user,
       );
     }
   }
 
-  public deleteUser = (userId?: string) => {
-    if (!userId || this.authenticated.userId === userId) {
+  public deleteUser = (user?: UserDetails) => {
+    if (!user || this.authenticated.userId === user.userId) {
       this.state = new DeletingSelf(this.authenticated, {
         onDone: this.signOut,
         onCancel: this.listUsers,
@@ -90,7 +96,7 @@ export class AuthenticatedAdmin {
           onDone: this.listUsers,
           onCancel: this.listUsers,
         },
-        userId,
+        user,
       );
     }
   }
