@@ -1,4 +1,4 @@
-import { Alert, Button, Form, Input, Loading } from "element-react";
+import { Alert, Button, Checkbox, Form, Input, Loading } from "element-react";
 import { observer } from "mobx-react";
 import * as React from "react";
 import { Registering } from "../state/registering";
@@ -38,6 +38,13 @@ export class RegisteringPage extends React.Component<{controller: Registering}> 
               type="password"
               value={this.props.controller.confirmPassword}
               onChange={(value: any) => this.props.controller.confirmPassword = value}
+            />
+          </Form.Item>
+          <Form.Item>
+            <Checkbox
+              label="I'm a realtor. Let me list apartments."
+              checked={this.props.controller.role === "realtor"}
+              onChange={(checked: boolean) => this.props.controller.role = checked ? "realtor" : "client"}
             />
           </Form.Item>
           <Form.Item>

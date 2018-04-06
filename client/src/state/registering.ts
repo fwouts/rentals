@@ -9,7 +9,7 @@ export class Registering {
   @observable public password = "";
   @observable public confirmPassword = "";
   @observable public name = "";
-  @observable public role: Role = "client";
+  @observable public role: Role & ("client" | "realtor") = "client";
   @observable public error: string | null = null;
   @observable public pending = false;
 
