@@ -4,22 +4,22 @@ import { User } from "@/db/entities/user";
 import { loginUser } from "@/endpoints/loginUser";
 
 export const CLIENT_ANNA = "anna@gmail.com";
-export const ANNA_PASSWORD = "N)u8E]U?";
+export const ANNA_PASSWORD = "anna!123";
 
 export const CLIENT_BRIAN = "brian@gmail.com";
-export const BRIAN_PASSWORD = ")@LC;s7m";
+export const BRIAN_PASSWORD = "brian!123";
 
 export const REALTOR_JOHN = "john@realestate.com";
-export const JOHN_PASSWORD = "+3Z[CqS+";
+export const JOHN_PASSWORD = "john!123";
 
 export const REALTOR_HELENA = "helena@realestate.com";
-export const HELENA_PASSWORD = 'Da$4/8A"';
+export const HELENA_PASSWORD = "helena!123";
 
 export const ADMIN_FRANK = "frank@rentals.com";
-export const FRANK_PASSWORD = "3@4NUx`&";
+export const FRANK_PASSWORD = "frank!123";
 
 export const ADMIN_GEORGE = "george@rentals.com";
-export const GEORGE_PASSWORD = "9tLS<s/X";
+export const GEORGE_PASSWORD = "george!123";
 
 export async function createTestUsers() {
   await connection.manager.save([
