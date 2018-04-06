@@ -1,4 +1,5 @@
 import { observable } from "mobx";
+import { UserDetails } from "../../api";
 import { Authenticated } from "../authenticating";
 import { ListingApartments } from "./states/apartments/listing";
 import { DeletingSelf } from "./states/users/deleting-self";
@@ -21,6 +22,20 @@ export class AuthenticatedClient {
   public listApartments = async () => {
     this.state = new ListingApartments(this.authenticated);
     await this.state.loadFresh();
+  }
+
+  public updateUser = () => {
+    this.state = new UpdatingSelf(this.authenticated, {
+      onDone: this.listApartments,
+      onCancel: this.listApartments,
+    });
+  }
+
+  public deleteUser = (user: UserDetails) => {
+    this.state = new DeletingSelf(this.authenticated, {
+      onDone: this.listApartments,
+      onCancel: this.listApartments,
+    });
   }
 }
 

@@ -36,11 +36,11 @@ export class AuthenticatedAdmin {
     await this.state.loadFresh();
   }
 
-  public createApartment = async () => {
+  public createApartment = () => {
     this.state = new CreatingApartment(this.authenticated, this.listApartments);
   }
 
-  public editApartment = async (apartment: ApartmentDetails) => {
+  public editApartment = (apartment: ApartmentDetails) => {
     this.state = new UpdatingApartment(
       this.authenticated,
       {
@@ -49,6 +49,46 @@ export class AuthenticatedAdmin {
       },
       apartment,
     );
+  }
+
+  public listUsers = async () => {
+    // TODO: Implement.
+  }
+
+  public updateUser = (userId: string) => {
+    if (this.authenticated.userId === userId) {
+      this.state = new UpdatingSelf(this.authenticated, {
+        onDone: this.listUsers,
+        onCancel: this.listUsers,
+      });
+    } else {
+      this.state = new AdminUpdatingOther(
+        this.authenticated,
+        {
+          onDone: this.listUsers,
+          onCancel: this.listUsers,
+        },
+        userId,
+      );
+    }
+  }
+
+  public deleteUser = (userId: string) => {
+    if (this.authenticated.userId === userId) {
+      this.state = new DeletingSelf(this.authenticated, {
+        onDone: this.listUsers,
+        onCancel: this.listUsers,
+      });
+    } else {
+      this.state = new AdminDeletingOther(
+        this.authenticated,
+        {
+          onDone: this.listUsers,
+          onCancel: this.listUsers,
+        },
+        userId,
+      );
+    }
   }
 }
 

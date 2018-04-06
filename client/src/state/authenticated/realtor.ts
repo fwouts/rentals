@@ -48,6 +48,20 @@ export class AuthenticatedRealtor {
       apartment,
     );
   }
+
+  public updateUser = () => {
+    this.state = new UpdatingSelf(this.authenticated, {
+      onDone: this.listApartments,
+      onCancel: this.listApartments,
+    });
+  }
+
+  public deleteUser = () => {
+    this.state = new DeletingSelf(this.authenticated, {
+      onDone: this.listApartments,
+      onCancel: this.listApartments,
+    });
+  }
 }
 
 export interface Callbacks {
