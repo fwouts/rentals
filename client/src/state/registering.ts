@@ -1,3 +1,4 @@
+import { Message } from "element-react";
 import { observable } from "mobx";
 import { Role } from "../api";
 import { registerUser } from "../client";
@@ -10,7 +11,6 @@ export class Registering {
   @observable public confirmPassword = "";
   @observable public name = "";
   @observable public role: Role & ("client" | "realtor") = "client";
-  @observable public error: string | null = null;
   @observable public pending = false;
 
   private readonly onSuccess: OnSuccess;
@@ -23,7 +23,10 @@ export class Registering {
     try {
       this.pending = true;
       if (this.password !== this.confirmPassword) {
-        this.error = "Passwords do not match.";
+        Message({
+          type: "error",
+          message: "Passwords do not match.",
+        });
         return;
       }
       // TODO: Check for empty fields, trim inputs (across all forms).
@@ -37,17 +40,28 @@ export class Registering {
         },
       );
       switch (response.status) {
-        case "error":
-          this.error = response.message;
-          break;
         case "success":
+          Message({
+            type: "success",
+            message: response.message,
+          });
           this.onSuccess();
+          break;
+        case "error":
+        default:
+          Message({
+            type: "error",
+            message: response.message,
+          });
           break;
       }
     } catch (e) {
       // tslint:disable-next-line no-console
       console.error(e);
-      this.error = "An unexpected error has occurred.";
+      Message({
+        type: "error",
+        message: "An unexpected error has occurred.",
+      });
     } finally {
       this.pending = false;
     }

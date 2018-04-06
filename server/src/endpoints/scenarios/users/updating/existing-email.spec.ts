@@ -30,7 +30,7 @@ test("account cannot be updated to an existing email address", async () => {
   );
   expect(registerAccountResponse).toMatchObject({
     status: "success",
-    message: "User successfully registered.",
+    message: "Congratulations, you are now registered!",
   });
   const user = await findUser("hello@gmail.com");
   const updateAccountResponse = await updateUser(
@@ -44,6 +44,6 @@ test("account cannot be updated to an existing email address", async () => {
   );
   expect(updateAccountResponse).toMatchObject({
     status: "error",
-    message: "Email already registered.",
+    message: "This email address is already registered.",
   });
 });

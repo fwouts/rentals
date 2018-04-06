@@ -83,7 +83,7 @@ async function saveUser(
     if (e.message.indexOf("duplicate key value") !== -1) {
       return {
         status: "error",
-        message: "Email already registered.",
+        message: "This email address is already registered.",
       };
     }
     throw e;

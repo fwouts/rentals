@@ -1,3 +1,4 @@
+import { Message } from "element-react";
 import { observable } from "mobx";
 import { Role } from "../api";
 import { loginUser } from "../client";
@@ -7,7 +8,6 @@ export class Authenticating {
 
   @observable public email = "";
   @observable public password = "";
-  @observable public error: string | null = null;
   @observable public pending = false;
 
   private readonly onSuccess: OnSuccess;
@@ -24,17 +24,28 @@ export class Authenticating {
         password: this.password,
       });
       switch (response.status) {
-        case "error":
-          this.error = response.message;
-          break;
         case "success":
+          Message({
+            type: "success",
+            message: "Hi there!",
+          });
           this.onSuccess(response);
+          break;
+        case "error":
+        default:
+          Message({
+            type: "error",
+            message: response.message,
+          });
           break;
       }
     } catch (e) {
       // tslint:disable-next-line no-console
       console.error(e);
-      this.error = "An unexpected error has occurred.";
+      Message({
+        type: "error",
+        message: "An unexpected error has occurred.",
+      });
     } finally {
       this.pending = false;
     }

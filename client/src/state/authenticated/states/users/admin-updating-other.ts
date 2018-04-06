@@ -1,3 +1,4 @@
+import { Message } from "element-react";
 import { observable } from "mobx";
 import { UserDetails } from "../../../../api";
 import { updateUser } from "../../../../client";
@@ -11,7 +12,6 @@ export class AdminUpdatingOther {
   @observable public name: string;
   @observable public newPassword = "";
   @observable public confirmNewPassword = "";
-  @observable public error: string | null = null;
   @observable public pending = false;
 
   private readonly authenticated: Authenticated;
@@ -31,7 +31,10 @@ export class AdminUpdatingOther {
 
   public update = async () => {
     if (this.newPassword !== this.confirmNewPassword) {
-      this.error = "Passwords do not match.";
+      Message({
+        type: "error",
+        message: "Passwords do not match.",
+      });
       return;
     }
     try {
@@ -55,11 +58,18 @@ export class AdminUpdatingOther {
       );
       switch (response.status) {
         case "success":
+          Message({
+            type: "success",
+            message: response.message,
+          });
           this.callbacks.onDone();
           break;
         case "error":
         default:
-          this.error = response.message;
+          Message({
+            type: "error",
+            message: response.message,
+          });
           break;
       }
     } finally {

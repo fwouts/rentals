@@ -1,3 +1,4 @@
+import { Message } from "element-react";
 import { observable } from "mobx";
 import { deleteUser } from "../../../../client";
 import { Authenticated } from "../../../authenticating";
@@ -6,7 +7,6 @@ export class DeletingSelf {
   public readonly kind = "deleting-user-self";
 
   @observable public password = "";
-  @observable public error: string | null = null;
   @observable public pending = false;
 
   private readonly authenticated: Authenticated;
@@ -31,11 +31,18 @@ export class DeletingSelf {
       );
       switch (response.status) {
         case "success":
+          Message({
+            type: "success",
+            message: response.message,
+          });
           this.callbacks.onDone();
           break;
         case "error":
         default:
-          this.error = response.message;
+          Message({
+            type: "error",
+            message: response.message,
+          });
           break;
       }
     } finally {

@@ -1,9 +1,11 @@
+import { Message } from "element-react";
 import { observable } from "mobx";
 import { checkAuth } from "../client";
 import { AuthenticatedAdmin } from "./authenticated/admin";
 import { AuthenticatedClient } from "./authenticated/client";
 import { AuthenticatedRealtor } from "./authenticated/realtor";
 import { Authenticated, Authenticating } from "./authenticating";
+import { humanizeRole } from "./i18n/role";
 import { Registering } from "./registering";
 import { Unauthenticated } from "./unauthenticated";
 
@@ -43,17 +45,32 @@ export class AppController {
         .then((response) => {
           switch (response.status) {
             case "success":
-              // If the user ID or role have changed, refresh.
+              // If the user ID has changed, refresh.
+              if (response.userId !== authenticated!.userId) {
+                Message({
+                  message:
+                    "An unexpected error occurred but we signed you back in. You're good to go!",
+                  type: "warning",
+                });
+                this.onAuthenticated(response);
+              }
               if (
                 response.userId !== authenticated!.userId ||
                 response.role !== authenticated!.role
               ) {
+                Message({
+                  message: `You are now ${humanizeRole(
+                    response.role,
+                    true,
+                  )}. Congratulations!`,
+                  type: "info",
+                });
                 this.onAuthenticated(response);
               }
               break;
             case "error":
             default:
-              this.state = this.getUnauthenticatedState();
+              this.signOut();
           }
         })
         .catch((e) => {
@@ -114,5 +131,9 @@ export class AppController {
       window.localStorage.removeItem(LOCAL_STORAGE_AUTHENTICATION_KEY);
     }
     this.state = this.getUnauthenticatedState();
+    Message({
+      message: "You have been signed out.",
+      type: "info",
+    });
   }
 }

@@ -12,6 +12,7 @@ import { observer } from "mobx-react";
 import * as React from "react";
 import { Role, UserDetails } from "../../api";
 import { AdminListingUsers } from "../../state/authenticated/states/users/admin-listing";
+import { humanizeRole } from "../../state/i18n/role";
 import "./AdminListingUsersComponent.scss";
 
 interface Row {
@@ -141,22 +142,9 @@ export class AdminListingUsersComponent extends React.Component<{
       details: user,
       userId: user.userId,
       name: user.name,
-      role: this.formatRole(user.role),
+      role: humanizeRole(user.role),
       email: user.email,
     };
-  }
-
-  private formatRole(role: Role) {
-    switch (role) {
-      case "client":
-        return "Client";
-      case "realtor":
-        return "Realtor";
-      case "admin":
-        return "Admin";
-      default:
-        return "?";
-    }
   }
 
   private onSubmit = (e: Event) => {

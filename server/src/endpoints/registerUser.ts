@@ -40,13 +40,15 @@ export async function registerUser(
     await connection.manager.save(user);
     return {
       status: "success",
-      message: "User successfully registered.",
+      message: isAdmin
+        ? "User successfully registered."
+        : "Congratulations, you are now registered!",
     };
   } catch (e) {
     if (e.message.indexOf("duplicate key value") !== -1) {
       return {
         status: "error",
-        message: "Email already registered.",
+        message: "This email address is already registered.",
       };
     }
     throw e;

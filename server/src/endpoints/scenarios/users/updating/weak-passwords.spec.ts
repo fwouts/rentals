@@ -72,7 +72,7 @@ async function createUser(): Promise<User> {
   );
   expect(registerResponse).toEqual({
     status: "success",
-    message: "User successfully registered.",
+    message: "Congratulations, you are now registered!",
   });
   return await findUser(email);
 }

@@ -20,7 +20,7 @@ test("client registration", async () => {
   );
   expect(registerResponse).toMatchObject({
     status: "success",
-    message: "User successfully registered.",
+    message: "Congratulations, you are now registered!",
   });
   const incorrectLoginResponse = await loginUser({
     email: "client@gmail.com",

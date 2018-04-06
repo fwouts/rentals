@@ -1,3 +1,4 @@
+import { Message } from "element-react";
 import { observable } from "mobx";
 import { ApartmentInfo, UserDetails } from "../../../../api";
 import { createApartment } from "../../../../client";
@@ -19,7 +20,6 @@ export class CreatingApartment {
     rented: false,
   };
   @observable public realtorId: string | null = null;
-  @observable public error: string | null = null;
   @observable public pending = false;
 
   @observable public realtorPicker: UserPicker | null;
@@ -63,17 +63,28 @@ export class CreatingApartment {
         },
       );
       switch (response.status) {
-        case "error":
-          this.error = response.message;
-          break;
         case "success":
+          Message({
+            type: "success",
+            message: response.message,
+          });
           this.onSuccess();
+          break;
+        case "error":
+        default:
+          Message({
+            type: "error",
+            message: response.message,
+          });
           break;
       }
     } catch (e) {
       // tslint:disable-next-line no-console
       console.error(e);
-      this.error = "An unexpected error has occurred.";
+      Message({
+        type: "error",
+        message: "An unexpected error has occurred.",
+      });
     } finally {
       this.pending = false;
     }

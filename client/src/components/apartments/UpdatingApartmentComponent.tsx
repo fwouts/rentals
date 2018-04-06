@@ -1,4 +1,4 @@
-import { Alert, Button, Checkbox, Form, InputNumber, Loading } from "element-react";
+import { Button, Checkbox, Form, InputNumber, Loading } from "element-react";
 import { observer } from "mobx-react";
 import * as React from "react";
 import { UpdatingApartment } from "../../state/authenticated/states/apartments/updating";
@@ -20,7 +20,6 @@ export class UpdatingApartmentComponent extends React.Component<{
           labelWidth="200"
           {...{onSubmit: this.onSubmit} as any}
         >
-          {this.props.controller.error && <Alert title={this.props.controller.error} type="error" />}
           <Form.Item label="Floor area (m2)" required={true}>
             <InputNumber
               defaultValue={this.props.controller.apartmentInfo.floorArea}
