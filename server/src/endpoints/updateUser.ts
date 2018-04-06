@@ -2,6 +2,7 @@ import { authenticate } from "@/auth/jwt";
 import { passwordValid } from "@/auth/salting";
 import { connection } from "@/db/connections";
 import { User } from "@/db/entities/user";
+import emailValidator from "email-validator";
 import owasp from "owasp-password-strength-test";
 import { AuthRequired, UpdateUserRequest, UpdateUserResponse } from "../api";
 
@@ -18,6 +19,12 @@ export async function updateUser(
     return {
       status: "error",
       message: "No such user.",
+    };
+  }
+  if (request.email && !emailValidator.validate(request.email)) {
+    return {
+      status: "error",
+      message: "Invalid email address format.",
     };
   }
   if (request.newPassword) {

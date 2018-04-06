@@ -1,4 +1,5 @@
 import { authenticate } from "@/auth/jwt";
+import emailValidator from "email-validator";
 import owasp from "owasp-password-strength-test";
 import {
   AuthOptional,
@@ -21,6 +22,12 @@ export async function registerUser(
     return {
       status: "error",
       message: "Only an admin can register another admin.",
+    };
+  }
+  if (!emailValidator.validate(request.email)) {
+    return {
+      status: "error",
+      message: "Invalid email address format.",
     };
   }
   const passwordTest = owasp.test(request.password);
