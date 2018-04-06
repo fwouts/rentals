@@ -1,7 +1,12 @@
 import { observable } from "mobx";
-import { ApartmentDetails, ListApartmentsFilter } from "../../../../api";
+import {
+  ApartmentDetails,
+  ListApartmentsFilter,
+  UserDetails,
+} from "../../../../api";
 import { listApartments } from "../../../../client";
 import { Authenticated } from "../../../authenticating";
+import { UserPicker } from "../../../components/userpicker";
 import { DeletingApartment } from "./deleting";
 
 const MAX_PER_PAGE = 10;
@@ -23,6 +28,7 @@ export class ListingApartments {
   @observable public pageCount = 0;
   @observable public currentPage = 1;
 
+  @observable public realtorFilter: UserPicker | null;
   @observable public deletingApartment: DeletingApartment | null = null;
 
   private appliedFilter = this.filter;
@@ -30,6 +36,22 @@ export class ListingApartments {
 
   public constructor(authenticated: Authenticated) {
     this.authenticated = authenticated;
+    if (authenticated.role === "admin") {
+      this.realtorFilter = new UserPicker(
+        authenticated,
+        {
+          onChange: () => {
+            this.filter.realtorId = null;
+          },
+          onPick: (user: UserDetails) => {
+            this.filter.realtorId = user.userId;
+          },
+        },
+        "realtor",
+      );
+    } else {
+      this.realtorFilter = null;
+    }
   }
 
   public loadFresh = async () => {

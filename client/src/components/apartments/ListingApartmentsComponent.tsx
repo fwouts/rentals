@@ -1,10 +1,23 @@
 import {
-  Alert, Button, Card, Checkbox, Dialog, Form, InputNumber, Loading, Pagination, Select, Table } from "element-react";
+  Alert,
+  AutoComplete,
+  Button,
+  Card,
+  Checkbox,
+  Dialog,
+  Form,
+  InputNumber,
+  Loading,
+  Pagination,
+  Select,
+  Table,
+} from "element-react";
 import { observer } from "mobx-react";
 import moment from "moment";
 import * as React from "react";
 import { ApartmentDetails } from "../../api";
 import { ListingApartments } from "../../state/authenticated/states/apartments/listing";
+import { UserPicker } from "../../state/components/userpicker";
 import "./ListingApartmentsComponent.scss";
 
 interface Row {
@@ -23,6 +36,7 @@ interface Row {
 export class ListingApartmentsComponent extends React.Component<{
   controller: ListingApartments,
   enableRentedFilter?: boolean,
+  realtorFilter?: UserPicker,
   enableModification?: {
     filter: {
       realtorId: string,
@@ -123,6 +137,7 @@ export class ListingApartmentsComponent extends React.Component<{
                 (value) => this.props.controller.filter.priceRange = value,
               )}
               {this.props.enableRentedFilter && this.renderRentedFilter()}
+              {this.props.realtorFilter && this.renderRealtorFilter(this.props.realtorFilter)}
               <Form.Item>
                 <Button type="primary" nativeType="submit">Filter</Button>
               </Form.Item>
@@ -257,6 +272,26 @@ export class ListingApartmentsComponent extends React.Component<{
           <Select.Option key="only-rented" label="Show only rented apartments" value="only-rented" />
           <Select.Option key="only-rentable" label="Show only rentable apartments" value="only-rentable" />
         </Select>
+      </Form.Item>
+    );
+  }
+
+  private renderRealtorFilter(userPicker: UserPicker) {
+    return (
+      <Form.Item label="Filter by realtor">
+        <AutoComplete
+          placeholder="Type the name of a realtor"
+          value={userPicker.name}
+          fetchSuggestions={async (query, callback) => {
+            const name = query || "";
+            userPicker.name = name;
+            const users = await userPicker.fetchSuggestions();
+            if (callback) {
+              callback(users);
+            }
+          }}
+          onSelect={userPicker.pick}
+        />
       </Form.Item>
     );
   }

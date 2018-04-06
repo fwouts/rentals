@@ -16,6 +16,7 @@ export class AuthenticatedAdminPage extends React.Component<{controller: Authent
           <ListingApartmentsComponent
             controller={this.props.controller.state}
             enableRentedFilter={true}
+            realtorFilter={this.props.controller.state.realtorFilter!}
             enableModification={{
               filter: "all",
               editApartment: this.props.controller.editApartment,
