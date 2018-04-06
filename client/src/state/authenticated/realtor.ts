@@ -1,4 +1,5 @@
 import { observable } from "mobx";
+import { ApartmentDetails } from "../../api";
 import { Authenticated } from "../authenticating";
 import { CreatingApartment } from "./states/apartments/creating";
 import { ListingApartments } from "./states/apartments/listing";
@@ -16,12 +17,14 @@ export class AuthenticatedRealtor {
     | UpdatingApartment
     | UpdatingSelf
     | DeletingSelf;
+  public readonly realtorId: string;
   public readonly signOut: () => void;
 
   private readonly authenticated: Authenticated;
 
   public constructor(authenticated: Authenticated, callbacks: Callbacks) {
     this.authenticated = authenticated;
+    this.realtorId = authenticated.userId;
     this.signOut = callbacks.signOut;
     this.listApartments();
   }
@@ -29,6 +32,21 @@ export class AuthenticatedRealtor {
   public listApartments = async () => {
     this.state = new ListingApartments(this.authenticated);
     await this.state.loadFresh();
+  }
+
+  public createApartment = async () => {
+    this.state = new CreatingApartment(this.authenticated, this.listApartments);
+  }
+
+  public editApartment = async (apartment: ApartmentDetails) => {
+    this.state = new UpdatingApartment(
+      this.authenticated,
+      {
+        onDone: this.listApartments,
+        onCancel: this.listApartments,
+      },
+      apartment,
+    );
   }
 }
 
