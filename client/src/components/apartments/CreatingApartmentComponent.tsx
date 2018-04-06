@@ -1,4 +1,4 @@
-import { Button, Checkbox, Form, InputNumber, Loading } from "element-react";
+import { Button, Checkbox, Form, InputNumber } from "element-react";
 import { observer } from "mobx-react";
 import * as React from "react";
 import { CreatingApartment } from "../../state/authenticated/states/apartments/creating";
@@ -14,7 +14,6 @@ export class CreatingApartmentComponent extends React.Component<{
         <h1>
           Create an apartment listing
         </h1>
-        {this.props.controller.pending && <Loading fullscreen={true} />}
         <Form
           model={this.props.controller.apartmentInfo}
           labelWidth="200"
@@ -66,7 +65,7 @@ export class CreatingApartmentComponent extends React.Component<{
             <RealtorPickerComponent userPicker={this.props.controller.realtorPicker} />
           )}
           <Form.Item>
-            <Button type="primary" nativeType="submit">Create</Button>
+            <Button loading={this.props.controller.pending} type="primary" nativeType="submit">Create</Button>
           </Form.Item>
         </Form>
       </div>

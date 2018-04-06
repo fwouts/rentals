@@ -1,4 +1,4 @@
-import { Button, Checkbox, Form, Input, Loading } from "element-react";
+import { Button, Checkbox, Form, Input } from "element-react";
 import { observer } from "mobx-react";
 import * as React from "react";
 import { Registering } from "../state/registering";
@@ -11,7 +11,6 @@ export class RegisteringPage extends React.Component<{controller: Registering}> 
         <h1>
           Create an account
         </h1>
-        {this.props.controller.pending && <Loading fullscreen={true} />}
         <Form model={this.props.controller} {...{onSubmit: this.onSubmit} as any}>
           <Form.Item label="Name" required={true}>
             <Input
@@ -47,7 +46,7 @@ export class RegisteringPage extends React.Component<{controller: Registering}> 
             />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" nativeType="submit">Register</Button>
+            <Button loading={this.props.controller.pending} type="primary" nativeType="submit">Register</Button>
           </Form.Item>
         </Form>
       </div>

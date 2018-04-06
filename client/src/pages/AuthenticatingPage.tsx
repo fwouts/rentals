@@ -1,4 +1,4 @@
-import { Button, Form, Input, Loading } from "element-react";
+import { Button, Form, Input } from "element-react";
 import { observer } from "mobx-react";
 import * as React from "react"; import { Authenticating } from "../state/authenticating";
 
@@ -10,7 +10,6 @@ export class AuthenticatingPage extends React.Component<{controller: Authenticat
         <h1>
           Sign in
         </h1>
-        {this.props.controller.pending && <Loading fullscreen={true} />}
         <Form model={this.props.controller} {...{onSubmit: this.onSubmit} as any}>
           <Form.Item label="Email address" required={true}>
             <Input
@@ -26,7 +25,7 @@ export class AuthenticatingPage extends React.Component<{controller: Authenticat
             />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" nativeType="submit">Sign in</Button>
+            <Button loading={this.props.controller.pending} type="primary" nativeType="submit">Sign in</Button>
           </Form.Item>
         </Form>
       </div>

@@ -1,4 +1,4 @@
-import { Button, Form, Input, Loading } from "element-react";
+import { Button, Form, Input } from "element-react";
 import { observer } from "mobx-react";
 import * as React from "react";
 import { AdminCreatingOther } from "../../state/authenticated/states/users/admin-creating-other";
@@ -11,7 +11,6 @@ export class AdminCreatingOtherComponent extends React.Component<{controller: Ad
         <h1>
           Create user account
         </h1>
-        {this.props.controller.pending && <Loading fullscreen={true} />}
         <Form model={this.props.controller} {...{onSubmit: this.onSubmit} as any}>
           <Form.Item label="Name">
             <Input
@@ -40,7 +39,7 @@ export class AdminCreatingOtherComponent extends React.Component<{controller: Ad
             />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" nativeType="submit">Create</Button>
+            <Button loading={this.props.controller.pending} type="primary" nativeType="submit">Create</Button>
           </Form.Item>
         </Form>
       </div>

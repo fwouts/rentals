@@ -1,4 +1,4 @@
-import { Button, Form, Input, Loading } from "element-react";
+import { Button, Form, Input } from "element-react";
 import { observer } from "mobx-react";
 import * as React from "react";
 import { DeletingSelf } from "../../state/authenticated/states/users/deleting-self";
@@ -11,7 +11,6 @@ export class DeletingSelfComponent extends React.Component<{controller: Deleting
         <h1>
           Delete your account
         </h1>
-        {this.props.controller.pending && <Loading fullscreen={true} />}
         <Form model={this.props.controller} {...{onSubmit: this.onSubmit} as any}>
           <Form.Item label="Enter your password" required={true}>
             <Input
@@ -22,7 +21,7 @@ export class DeletingSelfComponent extends React.Component<{controller: Deleting
           </Form.Item>
           <Form.Item>
             <Button onClick={this.props.controller.cancel}>Cancel</Button>
-            <Button type="primary" nativeType="submit">Delete</Button>
+            <Button loading={this.props.controller.pending} type="primary" nativeType="submit">Delete</Button>
           </Form.Item>
         </Form>
       </div>
