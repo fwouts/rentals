@@ -1,4 +1,5 @@
 import { observable } from "mobx";
+import { checkAuth } from "../client";
 import { AuthenticatedAdmin } from "./authenticated/admin";
 import { AuthenticatedClient } from "./authenticated/client";
 import { AuthenticatedRealtor } from "./authenticated/realtor";
@@ -36,6 +37,30 @@ export class AppController {
     }
     if (authenticated) {
       this.state = this.getAuthenticatedState(authenticated);
+      checkAuth({
+        Authorization: authenticated.jwtToken,
+      })
+        .then((response) => {
+          switch (response.status) {
+            case "success":
+              // If the user ID or role have changed, refresh.
+              if (
+                response.userId !== authenticated!.userId ||
+                response.role !== authenticated!.role
+              ) {
+                this.onAuthenticated(response);
+              }
+              break;
+            case "error":
+            default:
+              this.state = this.getUnauthenticatedState();
+          }
+        })
+        .catch((e) => {
+          // tslint:disable-next-line no-console
+          console.error(e);
+          this.state = this.getUnauthenticatedState();
+        });
     } else {
       this.state = this.getUnauthenticatedState();
     }
@@ -48,15 +73,17 @@ export class AppController {
   }
 
   public authenticate = () => {
-    this.state = new Authenticating((authenticated) => {
-      if (window.localStorage) {
-        window.localStorage.setItem(
-          LOCAL_STORAGE_AUTHENTICATION_KEY,
-          JSON.stringify(authenticated),
-        );
-      }
-      this.state = this.getAuthenticatedState(authenticated);
-    });
+    this.state = new Authenticating(this.onAuthenticated);
+  }
+
+  private onAuthenticated = (authenticated: Authenticated) => {
+    if (window.localStorage) {
+      window.localStorage.setItem(
+        LOCAL_STORAGE_AUTHENTICATION_KEY,
+        JSON.stringify(authenticated),
+      );
+    }
+    this.state = this.getAuthenticatedState(authenticated);
   }
 
   private getAuthenticatedState(authenticated: Authenticated) {
