@@ -2,6 +2,7 @@ import { Alert, Button, Checkbox, Form, InputNumber, Loading } from "element-rea
 import { observer } from "mobx-react";
 import * as React from "react";
 import { CreatingApartment } from "../../state/authenticated/states/apartments/creating";
+import { RealtorPickerComponent } from "./RealtorPickerComponent";
 
 @observer
 export class CreatingApartmentComponent extends React.Component<{
@@ -62,6 +63,9 @@ export class CreatingApartmentComponent extends React.Component<{
               onChange={(value: any) => this.props.controller.apartmentInfo.rented = value}
             />
           </Form.Item>
+          {this.props.controller.realtorPicker && (
+            <RealtorPickerComponent userPicker={this.props.controller.realtorPicker} />
+          )}
           <Form.Item>
             <Button type="primary" nativeType="submit">Create</Button>
           </Form.Item>

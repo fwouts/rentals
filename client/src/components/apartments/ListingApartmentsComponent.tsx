@@ -1,6 +1,5 @@
 import {
   Alert,
-  AutoComplete,
   Button,
   Card,
   Checkbox,
@@ -19,6 +18,7 @@ import { ApartmentDetails } from "../../api";
 import { ListingApartments } from "../../state/authenticated/states/apartments/listing";
 import { UserPicker } from "../../state/components/userpicker";
 import "./ListingApartmentsComponent.scss";
+import { RealtorPickerComponent } from "./RealtorPickerComponent";
 
 interface Row {
   details: ApartmentDetails;
@@ -137,7 +137,7 @@ export class ListingApartmentsComponent extends React.Component<{
                 (value) => this.props.controller.filter.priceRange = value,
               )}
               {this.props.enableRentedFilter && this.renderRentedFilter()}
-              {this.props.realtorFilter && this.renderRealtorFilter(this.props.realtorFilter)}
+              {this.props.realtorFilter && <RealtorPickerComponent userPicker={this.props.realtorFilter} />}
               <Form.Item>
                 <Button type="primary" nativeType="submit">Filter</Button>
               </Form.Item>
@@ -272,26 +272,6 @@ export class ListingApartmentsComponent extends React.Component<{
           <Select.Option key="only-rented" label="Show only rented apartments" value="only-rented" />
           <Select.Option key="only-rentable" label="Show only rentable apartments" value="only-rentable" />
         </Select>
-      </Form.Item>
-    );
-  }
-
-  private renderRealtorFilter(userPicker: UserPicker) {
-    return (
-      <Form.Item label="Filter by realtor">
-        <AutoComplete
-          placeholder="Type the name of a realtor"
-          value={userPicker.name}
-          fetchSuggestions={async (query, callback) => {
-            const name = query || "";
-            userPicker.name = name;
-            const users = await userPicker.fetchSuggestions();
-            if (callback) {
-              callback(users);
-            }
-          }}
-          onSelect={userPicker.pick}
-        />
       </Form.Item>
     );
   }

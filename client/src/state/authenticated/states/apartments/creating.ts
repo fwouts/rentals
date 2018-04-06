@@ -1,7 +1,8 @@
 import { observable } from "mobx";
-import { ApartmentInfo } from "../../../../api";
+import { ApartmentInfo, UserDetails } from "../../../../api";
 import { createApartment } from "../../../../client";
 import { Authenticated } from "../../../authenticating";
+import { UserPicker } from "../../../components/userpicker";
 
 export class CreatingApartment {
   public readonly kind = "creating-apartment";
@@ -21,12 +22,30 @@ export class CreatingApartment {
   @observable public error: string | null = null;
   @observable public pending = false;
 
+  @observable public realtorPicker: UserPicker | null;
+
   private readonly authenticated: Authenticated;
   private readonly onSuccess: OnSuccess;
 
   public constructor(authenticated: Authenticated, onSuccess: OnSuccess) {
     this.authenticated = authenticated;
     this.onSuccess = onSuccess;
+    if (authenticated.role === "admin") {
+      this.realtorPicker = new UserPicker(
+        authenticated,
+        {
+          onChange: () => {
+            this.realtorId = null;
+          },
+          onPick: (user: UserDetails) => {
+            this.realtorId = user.userId;
+          },
+        },
+        "realtor",
+      );
+    } else {
+      this.realtorPicker = null;
+    }
   }
 
   public async submit() {
