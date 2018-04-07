@@ -1,15 +1,29 @@
+import { isEqual } from "lodash";
 import { observable } from "mobx";
 import {
   ApartmentDetails,
   ListApartmentsFilter,
   UserDetails,
+  Viewport,
 } from "../../../../api";
 import { listApartments } from "../../../../client";
 import { Authenticated } from "../../../authenticating";
 import { UserPicker } from "../../../components/userpicker";
 import { DeletingApartment } from "./deleting";
 
-const MAX_PER_PAGE = 10;
+const LIST_MAX_PER_PAGE = 10;
+const MAP_MAX_RESULTS = 100;
+
+const WORLD_VIEWPORT: Viewport = {
+  southWest: {
+    latitude: -90,
+    longitude: -180,
+  },
+  northEast: {
+    latitude: +90,
+    longitude: +180,
+  },
+};
 
 export class ListingApartments {
   public readonly kind = "listing-apartments";
@@ -23,7 +37,15 @@ export class ListingApartments {
     priceRange: null,
     numberOfRooms: null,
   };
-  @observable public tab: "list" | "map" = "map";
+  @observable
+  public tab:
+    | {
+        kind: "list";
+      }
+    | {
+        kind: "map";
+        viewport: Viewport;
+      };
   @observable public apartments: ApartmentDetails[] = [];
   @observable public total = 0;
   @observable public pageCount = 0;
@@ -37,6 +59,10 @@ export class ListingApartments {
 
   public constructor(authenticated: Authenticated) {
     this.authenticated = authenticated;
+    this.tab = {
+      kind: "map",
+      viewport: WORLD_VIEWPORT,
+    };
     if (authenticated.role === "admin") {
       this.realtorFilter = new UserPicker(
         authenticated,
@@ -55,6 +81,36 @@ export class ListingApartments {
     }
   }
 
+  public switchTab = async (tab: "list" | "map") => {
+    if (this.tab.kind === tab) {
+      return;
+    }
+    switch (tab) {
+      case "list":
+        this.tab = {
+          kind: "list",
+        };
+        break;
+      case "map":
+        this.tab = {
+          kind: "map",
+          viewport: WORLD_VIEWPORT,
+        };
+        break;
+    }
+    await this.loadFresh();
+  }
+
+  public updateViewport = async (viewport: Viewport) => {
+    if (this.tab.kind !== "map") {
+      return;
+    }
+    if (!isEqual(viewport, this.tab.viewport)) {
+      this.tab.viewport = viewport;
+      await this.loadFresh();
+    }
+  }
+
   public loadFresh = async () => {
     this.apartments = [];
     this.total = 0;
@@ -67,15 +123,28 @@ export class ListingApartments {
   public loadPage = async (pageNumber: number) => {
     try {
       this.loading = true;
+      let request;
+      switch (this.tab.kind) {
+        case "list":
+          request = {
+            filter: toRequestFilter(this.appliedFilter),
+            maxPerPage: LIST_MAX_PER_PAGE,
+            page: pageNumber,
+          };
+          break;
+        case "map":
+          request = {
+            filter: toRequestFilter(this.appliedFilter, this.tab.viewport),
+            maxPerPage: MAP_MAX_RESULTS,
+            page: pageNumber,
+          };
+          break;
+      }
       const response = await listApartments(
         {
           Authorization: this.authenticated.jwtToken,
         },
-        {
-          filter: toRequestFilter(this.appliedFilter),
-          maxPerPage: MAX_PER_PAGE,
-          page: pageNumber,
-        },
+        request,
       );
       this.apartments = response.results;
       this.total = response.totalResults;
@@ -122,7 +191,10 @@ export interface Filter {
   } | null;
 }
 
-function toRequestFilter(filter: Filter): ListApartmentsFilter {
+function toRequestFilter(
+  filter: Filter,
+  viewport?: Viewport,
+): ListApartmentsFilter {
   const requestFilter: ListApartmentsFilter = {};
   if (filter.realtorId) {
     requestFilter.realtorId = filter.realtorId;
@@ -138,6 +210,9 @@ function toRequestFilter(filter: Filter): ListApartmentsFilter {
   }
   if (filter.numberOfRooms) {
     requestFilter.numberOfRooms = filter.numberOfRooms;
+  }
+  if (viewport) {
+    requestFilter.viewport = viewport;
   }
   return requestFilter;
 }

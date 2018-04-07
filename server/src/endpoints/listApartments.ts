@@ -85,6 +85,46 @@ export async function listApartments(
     whereArgs.roomsMin = requestFilter.numberOfRooms.min;
     whereArgs.roomsMax = requestFilter.numberOfRooms.max;
   }
+  if (requestFilter.viewport) {
+    if (
+      requestFilter.viewport.southWest.longitude <
+      requestFilter.viewport.northEast.longitude
+    ) {
+      // We're not crossing the 180° Meridian.
+      // For example:
+      // southWest.longitude = New York (-74)
+      // northEast.longitude = Paris (+2)
+      // We want points between [southWest.longitude, northEast.longitude].
+      whereQueries.push(
+        `(
+           (apartment.longitude BETWEEN :west AND :east)
+           AND
+           (apartment.latitude BETWEEN :south AND :north)
+         )`,
+      );
+    } else {
+      // We are crossing the 180° Meridian.
+      // For example:
+      // southWest.longitude = Noumea (+166)
+      // northEast.longitude = Hawaii (-155)
+      // We want points between [southWest.longitude, +180] and [-180, northEast.longitude].
+      whereQueries.push(
+        `(
+           (
+            (apartment.longitude BETWEEN :west AND +180)
+            OR
+            (apartment.longitude BETWEEN -180 AND :east)
+           )
+           AND
+           (apartment.latitude BETWEEN :south AND :north)
+         )`,
+      );
+    }
+    whereArgs.north = requestFilter.viewport.northEast.latitude;
+    whereArgs.south = requestFilter.viewport.southWest.latitude;
+    whereArgs.east = requestFilter.viewport.northEast.longitude;
+    whereArgs.west = requestFilter.viewport.southWest.longitude;
+  }
   let skip;
   if (request.page) {
     skip = (request.page - 1) * maxResultsPerPage;

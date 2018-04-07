@@ -20,7 +20,6 @@ export class AuthenticatedClient {
 
   public listApartments = async () => {
     this.state = new ListingApartments(this.authenticated);
-    await this.state.loadFresh();
   }
 
   public updateUser = () => {

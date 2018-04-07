@@ -20,7 +20,7 @@ import {
   withGoogleMap,
   withScriptjs,
 } from "react-google-maps";
-import { ApartmentDetails } from "../../api";
+import { ApartmentDetails, Viewport } from "../../api";
 import { ListingApartments } from "../../state/authenticated/states/apartments/listing";
 import { UserPicker } from "../../state/components/userpicker";
 import "./ListingApartmentsComponent.scss";
@@ -180,8 +180,8 @@ export class ListingApartmentsComponent extends React.Component<{
         <Card className="list">
           <Loading loading={this.props.controller.loading}>
             <Tabs
-              activeName={this.props.controller.tab}
-              onTabClick={(tab) => this.props.controller.tab = tab.props.name}
+              activeName={this.props.controller.tab.kind}
+              onTabClick={(tab) => this.props.controller.switchTab(tab.props.name)}
             >
               <Tabs.Pane name="map" label="Map view">
                 <MapComponent
@@ -192,6 +192,7 @@ export class ListingApartmentsComponent extends React.Component<{
                   containerElement={<div />}
                   mapElement={<div className="map-container" />}
                   apartments={this.props.controller.apartments}
+                  onViewportChanged={this.props.controller.updateViewport}
                 />
               </Tabs.Pane>
               <Tabs.Pane name="list" label="List view">
@@ -201,18 +202,18 @@ export class ListingApartmentsComponent extends React.Component<{
                   stripe={true}
                   {...({emptyText: "No apartments to show."}) as any}
                 />
+                <div className="pagination">
+                  <Pagination
+                    layout="prev, pager, next"
+                    pageCount={this.props.controller.pageCount}
+                    currentPage={this.props.controller.currentPage}
+                    onCurrentChange={(page) => {
+                      this.props.controller.loadPage(page!);
+                    }}
+                  />
+                </div>
               </Tabs.Pane>
             </Tabs>
-            <div className="pagination">
-              <Pagination
-                layout="prev, pager, next"
-                pageCount={this.props.controller.pageCount}
-                currentPage={this.props.controller.currentPage}
-                onCurrentChange={(page) => {
-                  this.props.controller.loadPage(page!);
-                }}
-              />
-            </div>
           </Loading>
         </Card>
       </div>
@@ -338,21 +339,47 @@ export class ListingApartmentsComponent extends React.Component<{
 
 const MapComponent = withScriptjs(withGoogleMap((props: {
   apartments: ApartmentDetails[],
-}) => (
-  <GoogleMap
-    defaultZoom={3}
-    defaultCenter={{ lat: -33.8688, lng: 151.2093 }}
-  >
-    {props.apartments.map((apartment) => (
-      <Marker
-        key={apartment.apartmentId}
-        position={{
-          lat: apartment.info.coordinates.latitude,
-          lng: apartment.info.coordinates.longitude,
-        }}
-        title={apartment.realtor.name}
-      />
-    ))}
-  </GoogleMap>
-),
-));
+  onViewportChanged(viewport: Viewport),
+}) => {
+  let map: GoogleMap | null;
+  return (
+    <GoogleMap
+      ref={(m) => {
+        map = m;
+      }}
+      defaultZoom={3}
+      defaultCenter={{ lat: -33.8688, lng: 151.2093 }}
+      onIdle={() => {
+        if (map) {
+          const bounds = map.getBounds();
+          if (!bounds) {
+            // Do nothing.
+            return;
+          }
+          const viewport: Viewport = {
+            southWest: {
+              latitude: bounds.getSouthWest().lat(),
+              longitude: bounds.getSouthWest().lng(),
+            },
+            northEast: {
+              latitude: bounds.getNorthEast().lat(),
+              longitude: bounds.getNorthEast().lng(),
+            },
+          };
+          props.onViewportChanged(viewport);
+        }
+      }}
+    >
+      {props.apartments.map((apartment) => (
+        <Marker
+          key={apartment.apartmentId}
+          position={{
+            lat: apartment.info.coordinates.latitude,
+            lng: apartment.info.coordinates.longitude,
+          }}
+          title={apartment.realtor.name}
+        />
+      ))}
+    </GoogleMap>
+  );
+}));

@@ -217,6 +217,7 @@ type ListApartmentsFilter = {
     min: int
     max: int
   }
+  viewport?: Viewport
 }
 
 type ListApartmentsResponse = {
@@ -246,6 +247,11 @@ type ApartmentInfo = {
   coordinates: Coordinates
 
   rented: bool
+}
+
+type Viewport = {
+  southWest: Coordinates
+  northEast: Coordinates
 }
 
 type Coordinates = {

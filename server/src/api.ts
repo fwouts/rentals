@@ -130,6 +130,7 @@ export interface ListApartmentsFilter {
     min: number;
     max: number;
   };
+  viewport?: Viewport;
 }
 
 export interface ListApartmentsResponse {
@@ -151,6 +152,11 @@ export interface ApartmentInfo {
   numberOfRooms: number;
   coordinates: Coordinates;
   rented: boolean;
+}
+
+export interface Viewport {
+  southWest: Coordinates;
+  northEast: Coordinates;
 }
 
 export interface Coordinates {
