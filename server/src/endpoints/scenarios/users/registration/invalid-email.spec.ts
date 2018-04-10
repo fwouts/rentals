@@ -1,10 +1,8 @@
 import { registerUser } from "@/endpoints/registerUser";
 import { useTestingDatabase } from "@/testing/db";
-import { setUpJwtForTesting } from "@/testing/jwt";
 import { GOOD_PASSWORD_1 } from "@/testing/passwords";
 import "jest";
 
-setUpJwtForTesting();
 useTestingDatabase();
 
 test("invalid emails cannot be registered", async () => {

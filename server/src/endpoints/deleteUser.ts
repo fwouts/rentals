@@ -1,5 +1,5 @@
-import { authenticate } from "@/auth/jwt";
 import { passwordValid } from "@/auth/salting";
+import { authenticate } from "@/auth/token";
 import { connection } from "@/db/connections";
 import { User } from "@/db/entities/user";
 import { AuthRequired, DeleteUserRequest, DeleteUserResponse } from "../api";

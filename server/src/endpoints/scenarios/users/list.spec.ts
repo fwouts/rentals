@@ -1,6 +1,5 @@
 import { listUsers } from "@/endpoints/listUsers";
 import { useTestingDatabase } from "@/testing/db";
-import { setUpJwtForTesting } from "@/testing/jwt";
 import {
   ADMIN_FRANK,
   authHeaders,
@@ -13,7 +12,6 @@ import {
 } from "@/testing/users";
 import "jest";
 
-setUpJwtForTesting();
 useTestingDatabase();
 
 beforeEach(async () => {

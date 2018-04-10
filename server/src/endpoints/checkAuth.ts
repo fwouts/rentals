@@ -1,16 +1,15 @@
-import { authenticate, safeToken } from "@/auth/jwt";
+import { authenticate } from "@/auth/token";
 import { AuthRequired, LoginUserResponse } from "../api";
 
 export async function checkAuth(
   headers: AuthRequired,
 ): Promise<LoginUserResponse> {
   try {
-    const currentUser = await authenticate(headers.Authorization);
+    const authToken = headers.Authorization;
+    const currentUser = await authenticate(authToken);
     return {
       status: "success",
-      authToken: safeToken({
-        userId: currentUser.userId,
-      }),
+      authToken,
       role: currentUser.role,
       userId: currentUser.userId,
     };

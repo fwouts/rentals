@@ -1,4 +1,4 @@
-import { authenticate } from "@/auth/jwt";
+import { authenticate } from "@/auth/token";
 import { connection } from "@/db/connections";
 import { User } from "@/db/entities/user";
 import {

@@ -1,5 +1,5 @@
-import { safeToken } from "@/auth/jwt";
 import { passwordValid } from "@/auth/salting";
+import { createSessionToken } from "@/auth/token";
 import { LoginUserRequest, LoginUserResponse } from "../api";
 import { connection } from "../db/connections";
 import { User } from "../db/entities/user";
@@ -25,9 +25,7 @@ export async function loginUser(
   const confirmedUser = potentialUser;
   return {
     status: "success",
-    authToken: safeToken({
-      userId: confirmedUser.userId,
-    }),
+    authToken: await createSessionToken(confirmedUser),
     role: confirmedUser.role,
     userId: confirmedUser.userId,
   };

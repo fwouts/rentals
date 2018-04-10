@@ -22,7 +22,10 @@ async function wipeData() {
   const testConnection = await createTestOnlyConnection({
     forWiping: true,
   });
-  await testConnection.query('DROP TABLE IF EXISTS "apartment", "user";');
+  const tablesToDelete = ENTITIES.map(
+    (entity) => `"${entity.name.toLowerCase()}"`,
+  ).join(", ");
+  await testConnection.query(`DROP TABLE IF EXISTS ${tablesToDelete};`);
   await testConnection.close();
 }
 

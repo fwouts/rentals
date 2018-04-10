@@ -1,6 +1,5 @@
 import { updateUser } from "@/endpoints/updateUser";
 import { useTestingDatabase } from "@/testing/db";
-import { setUpJwtForTesting } from "@/testing/jwt";
 import {
   ANNA_PASSWORD,
   authHeaders,
@@ -10,7 +9,6 @@ import {
 } from "@/testing/users";
 import "jest";
 
-setUpJwtForTesting();
 useTestingDatabase();
 
 beforeEach(async () => {

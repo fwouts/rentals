@@ -3,7 +3,6 @@ import { connection } from "@/db/connections";
 import { Apartment } from "@/db/entities/apartment";
 import { deleteApartment } from "@/endpoints/deleteApartment";
 import { useTestingDatabase } from "@/testing/db";
-import { setUpJwtForTesting } from "@/testing/jwt";
 import {
   ADMIN_FRANK,
   authHeaders,
@@ -30,7 +29,6 @@ const APARTMENT_INFO: ApartmentInfo = {
   rented: false,
 };
 
-setUpJwtForTesting();
 useTestingDatabase();
 
 beforeEach(async () => {

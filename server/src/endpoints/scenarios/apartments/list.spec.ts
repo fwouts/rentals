@@ -1,7 +1,6 @@
 import { listApartments } from "@/endpoints/listApartments";
 import { createTestApartments } from "@/testing/apartments";
 import { useTestingDatabase } from "@/testing/db";
-import { setUpJwtForTesting } from "@/testing/jwt";
 import {
   ADMIN_FRANK,
   authHeaders,
@@ -15,7 +14,6 @@ import {
   REALTOR_JOHN,
 } from "@/testing/users";
 
-setUpJwtForTesting();
 useTestingDatabase();
 
 beforeEach(async () => {

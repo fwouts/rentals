@@ -1,7 +1,8 @@
 import { Role } from "@/api";
 import * as salting from "@/auth/salting";
+import { Session } from "@/db/entities/session";
 import owasp from "owasp-password-strength-test";
-import { Column, Entity, PrimaryColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
 import uuid from "uuid";
 
 owasp.config({
@@ -60,6 +61,9 @@ export class User {
     length: 7,
   })
   public role!: Role;
+
+  @OneToMany((type) => Session, (session) => session.user)
+  public sessions!: Session[];
 
   public constructor(userId?: string) {
     if (userId) {

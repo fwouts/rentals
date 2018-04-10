@@ -1,11 +1,9 @@
 import { loginUser } from "@/endpoints/loginUser";
 import { registerUser } from "@/endpoints/registerUser";
 import { useTestingDatabase } from "@/testing/db";
-import { setUpJwtForTesting } from "@/testing/jwt";
 import { GOOD_PASSWORD_1 } from "@/testing/passwords";
 import "jest";
 
-setUpJwtForTesting();
 useTestingDatabase();
 
 test("realtor registration", async () => {

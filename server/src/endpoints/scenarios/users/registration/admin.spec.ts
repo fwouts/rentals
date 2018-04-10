@@ -3,7 +3,6 @@ import { User } from "@/db/entities/user";
 import { loginUser } from "@/endpoints/loginUser";
 import { registerUser } from "@/endpoints/registerUser";
 import { useTestingDatabase } from "@/testing/db";
-import { setUpJwtForTesting } from "@/testing/jwt";
 import {
   GOOD_PASSWORD_1,
   GOOD_PASSWORD_2,
@@ -13,7 +12,6 @@ import {
 import { authHeaders } from "@/testing/users";
 import "jest";
 
-setUpJwtForTesting();
 useTestingDatabase();
 
 beforeEach(async () => {

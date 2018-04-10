@@ -1,4 +1,4 @@
-import { authenticate } from "@/auth/jwt";
+import { authenticate } from "@/auth/token";
 import emailValidator from "email-validator";
 import owasp from "owasp-password-strength-test";
 import {

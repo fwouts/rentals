@@ -1,6 +1,5 @@
 import { checkAuth } from "@/endpoints/checkAuth";
 import { useTestingDatabase } from "@/testing/db";
-import { setUpJwtForTesting } from "@/testing/jwt";
 import {
   ADMIN_FRANK,
   ANNA_PASSWORD,
@@ -13,7 +12,6 @@ import {
 } from "@/testing/users";
 import "jest";
 
-setUpJwtForTesting();
 useTestingDatabase();
 
 beforeEach(async () => {

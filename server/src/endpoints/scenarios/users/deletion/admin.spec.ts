@@ -1,6 +1,5 @@
 import { deleteUser } from "@/endpoints/deleteUser";
 import { useTestingDatabase } from "@/testing/db";
-import { setUpJwtForTesting } from "@/testing/jwt";
 import {
   ADMIN_FRANK,
   ADMIN_GEORGE,
@@ -13,7 +12,6 @@ import {
 } from "@/testing/users";
 import "jest";
 
-setUpJwtForTesting();
 useTestingDatabase();
 
 beforeEach(async () => {

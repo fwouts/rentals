@@ -1,10 +1,8 @@
 import { registerUser } from "@/endpoints/registerUser";
 import { useTestingDatabase } from "@/testing/db";
-import { setUpJwtForTesting } from "@/testing/jwt";
 import "jest";
 import uuid from "uuid";
 
-setUpJwtForTesting();
 useTestingDatabase();
 
 test("weak passwords are rejected", async () => {

@@ -1,7 +1,6 @@
 import { passwordValid } from "@/auth/salting";
 import { updateUser } from "@/endpoints/updateUser";
 import { useTestingDatabase } from "@/testing/db";
-import { setUpJwtForTesting } from "@/testing/jwt";
 import { GOOD_PASSWORD_1 } from "@/testing/passwords";
 import {
   authHeaders,
@@ -14,7 +13,6 @@ import {
 } from "@/testing/users";
 import "jest";
 
-setUpJwtForTesting();
 useTestingDatabase();
 
 beforeEach(async () => {
