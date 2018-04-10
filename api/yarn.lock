@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@zenclabs/api@^0.0.11":
-  version "0.0.11"
-  resolved "https://registry.yarnpkg.com/@zenclabs/api/-/api-0.0.11.tgz#efda632d02b6dffc896fe7c511beae4c38309197"
+"@zenclabs/api@^0.0.13":
+  version "0.0.13"
+  resolved "https://registry.yarnpkg.com/@zenclabs/api/-/api-0.0.13.tgz#2611d83a6333c75bad36ef5aeca13fc998281254"
 
 uuid@^3.2.1:
   version "3.2.1"
