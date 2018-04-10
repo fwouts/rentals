@@ -85,6 +85,6 @@ export async function authHeaders(
     throw new Error();
   }
   return {
-    Authorization: loginResponse.jwtToken,
+    Authorization: loginResponse.authToken,
   };
 }

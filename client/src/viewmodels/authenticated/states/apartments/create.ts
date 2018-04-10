@@ -53,7 +53,7 @@ export class CreateApartmentViewModel {
       this.pending = true;
       const response = await createApartment(
         {
-          Authorization: this.authenticated.jwtToken,
+          Authorization: this.authenticated.authToken,
         },
         {
           info: this.apartmentInfo,

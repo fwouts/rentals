@@ -28,7 +28,7 @@ export class AdminDeleteUserViewModel {
       this.pending = true;
       const response = await deleteUser(
         {
-          Authorization: this.authenticated.jwtToken,
+          Authorization: this.authenticated.authToken,
         },
         this.user.userId,
         {},

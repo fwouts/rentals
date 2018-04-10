@@ -28,7 +28,7 @@ export type LoginUserResponse = {
   message: string;
 } | {
   status: "success";
-  jwtToken: string;
+  authToken: string;
   userId: string;
   role: Role;
 };

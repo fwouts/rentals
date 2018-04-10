@@ -41,7 +41,7 @@ export class AdminUpdateUserViewModel {
       this.pending = true;
       const response = await updateUser(
         {
-          Authorization: this.authenticated.jwtToken,
+          Authorization: this.authenticated.authToken,
         },
         this.userId,
         {

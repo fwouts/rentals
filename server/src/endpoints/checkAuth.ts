@@ -8,7 +8,7 @@ export async function checkAuth(
     const currentUser = await authenticate(headers.Authorization);
     return {
       status: "success",
-      jwtToken: safeToken({
+      authToken: safeToken({
         userId: currentUser.userId,
       }),
       role: currentUser.role,

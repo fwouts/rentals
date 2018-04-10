@@ -30,7 +30,7 @@ export type LoginUserResponse =
     }
   | {
       status: "success";
-      jwtToken: string;
+      authToken: string;
       userId: string;
       role: Role;
     };

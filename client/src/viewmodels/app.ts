@@ -40,7 +40,7 @@ export class AppController {
     if (authenticated) {
       this.state = this.getAuthenticatedState(authenticated);
       checkAuth({
-        Authorization: authenticated.jwtToken,
+        Authorization: authenticated.authToken,
       })
         .then((response) => {
           switch (response.status) {

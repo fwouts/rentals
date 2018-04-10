@@ -55,7 +55,7 @@ export class SignInViewModel {
 export type OnSuccess = (authenticated: SessionInfo) => void;
 
 export interface SessionInfo {
-  jwtToken: string;
+  authToken: string;
   role: Role;
   userId: string;
 }

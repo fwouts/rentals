@@ -25,7 +25,7 @@ export async function loginUser(
   const confirmedUser = potentialUser;
   return {
     status: "success",
-    jwtToken: safeToken({
+    authToken: safeToken({
       userId: confirmedUser.userId,
     }),
     role: confirmedUser.role,

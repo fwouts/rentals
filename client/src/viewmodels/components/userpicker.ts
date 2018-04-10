@@ -30,7 +30,7 @@ export class UserPickerViewModel {
     }
     const response = await listUsers(
       {
-        Authorization: this.authenticated.jwtToken,
+        Authorization: this.authenticated.authToken,
       },
       {
         filter: {

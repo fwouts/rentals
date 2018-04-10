@@ -142,7 +142,7 @@ export class ListApartmentsViewModel {
       }
       const response = await listApartments(
         {
-          Authorization: this.authenticated.jwtToken,
+          Authorization: this.authenticated.authToken,
         },
         request,
       );

@@ -163,7 +163,7 @@ export function validate_LoginUserResponse_1(value: any): boolean {
   if (!validate_LoginUserResponse_1_status(value.status)) {
     return false;
   }
-  if (!validate_LoginUserResponse_1_jwtToken(value.jwtToken)) {
+  if (!validate_LoginUserResponse_1_authToken(value.authToken)) {
     return false;
   }
   if (!validate_LoginUserResponse_1_userId(value.userId)) {
@@ -179,7 +179,7 @@ export function validate_LoginUserResponse_1_status(value: any): boolean {
   return value === "success";
 }
 
-export function validate_LoginUserResponse_1_jwtToken(value: any): boolean {
+export function validate_LoginUserResponse_1_authToken(value: any): boolean {
   return typeof value === "string";
 }
 

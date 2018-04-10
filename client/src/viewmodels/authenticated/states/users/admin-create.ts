@@ -35,7 +35,7 @@ export class AdminCreateUserViewModel {
       // TODO: Check for empty fields, trim inputs (across all forms).
       const response = await registerUser(
         {
-          Authorization: this.authenticated.jwtToken,
+          Authorization: this.authenticated.authToken,
         },
         {
           email: this.email,

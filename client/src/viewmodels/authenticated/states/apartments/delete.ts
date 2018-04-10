@@ -28,7 +28,7 @@ export class DeleteApartmentViewModel {
       this.pending = true;
       const response = await deleteApartment(
         {
-          Authorization: this.authenticated.jwtToken,
+          Authorization: this.authenticated.authToken,
         },
         this.apartment.apartmentId,
       );

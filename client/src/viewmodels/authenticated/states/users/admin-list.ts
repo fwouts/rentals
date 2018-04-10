@@ -41,7 +41,7 @@ export class AdminListUsersViewModel {
       this.loading = true;
       const response = await listUsers(
         {
-          Authorization: this.authenticated.jwtToken,
+          Authorization: this.authenticated.authToken,
         },
         {
           filter: toRequestFilter(this.appliedFilter),

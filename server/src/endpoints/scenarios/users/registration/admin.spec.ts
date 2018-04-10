@@ -129,5 +129,5 @@ test("admin registration", async () => {
   if (correctLoginResponse.status !== "success") {
     throw new Error();
   }
-  expect(correctLoginResponse.jwtToken.length).toBeGreaterThan(5);
+  expect(correctLoginResponse.authToken.length).toBeGreaterThan(5);
 });
