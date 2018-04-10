@@ -13,7 +13,7 @@ export class AdminListingUsers {
   public filter: Filter = {
     role: null,
   };
-  @observable public users: UserDetails[] = [];
+  @observable.shallow public users: UserDetails[] = [];
   @observable public total = 0;
   @observable public pageCount = 0;
   @observable public currentPage = 1;

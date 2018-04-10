@@ -46,7 +46,7 @@ export class ListingApartments {
         kind: "map";
         viewport: Viewport;
       };
-  @observable public apartments: ApartmentDetails[] = [];
+  @observable.shallow public apartments: ApartmentDetails[] = [];
   @observable public total = 0;
   @observable public pageCount = 0;
   @observable public currentPage = 1;
