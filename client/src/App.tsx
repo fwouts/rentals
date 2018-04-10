@@ -3,29 +3,29 @@ import * as React from "react";
 import { AuthenticatedAdminPage } from "./pages/AuthenticatedAdminPage";
 import { AuthenticatedClientPage } from "./pages/AuthenticatedClientPage";
 import { AuthenticatedRealtorPage } from "./pages/AuthenticatedRealtorPage";
-import { AuthenticatingPage } from "./pages/AuthenticatingPage";
-import { RegisteringPage } from "./pages/RegisteringPage";
+import { RegisterPage } from "./pages/RegisterPage";
+import { SignInPage } from "./pages/SignInPage";
 import { UnauthenticatedPage } from "./pages/UnauthenticatedPage";
-import { AppController } from "./state/app";
+import { AppController } from "./viewmodels/app";
 
 @observer
-class App extends React.Component<{controller: AppController}> {
+class App extends React.Component<{viewModel: AppController}> {
   public render() {
-    switch (this.props.controller.state.kind) {
+    switch (this.props.viewModel.state.kind) {
       case "unauthenticated":
-        return <UnauthenticatedPage controller={this.props.controller.state} />;
-      case "registering":
-        return <RegisteringPage controller={this.props.controller.state} />;
-      case "authenticating":
-        return <AuthenticatingPage controller={this.props.controller.state} />;
+        return <UnauthenticatedPage viewModel={this.props.viewModel.state} />;
+      case "register":
+        return <RegisterPage viewModel={this.props.viewModel.state} />;
+      case "signin":
+        return <SignInPage viewModel={this.props.viewModel.state} />;
       case "authenticated-client":
-        return <AuthenticatedClientPage controller={this.props.controller.state} />;
+        return <AuthenticatedClientPage viewModel={this.props.viewModel.state} />;
       case "authenticated-realtor":
-        return <AuthenticatedRealtorPage controller={this.props.controller.state} />;
+        return <AuthenticatedRealtorPage viewModel={this.props.viewModel.state} />;
         case "authenticated-admin":
-          return <AuthenticatedAdminPage controller={this.props.controller.state} />;
+          return <AuthenticatedAdminPage viewModel={this.props.viewModel.state} />;
       default:
-        throw new Error(`Unknown state: ${JSON.stringify(this.props.controller.state)}.`);
+        throw new Error(`Unknown state: ${JSON.stringify(this.props.viewModel.state)}.`);
     }
   }
 }

@@ -1,39 +1,39 @@
 import { Menu } from "element-react";
 import { observer } from "mobx-react";
 import * as React from "react";
-import { ListingApartmentsComponent } from "../components/apartments/ListingApartmentsComponent";
-import { DeletingSelfComponent } from "../components/users/DeletingSelfComponent";
-import { UpdatingSelfComponent } from "../components/users/UpdatingSelfComponent";
-import { AuthenticatedClient } from "../state/authenticated/client";
+import { ListApartments} from "../components/apartments/ListApartments";
+import { SelfDeleteUser } from "../components/users/SelfDeleteUser";
+import { SelfUpdateUser } from "../components/users/SelfUpdateUser";
+import { AuthenticatedClientViewModel } from "../viewmodels/authenticated/client";
 
 @observer
-export class AuthenticatedClientPage extends React.Component<{controller: AuthenticatedClient}> {
+export class AuthenticatedClientPage extends React.Component<{viewModel: AuthenticatedClientViewModel}> {
   public render() {
     let element;
-    switch (this.props.controller.state.kind) {
-      case "listing-apartments":
+    switch (this.props.viewModel.state.kind) {
+      case "list-apartments":
         element = (
-          <ListingApartmentsComponent
-            controller={this.props.controller.state}
+          <ListApartments
+            viewModel={this.props.viewModel.state}
           />
         );
         break;
-      case "updating-user-self":
+      case "self-update-user":
         element = (
-          <UpdatingSelfComponent
-            controller={this.props.controller.state}
+          <SelfUpdateUser
+            viewModel={this.props.viewModel.state}
           />
         );
         break;
-      case "deleting-user-self":
+      case "self-delete-user":
         element = (
-          <DeletingSelfComponent
-            controller={this.props.controller.state}
+          <SelfDeleteUser
+            viewModel={this.props.viewModel.state}
           />
         );
         break;
       default:
-        throw new Error(`Unsupported state: ${JSON.stringify(this.props.controller.state)}.`);
+        throw new Error(`Unsupported state: ${JSON.stringify(this.props.viewModel.state)}.`);
     }
     return (
       <div className="container-large">
@@ -55,16 +55,16 @@ export class AuthenticatedClientPage extends React.Component<{controller: Authen
   private onMenuSelect = (index: string) => {
     switch (index) {
       case "account-signout":
-        this.props.controller.signOut();
+        this.props.viewModel.signOut();
         break;
       case "account-update":
-        this.props.controller.updateUser();
+        this.props.viewModel.updateUser();
         break;
       case "account-delete":
-        this.props.controller.deleteUser();
+        this.props.viewModel.deleteUser();
         break;
       case "apartments-list":
-        this.props.controller.listApartments();
+        this.props.viewModel.listApartments();
         break;
     }
   }

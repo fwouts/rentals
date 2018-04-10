@@ -1,63 +1,63 @@
 import { Menu } from "element-react";
 import { observer } from "mobx-react";
 import * as React from "react";
-import { CreatingApartmentComponent } from "../components/apartments/CreatingApartmentComponent";
-import { ListingApartmentsComponent } from "../components/apartments/ListingApartmentsComponent";
-import { UpdatingApartmentComponent } from "../components/apartments/UpdatingApartmentComponent";
-import { DeletingSelfComponent } from "../components/users/DeletingSelfComponent";
-import { UpdatingSelfComponent } from "../components/users/UpdatingSelfComponent";
-import { AuthenticatedRealtor } from "../state/authenticated/realtor";
+import { CreateApartment } from "../components/apartments/CreatingApartment";
+import { ListApartments } from "../components/apartments/ListApartments";
+import { UpdateApartment } from "../components/apartments/UpdateApartment";
+import { SelfDeleteUser } from "../components/users/SelfDeleteUser";
+import { SelfUpdateUser } from "../components/users/SelfUpdateUser";
+import { AuthenticatedRealtorViewModel } from "../viewmodels/authenticated/realtor";
 
 @observer
-export class AuthenticatedRealtorPage extends React.Component<{controller: AuthenticatedRealtor}> {
+export class AuthenticatedRealtorPage extends React.Component<{viewModel: AuthenticatedRealtorViewModel}> {
   public render() {
     let element;
-    switch (this.props.controller.state.kind) {
-      case "listing-apartments":
+    switch (this.props.viewModel.state.kind) {
+      case "list-apartments":
         element = (
-          <ListingApartmentsComponent
-            controller={this.props.controller.state}
+          <ListApartments
+            viewModel={this.props.viewModel.state}
             enableRentedFilter={true}
             enableModification={{
               filter: {
-                realtorId: this.props.controller.realtorId,
+                realtorId: this.props.viewModel.realtorId,
               },
-              editApartment: this.props.controller.editApartment,
-              deleteApartment: this.props.controller.state.deleteApartment,
+              editApartment: this.props.viewModel.editApartment,
+              deleteApartment: this.props.viewModel.state.deleteApartment,
             }}
           />
         );
         break;
-      case "creating-apartment":
+      case "create-apartment":
         element = (
-          <CreatingApartmentComponent
-            controller={this.props.controller.state}
+          <CreateApartment
+            viewModel={this.props.viewModel.state}
           />
         );
         break;
-      case "updating-apartment":
+      case "update-apartment":
         element = (
-          <UpdatingApartmentComponent
-            controller={this.props.controller.state}
+          <UpdateApartment
+            viewModel={this.props.viewModel.state}
           />
         );
         break;
-      case "updating-user-self":
+      case "self-update-user":
         element = (
-          <UpdatingSelfComponent
-            controller={this.props.controller.state}
+          <SelfUpdateUser
+            viewModel={this.props.viewModel.state}
           />
         );
         break;
-      case "deleting-user-self":
+      case "self-delete-user":
         element = (
-          <DeletingSelfComponent
-            controller={this.props.controller.state}
+          <SelfDeleteUser
+            viewModel={this.props.viewModel.state}
           />
         );
         break;
       default:
-        throw new Error(`Unsupported state: ${JSON.stringify(this.props.controller.state)}.`);
+        throw new Error(`Unsupported state: ${JSON.stringify(this.props.viewModel.state)}.`);
     }
     return (
       <div className="container-large">
@@ -82,19 +82,19 @@ export class AuthenticatedRealtorPage extends React.Component<{controller: Authe
   private onMenuSelect = (index: string) => {
     switch (index) {
       case "account-signout":
-        this.props.controller.signOut();
+        this.props.viewModel.signOut();
         break;
       case "account-update":
-        this.props.controller.updateUser();
+        this.props.viewModel.updateUser();
         break;
       case "account-delete":
-        this.props.controller.deleteUser();
+        this.props.viewModel.deleteUser();
         break;
       case "apartments-list":
-        this.props.controller.listApartments();
+        this.props.viewModel.listApartments();
         break;
       case "apartments-create":
-        this.props.controller.createApartment();
+        this.props.viewModel.createApartment();
         break;
     }
   }
