@@ -1,4 +1,6 @@
 import { observable } from "mobx";
+import { Router } from "../../router";
+import { AppViewModel } from "../app";
 import { SessionInfo } from "../signin";
 import { ListApartmentsViewModel } from "./states/apartments/list";
 import { SelfDeleteUserViewModel } from "./states/users/self-delete";
@@ -8,22 +10,29 @@ export class AuthenticatedClientViewModel {
   public readonly kind = "authenticated-client";
 
   @observable
-  public state!:
+  public state:
     | ListApartmentsViewModel
     | SelfUpdateUserViewModel
     | SelfDeleteUserViewModel;
   public readonly signOut: () => void;
 
+  private readonly router: Router<AppViewModel>;
   private readonly authenticated: SessionInfo;
 
-  public constructor(authenticated: SessionInfo, callbacks: Callbacks) {
+  public constructor(
+    router: Router<AppViewModel>,
+    authenticated: SessionInfo,
+    callbacks: Callbacks,
+  ) {
+    this.router = router;
     this.authenticated = authenticated;
     this.signOut = callbacks.signOut;
-    this.listApartments();
+    this.state = new ListApartmentsViewModel(this.authenticated);
   }
 
   public listApartments = async () => {
     this.state = new ListApartmentsViewModel(this.authenticated);
+    this.router.push();
   }
 
   public updateUser = () => {
@@ -31,6 +40,7 @@ export class AuthenticatedClientViewModel {
       onDone: this.listApartments,
       onCancel: this.listApartments,
     });
+    this.router.push();
   }
 
   public deleteUser = () => {
@@ -38,6 +48,7 @@ export class AuthenticatedClientViewModel {
       onDone: this.signOut,
       onCancel: this.listApartments,
     });
+    this.router.push();
   }
 }
 

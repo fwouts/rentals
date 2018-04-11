@@ -22,7 +22,7 @@ export class AuthenticatedRealtorPage extends React.Component<{viewModel: Authen
               filter: {
                 realtorId: this.props.viewModel.realtorId,
               },
-              editApartment: this.props.viewModel.editApartment,
+              updateApartment: this.props.viewModel.updateApartment,
               deleteApartment: this.props.viewModel.state.deleteApartment,
             }}
           />

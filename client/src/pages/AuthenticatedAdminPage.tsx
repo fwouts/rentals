@@ -25,7 +25,7 @@ export class AuthenticatedAdminPage extends React.Component<{viewModel: Authenti
             realtorFilter={this.props.viewModel.state.realtorFilter!}
             enableModification={{
               filter: "all",
-              editApartment: this.props.viewModel.editApartment,
+              updateApartment: this.props.viewModel.updateApartment,
               deleteApartment: this.props.viewModel.state.deleteApartment,
             }}
           />

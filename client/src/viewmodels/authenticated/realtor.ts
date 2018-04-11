@@ -1,5 +1,8 @@
 import { observable } from "mobx";
 import { ApartmentDetails } from "../../api";
+import { getApartment } from "../../client";
+import { Router } from "../../router";
+import { AppViewModel } from "../app";
 import { SessionInfo } from "../signin";
 import { CreateApartmentViewModel } from "./states/apartments/create";
 import { ListApartmentsViewModel } from "./states/apartments/list";
@@ -11,7 +14,7 @@ export class AuthenticatedRealtorViewModel {
   public readonly kind = "authenticated-realtor";
 
   @observable
-  public state!:
+  public state:
     | ListApartmentsViewModel
     | CreateApartmentViewModel
     | UpdateApartmentViewModel
@@ -20,17 +23,24 @@ export class AuthenticatedRealtorViewModel {
   public readonly realtorId: string;
   public readonly signOut: () => void;
 
+  private readonly router: Router<AppViewModel>;
   private readonly authenticated: SessionInfo;
 
-  public constructor(authenticated: SessionInfo, callbacks: Callbacks) {
+  public constructor(
+    router: Router<AppViewModel>,
+    authenticated: SessionInfo,
+    callbacks: Callbacks,
+  ) {
+    this.router = router;
     this.authenticated = authenticated;
     this.realtorId = authenticated.userId;
     this.signOut = callbacks.signOut;
-    this.listApartments();
+    this.state = new ListApartmentsViewModel(this.authenticated);
   }
 
   public listApartments = async () => {
     this.state = new ListApartmentsViewModel(this.authenticated);
+    this.router.push();
   }
 
   public createApartment = async () => {
@@ -38,9 +48,20 @@ export class AuthenticatedRealtorViewModel {
       this.authenticated,
       this.listApartments,
     );
+    this.router.push();
   }
 
-  public editApartment = async (apartment: ApartmentDetails) => {
+  public async fetchThenUpdateApartment(apartmentId: string) {
+    const apartment = await getApartment(
+      {
+        Authorization: this.authenticated.authToken,
+      },
+      apartmentId,
+    );
+    this.updateApartment(apartment);
+  }
+
+  public updateApartment = async (apartment: ApartmentDetails) => {
     this.state = new UpdateApartmentViewModel(
       this.authenticated,
       {
@@ -49,6 +70,7 @@ export class AuthenticatedRealtorViewModel {
       },
       apartment,
     );
+    this.router.push();
   }
 
   public updateUser = () => {
@@ -56,6 +78,7 @@ export class AuthenticatedRealtorViewModel {
       onDone: this.listApartments,
       onCancel: this.listApartments,
     });
+    this.router.push();
   }
 
   public deleteUser = () => {
@@ -63,6 +86,7 @@ export class AuthenticatedRealtorViewModel {
       onDone: this.signOut,
       onCancel: this.listApartments,
     });
+    this.router.push();
   }
 }
 

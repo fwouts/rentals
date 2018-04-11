@@ -1,5 +1,8 @@
 import { observable } from "mobx";
 import { ApartmentDetails, UserDetails } from "../../api";
+import { getApartment, getUser } from "../../client";
+import { Router } from "../../router";
+import { AppViewModel } from "../app";
 import { SessionInfo } from "../signin";
 import { CreateApartmentViewModel } from "./states/apartments/create";
 import { ListApartmentsViewModel } from "./states/apartments/list";
@@ -14,7 +17,7 @@ export class AuthenticatedAdminViewModel {
   public readonly kind = "authenticated-admin";
 
   @observable
-  public state!:
+  public state:
     | ListApartmentsViewModel
     | CreateApartmentViewModel
     | UpdateApartmentViewModel
@@ -26,16 +29,23 @@ export class AuthenticatedAdminViewModel {
     | AdminDeleteUserViewModel;
   public readonly signOut: () => void;
 
+  private readonly router: Router<AppViewModel>;
   private readonly authenticated: SessionInfo;
 
-  public constructor(authenticated: SessionInfo, callbacks: Callbacks) {
+  public constructor(
+    router: Router<AppViewModel>,
+    authenticated: SessionInfo,
+    callbacks: Callbacks,
+  ) {
+    this.router = router;
     this.authenticated = authenticated;
     this.signOut = callbacks.signOut;
-    this.listApartments();
+    this.state = new ListApartmentsViewModel(this.authenticated);
   }
 
   public listApartments = async () => {
     this.state = new ListApartmentsViewModel(this.authenticated);
+    this.router.push();
   }
 
   public createApartment = () => {
@@ -43,9 +53,20 @@ export class AuthenticatedAdminViewModel {
       this.authenticated,
       this.listApartments,
     );
+    this.router.push();
   }
 
-  public editApartment = (apartment: ApartmentDetails) => {
+  public async fetchThenUpdateApartment(apartmentId: string) {
+    const apartment = await getApartment(
+      {
+        Authorization: this.authenticated.authToken,
+      },
+      apartmentId,
+    );
+    this.updateApartment(apartment);
+  }
+
+  public updateApartment = (apartment: ApartmentDetails) => {
     this.state = new UpdateApartmentViewModel(
       this.authenticated,
       {
@@ -54,6 +75,7 @@ export class AuthenticatedAdminViewModel {
       },
       apartment,
     );
+    this.router.push();
   }
 
   public listUsers = async () => {
@@ -61,6 +83,7 @@ export class AuthenticatedAdminViewModel {
       editUser: this.updateUser,
       deleteUser: this.deleteUser,
     });
+    this.router.push();
     await this.state.loadFresh();
   }
 
@@ -69,6 +92,17 @@ export class AuthenticatedAdminViewModel {
       this.authenticated,
       this.listUsers,
     );
+    this.router.push();
+  }
+
+  public async fetchThenUpdateUser(userId: string) {
+    const user = await getUser(
+      {
+        Authorization: this.authenticated.authToken,
+      },
+      userId,
+    );
+    this.updateUser(user);
   }
 
   public updateUser = (user?: UserDetails) => {
@@ -87,6 +121,17 @@ export class AuthenticatedAdminViewModel {
         user,
       );
     }
+    this.router.push();
+  }
+
+  public async fetchThenDeleteUser(userId: string) {
+    const user = await getUser(
+      {
+        Authorization: this.authenticated.authToken,
+      },
+      userId,
+    );
+    this.deleteUser(user);
   }
 
   public deleteUser = (user?: UserDetails) => {
@@ -105,6 +150,7 @@ export class AuthenticatedAdminViewModel {
         user,
       );
     }
+    this.router.push();
   }
 }
 

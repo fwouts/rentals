@@ -47,7 +47,7 @@ export class ListApartments extends React.Component<{
     filter: {
       realtorId: string,
     } | "all",
-    editApartment(apartmentDetails: ApartmentDetails);
+    updateApartment(apartmentDetails: ApartmentDetails);
     deleteApartment(apartmentDetails: ApartmentDetails);
   },
 }> {
@@ -96,7 +96,7 @@ export class ListApartments extends React.Component<{
                 <Button
                   type="text"
                   size="small"
-                  onClick={() => this.props.enableModification!.editApartment(row.details)}
+                  onClick={() => this.props.enableModification!.updateApartment(row.details)}
                 >
                   Edit
                 </Button>

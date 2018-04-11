@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@types/googlemaps": "^3.30.8",
+    "@types/history": "^4.6.2",
     "@types/lodash": "^4.14.106",
     "@types/markerclustererplus": "^2.1.33",
     "@types/react": "^16.1.0",
@@ -19,6 +20,7 @@
     "axios": "^0.18.0",
     "element-react": "^1.4.12",
     "element-theme-default": "^1.4.13",
+    "history": "^4.7.2",
     "lodash": "^4.17.5",
     "mobx": "^4.1.1",
     "mobx-react": "^5.0.0",
