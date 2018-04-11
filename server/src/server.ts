@@ -9,6 +9,8 @@ import { checkAuth } from "./endpoints/checkAuth";
 import { createApartment } from "./endpoints/createApartment";
 import { deleteApartment } from "./endpoints/deleteApartment";
 import { deleteUser } from "./endpoints/deleteUser";
+import { getApartment } from "./endpoints/getApartment";
+import { getUser } from "./endpoints/getUser";
 import { listApartments } from "./endpoints/listApartments";
 import { listUsers } from "./endpoints/listUsers";
 import { loginUser } from "./endpoints/loginUser";
@@ -172,6 +174,25 @@ app.post("/users/list", async (req, res, next) => {
   }
 });
 
+app.get("/users/:id", async (req, res, next) => {
+  try {
+    const headers: api.AuthRequired = {
+      Authorization: req.header("Authorization")!,
+    };
+    if (!validation.validate_AuthRequired(headers)) {
+      throw new Error(`Invalid headers: ${JSON.stringify(headers, null, 2)}`);
+    }
+    const id = req.params.id;
+    const response: api.UserDetails = await getUser(headers, id);
+    if (!validation.validate_UserDetails(response)) {
+      throw new Error(`Invalid response: ${JSON.stringify(response, null, 2)}`);
+    }
+    res.json(response);
+  } catch (err) {
+    next(err);
+  }
+});
+
 app.post("/apartments/create", async (req, res, next) => {
   try {
     const headers: api.AuthRequired = {
@@ -263,6 +284,25 @@ app.post("/apartments/list", async (req, res, next) => {
       request,
     );
     if (!validation.validate_ListApartmentsResponse(response)) {
+      throw new Error(`Invalid response: ${JSON.stringify(response, null, 2)}`);
+    }
+    res.json(response);
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.get("/apartments/:id", async (req, res, next) => {
+  try {
+    const headers: api.AuthRequired = {
+      Authorization: req.header("Authorization")!,
+    };
+    if (!validation.validate_AuthRequired(headers)) {
+      throw new Error(`Invalid headers: ${JSON.stringify(headers, null, 2)}`);
+    }
+    const id = req.params.id;
+    const response: api.ApartmentDetails = await getApartment(headers, id);
+    if (!validation.validate_ApartmentDetails(response)) {
       throw new Error(`Invalid response: ${JSON.stringify(response, null, 2)}`);
     }
     res.json(response);

@@ -119,6 +119,13 @@ type ListUsersResponse = {
   pageCount: int
 }
 
+// Endpoint to get a specific users.
+//
+// Restrictions:
+// - only admins can get users
+@headers(AuthRequired)
+endpoint getUser: GET /users/:id void -> UserDetails
+
 type UserDetails = {
   userId: string
   email: string
@@ -225,6 +232,12 @@ type ListApartmentsResponse = {
   totalResults: int
   pageCount: int
 }
+
+// Endpoint to get a specific apartment.
+//
+// Non-rentable apartments are only visible to their realtors and admins.
+@headers(AuthRequired)
+endpoint getApartment: GET /apartments/:id void -> ApartmentDetails
 
 type ApartmentDetails = {
   apartmentId: string;

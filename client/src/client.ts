@@ -146,6 +146,27 @@ export async function listUsers(
   return response.data;
 }
 
+export async function getUser(
+  headers: api.AuthRequired,
+  id: string,
+): Promise<api.UserDetails> {
+  if (!validation.validate_AuthRequired(headers)) {
+    throw new Error(`Invalid headers: ${JSON.stringify(headers, null, 2)}`);
+  }
+  const url = `${URL}/users/${id}`;
+  const response = await axios({
+    url,
+    method: "GET",
+    headers,
+  });
+  if (!validation.validate_UserDetails(response.data)) {
+    throw new Error(
+      `Invalid response: ${JSON.stringify(response.data, null, 2)}`,
+    );
+  }
+  return response.data;
+}
+
 export async function createApartment(
   headers: api.AuthRequired,
   request: api.CreateApartmentRequest,
@@ -236,6 +257,27 @@ export async function listApartments(
     headers,
   });
   if (!validation.validate_ListApartmentsResponse(response.data)) {
+    throw new Error(
+      `Invalid response: ${JSON.stringify(response.data, null, 2)}`,
+    );
+  }
+  return response.data;
+}
+
+export async function getApartment(
+  headers: api.AuthRequired,
+  id: string,
+): Promise<api.ApartmentDetails> {
+  if (!validation.validate_AuthRequired(headers)) {
+    throw new Error(`Invalid headers: ${JSON.stringify(headers, null, 2)}`);
+  }
+  const url = `${URL}/apartments/${id}`;
+  const response = await axios({
+    url,
+    method: "GET",
+    headers,
+  });
+  if (!validation.validate_ApartmentDetails(response.data)) {
     throw new Error(
       `Invalid response: ${JSON.stringify(response.data, null, 2)}`,
     );
