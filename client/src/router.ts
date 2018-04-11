@@ -73,8 +73,6 @@ export class Router<State> {
   private matchPath(path: string, actualPath: string): false | string[] {
     const parts = path.split("/").filter((p) => p.length > 0);
     const actualParts = actualPath.split("/").filter((p) => p.length > 0);
-    // tslint:disable
-    console.log(path, actualParts);
     if (parts.length !== actualParts.length) {
       return false;
     }
