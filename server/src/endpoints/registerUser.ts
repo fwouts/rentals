@@ -1,4 +1,5 @@
 import { authenticate } from "@/auth/token";
+import { sendUserRegistrationVerification } from "@/emails/user-registration";
 import emailValidator from "email-validator";
 import owasp from "owasp-password-strength-test";
 import {
@@ -43,13 +44,19 @@ export async function registerUser(
     name: request.name,
     role: request.role,
   });
+  if (isAdmin) {
+    // Users created by admins don't need verification.
+    user.pendingEmail = null;
+    user.pendingEmailToken = null;
+  }
   try {
     await connection.manager.save(user);
+    await sendUserRegistrationVerification(user);
     return {
       status: "success",
       message: isAdmin
         ? "User successfully registered."
-        : "Congratulations, you are now registered!",
+        : "Great! Please check your email inbox now.",
     };
   } catch (e) {
     if (e.message.indexOf("duplicate key value") !== -1) {

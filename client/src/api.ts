@@ -18,6 +18,12 @@ export interface RegisterUserResponse {
   message: string;
 }
 
+export interface VerifyEmailRequest {
+  token: string;
+}
+
+export type VerifyEmailResponse = LoginUserResponse;
+
 export interface LoginUserRequest {
   email: string;
   password: string;

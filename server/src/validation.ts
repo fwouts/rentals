@@ -104,6 +104,24 @@ export function validate_RegisterUserResponse_message(value: any): boolean {
   return typeof value === "string";
 }
 
+export function validate_VerifyEmailRequest(value: any): boolean {
+  if (!(value instanceof Object)) {
+    return false;
+  }
+  if (!validate_VerifyEmailRequest_token(value.token)) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_VerifyEmailRequest_token(value: any): boolean {
+  return typeof value === "string";
+}
+
+export function validate_VerifyEmailResponse(value: any): boolean {
+  return validate_LoginUserResponse(value);
+}
+
 export function validate_LoginUserRequest(value: any): boolean {
   if (!(value instanceof Object)) {
     return false;

@@ -13,6 +13,12 @@ export async function authenticate(token: string): Promise<User> {
   if (moment(session.expires).isBefore(moment())) {
     throw new Error(`Session expired.`);
   }
+  if (
+    session.user.email === session.user.pendingEmail &&
+    session.user.pendingEmailToken
+  ) {
+    throw new Error(`Email not verified.`);
+  }
   return session.user;
 }
 

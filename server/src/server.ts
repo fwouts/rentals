@@ -17,6 +17,7 @@ import { loginUser } from "./endpoints/loginUser";
 import { registerUser } from "./endpoints/registerUser";
 import { updateApartment } from "./endpoints/updateApartment";
 import { updateUser } from "./endpoints/updateUser";
+import { verifyEmailAddress } from "./endpoints/verifyEmailAddress";
 import * as validation from "./validation";
 
 const PORT = 3010;
@@ -56,6 +57,22 @@ app.post("/users/register", async (req, res, next) => {
       request,
     );
     if (!validation.validate_RegisterUserResponse(response)) {
+      throw new Error(`Invalid response: ${JSON.stringify(response, null, 2)}`);
+    }
+    res.json(response);
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.post("/users/verify", async (req, res, next) => {
+  try {
+    const request: api.VerifyEmailRequest = req.body;
+    if (!validation.validate_VerifyEmailRequest(request)) {
+      throw new Error(`Invalid request: ${JSON.stringify(request, null, 2)}`);
+    }
+    const response: api.VerifyEmailResponse = await verifyEmailAddress(request);
+    if (!validation.validate_VerifyEmailResponse(response)) {
       throw new Error(`Invalid response: ${JSON.stringify(response, null, 2)}`);
     }
     res.json(response);

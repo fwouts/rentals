@@ -9,14 +9,10 @@ export function validate_AuthOptional(value: any): boolean {
 }
 
 export function validate_AuthOptional_Authorization(value: any): boolean {
-  return (
-    value === undefined || validate_AuthOptional_Authorization_present(value)
-  );
+  return value === undefined || validate_AuthOptional_Authorization_present(value);
 }
 
-export function validate_AuthOptional_Authorization_present(
-  value: any,
-): boolean {
+export function validate_AuthOptional_Authorization_present(value: any): boolean {
   return typeof value === "string";
 }
 
@@ -102,6 +98,24 @@ export function validate_RegisterUserResponse_status_1(value: any): boolean {
 
 export function validate_RegisterUserResponse_message(value: any): boolean {
   return typeof value === "string";
+}
+
+export function validate_VerifyEmailRequest(value: any): boolean {
+  if (!(value instanceof Object)) {
+    return false;
+  }
+  if (!validate_VerifyEmailRequest_token(value.token)) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_VerifyEmailRequest_token(value: any): boolean {
+  return typeof value === "string";
+}
+
+export function validate_VerifyEmailResponse(value: any): boolean {
+  return validate_LoginUserResponse(value);
 }
 
 export function validate_LoginUserRequest(value: any): boolean {
@@ -226,30 +240,19 @@ export function validate_UpdateUserRequest_name_present(value: any): boolean {
   return typeof value === "string";
 }
 
-export function validate_UpdateUserRequest_currentPassword(
-  value: any,
-): boolean {
-  return (
-    value === undefined ||
-    validate_UpdateUserRequest_currentPassword_present(value)
-  );
+export function validate_UpdateUserRequest_currentPassword(value: any): boolean {
+  return value === undefined || validate_UpdateUserRequest_currentPassword_present(value);
 }
 
-export function validate_UpdateUserRequest_currentPassword_present(
-  value: any,
-): boolean {
+export function validate_UpdateUserRequest_currentPassword_present(value: any): boolean {
   return typeof value === "string";
 }
 
 export function validate_UpdateUserRequest_newPassword(value: any): boolean {
-  return (
-    value === undefined || validate_UpdateUserRequest_newPassword_present(value)
-  );
+  return value === undefined || validate_UpdateUserRequest_newPassword_present(value);
 }
 
-export function validate_UpdateUserRequest_newPassword_present(
-  value: any,
-): boolean {
+export function validate_UpdateUserRequest_newPassword_present(value: any): boolean {
   return typeof value === "string";
 }
 
@@ -299,14 +302,10 @@ export function validate_DeleteUserRequest(value: any): boolean {
 }
 
 export function validate_DeleteUserRequest_password(value: any): boolean {
-  return (
-    value === undefined || validate_DeleteUserRequest_password_present(value)
-  );
+  return value === undefined || validate_DeleteUserRequest_password_present(value);
 }
 
-export function validate_DeleteUserRequest_password_present(
-  value: any,
-): boolean {
+export function validate_DeleteUserRequest_password_present(value: any): boolean {
   return typeof value === "string";
 }
 
@@ -370,14 +369,10 @@ export function validate_ListUsersRequest_filter_present(value: any): boolean {
 }
 
 export function validate_ListUsersRequest_maxPerPage(value: any): boolean {
-  return (
-    value === undefined || validate_ListUsersRequest_maxPerPage_present(value)
-  );
+  return value === undefined || validate_ListUsersRequest_maxPerPage_present(value);
 }
 
-export function validate_ListUsersRequest_maxPerPage_present(
-  value: any,
-): boolean {
+export function validate_ListUsersRequest_maxPerPage_present(value: any): boolean {
   return typeof value === "number" && Number.isInteger(value);
 }
 
@@ -536,15 +531,10 @@ export function validate_CreateApartmentRequest_info(value: any): boolean {
 }
 
 export function validate_CreateApartmentRequest_realtorId(value: any): boolean {
-  return (
-    value === undefined ||
-    validate_CreateApartmentRequest_realtorId_present(value)
-  );
+  return value === undefined || validate_CreateApartmentRequest_realtorId_present(value);
 }
 
-export function validate_CreateApartmentRequest_realtorId_present(
-  value: any,
-): boolean {
+export function validate_CreateApartmentRequest_realtorId_present(value: any): boolean {
   return typeof value === "string";
 }
 
@@ -575,9 +565,7 @@ export function validate_CreateApartmentResponse_0_status(value: any): boolean {
   return value === "error";
 }
 
-export function validate_CreateApartmentResponse_0_message(
-  value: any,
-): boolean {
+export function validate_CreateApartmentResponse_0_message(value: any): boolean {
   return typeof value === "string";
 }
 
@@ -601,15 +589,11 @@ export function validate_CreateApartmentResponse_1_status(value: any): boolean {
   return value === "success";
 }
 
-export function validate_CreateApartmentResponse_1_message(
-  value: any,
-): boolean {
+export function validate_CreateApartmentResponse_1_message(value: any): boolean {
   return typeof value === "string";
 }
 
-export function validate_CreateApartmentResponse_1_apartmentId(
-  value: any,
-): boolean {
+export function validate_CreateApartmentResponse_1_apartmentId(value: any): boolean {
   return typeof value === "string";
 }
 
@@ -631,15 +615,10 @@ export function validate_UpdateApartmentRequest_info(value: any): boolean {
 }
 
 export function validate_UpdateApartmentRequest_realtorId(value: any): boolean {
-  return (
-    value === undefined ||
-    validate_UpdateApartmentRequest_realtorId_present(value)
-  );
+  return value === undefined || validate_UpdateApartmentRequest_realtorId_present(value);
 }
 
-export function validate_UpdateApartmentRequest_realtorId_present(
-  value: any,
-): boolean {
+export function validate_UpdateApartmentRequest_realtorId_present(value: any): boolean {
   return typeof value === "string";
 }
 
@@ -730,39 +709,26 @@ export function validate_ListApartmentsRequest(value: any): boolean {
 }
 
 export function validate_ListApartmentsRequest_filter(value: any): boolean {
-  return (
-    value === undefined || validate_ListApartmentsRequest_filter_present(value)
-  );
+  return value === undefined || validate_ListApartmentsRequest_filter_present(value);
 }
 
-export function validate_ListApartmentsRequest_filter_present(
-  value: any,
-): boolean {
+export function validate_ListApartmentsRequest_filter_present(value: any): boolean {
   return validate_ListApartmentsFilter(value);
 }
 
 export function validate_ListApartmentsRequest_maxPerPage(value: any): boolean {
-  return (
-    value === undefined ||
-    validate_ListApartmentsRequest_maxPerPage_present(value)
-  );
+  return value === undefined || validate_ListApartmentsRequest_maxPerPage_present(value);
 }
 
-export function validate_ListApartmentsRequest_maxPerPage_present(
-  value: any,
-): boolean {
+export function validate_ListApartmentsRequest_maxPerPage_present(value: any): boolean {
   return typeof value === "number" && Number.isInteger(value);
 }
 
 export function validate_ListApartmentsRequest_page(value: any): boolean {
-  return (
-    value === undefined || validate_ListApartmentsRequest_page_present(value)
-  );
+  return value === undefined || validate_ListApartmentsRequest_page_present(value);
 }
 
-export function validate_ListApartmentsRequest_page_present(
-  value: any,
-): boolean {
+export function validate_ListApartmentsRequest_page_present(value: any): boolean {
   return typeof value === "number" && Number.isInteger(value);
 }
 
@@ -792,40 +758,26 @@ export function validate_ListApartmentsFilter(value: any): boolean {
 }
 
 export function validate_ListApartmentsFilter_realtorId(value: any): boolean {
-  return (
-    value === undefined ||
-    validate_ListApartmentsFilter_realtorId_present(value)
-  );
+  return value === undefined || validate_ListApartmentsFilter_realtorId_present(value);
 }
 
-export function validate_ListApartmentsFilter_realtorId_present(
-  value: any,
-): boolean {
+export function validate_ListApartmentsFilter_realtorId_present(value: any): boolean {
   return typeof value === "string";
 }
 
 export function validate_ListApartmentsFilter_rented(value: any): boolean {
-  return (
-    value === undefined || validate_ListApartmentsFilter_rented_present(value)
-  );
+  return value === undefined || validate_ListApartmentsFilter_rented_present(value);
 }
 
-export function validate_ListApartmentsFilter_rented_present(
-  value: any,
-): boolean {
+export function validate_ListApartmentsFilter_rented_present(value: any): boolean {
   return typeof value === "boolean";
 }
 
 export function validate_ListApartmentsFilter_sizeRange(value: any): boolean {
-  return (
-    value === undefined ||
-    validate_ListApartmentsFilter_sizeRange_present(value)
-  );
+  return value === undefined || validate_ListApartmentsFilter_sizeRange_present(value);
 }
 
-export function validate_ListApartmentsFilter_sizeRange_present(
-  value: any,
-): boolean {
+export function validate_ListApartmentsFilter_sizeRange_present(value: any): boolean {
   if (!(value instanceof Object)) {
     return false;
   }
@@ -838,28 +790,19 @@ export function validate_ListApartmentsFilter_sizeRange_present(
   return true;
 }
 
-export function validate_ListApartmentsFilter_sizeRange_present_min(
-  value: any,
-): boolean {
+export function validate_ListApartmentsFilter_sizeRange_present_min(value: any): boolean {
   return typeof value === "number" && Number.isInteger(value);
 }
 
-export function validate_ListApartmentsFilter_sizeRange_present_max(
-  value: any,
-): boolean {
+export function validate_ListApartmentsFilter_sizeRange_present_max(value: any): boolean {
   return typeof value === "number" && Number.isInteger(value);
 }
 
 export function validate_ListApartmentsFilter_priceRange(value: any): boolean {
-  return (
-    value === undefined ||
-    validate_ListApartmentsFilter_priceRange_present(value)
-  );
+  return value === undefined || validate_ListApartmentsFilter_priceRange_present(value);
 }
 
-export function validate_ListApartmentsFilter_priceRange_present(
-  value: any,
-): boolean {
+export function validate_ListApartmentsFilter_priceRange_present(value: any): boolean {
   if (!(value instanceof Object)) {
     return false;
   }
@@ -872,30 +815,19 @@ export function validate_ListApartmentsFilter_priceRange_present(
   return true;
 }
 
-export function validate_ListApartmentsFilter_priceRange_present_min(
-  value: any,
-): boolean {
+export function validate_ListApartmentsFilter_priceRange_present_min(value: any): boolean {
   return typeof value === "number" && Number.isInteger(value);
 }
 
-export function validate_ListApartmentsFilter_priceRange_present_max(
-  value: any,
-): boolean {
+export function validate_ListApartmentsFilter_priceRange_present_max(value: any): boolean {
   return typeof value === "number" && Number.isInteger(value);
 }
 
-export function validate_ListApartmentsFilter_numberOfRooms(
-  value: any,
-): boolean {
-  return (
-    value === undefined ||
-    validate_ListApartmentsFilter_numberOfRooms_present(value)
-  );
+export function validate_ListApartmentsFilter_numberOfRooms(value: any): boolean {
+  return value === undefined || validate_ListApartmentsFilter_numberOfRooms_present(value);
 }
 
-export function validate_ListApartmentsFilter_numberOfRooms_present(
-  value: any,
-): boolean {
+export function validate_ListApartmentsFilter_numberOfRooms_present(value: any): boolean {
   if (!(value instanceof Object)) {
     return false;
   }
@@ -908,27 +840,19 @@ export function validate_ListApartmentsFilter_numberOfRooms_present(
   return true;
 }
 
-export function validate_ListApartmentsFilter_numberOfRooms_present_min(
-  value: any,
-): boolean {
+export function validate_ListApartmentsFilter_numberOfRooms_present_min(value: any): boolean {
   return typeof value === "number" && Number.isInteger(value);
 }
 
-export function validate_ListApartmentsFilter_numberOfRooms_present_max(
-  value: any,
-): boolean {
+export function validate_ListApartmentsFilter_numberOfRooms_present_max(value: any): boolean {
   return typeof value === "number" && Number.isInteger(value);
 }
 
 export function validate_ListApartmentsFilter_viewport(value: any): boolean {
-  return (
-    value === undefined || validate_ListApartmentsFilter_viewport_present(value)
-  );
+  return value === undefined || validate_ListApartmentsFilter_viewport_present(value);
 }
 
-export function validate_ListApartmentsFilter_viewport_present(
-  value: any,
-): boolean {
+export function validate_ListApartmentsFilter_viewport_present(value: any): boolean {
   return validate_Viewport(value);
 }
 
@@ -960,15 +884,11 @@ export function validate_ListApartmentsResponse_results(value: any): boolean {
   return true;
 }
 
-export function validate_ListApartmentsResponse_results_item(
-  value: any,
-): boolean {
+export function validate_ListApartmentsResponse_results_item(value: any): boolean {
   return validate_ApartmentDetails(value);
 }
 
-export function validate_ListApartmentsResponse_totalResults(
-  value: any,
-): boolean {
+export function validate_ListApartmentsResponse_totalResults(value: any): boolean {
   return typeof value === "number" && Number.isInteger(value);
 }
 

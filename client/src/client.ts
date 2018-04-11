@@ -29,6 +29,26 @@ export async function registerUser(
   return response.data;
 }
 
+export async function verifyEmailAddress(
+  request: api.VerifyEmailRequest,
+): Promise<api.VerifyEmailResponse> {
+  if (!validation.validate_VerifyEmailRequest(request)) {
+    throw new Error(`Invalid request: ${JSON.stringify(request, null, 2)}`);
+  }
+  const url = `${URL}/users/verify`;
+  const response = await axios({
+    url,
+    method: "POST",
+    data: request,
+  });
+  if (!validation.validate_VerifyEmailResponse(response.data)) {
+    throw new Error(
+      `Invalid response: ${JSON.stringify(response.data, null, 2)}`,
+    );
+  }
+  return response.data;
+}
+
 export async function loginUser(
   request: api.LoginUserRequest,
 ): Promise<api.LoginUserResponse> {

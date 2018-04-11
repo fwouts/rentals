@@ -51,6 +51,13 @@ export function configureRoutes(
     (state) => state.kind === "register",
   );
   router.route(
+    "/verify/:token",
+    (token) => {
+      app.verify(token);
+    },
+    (state) => state.kind === "verify" && `/verify/${state.token}`,
+  );
+  router.route(
     "/admin/users",
     () => app.state.kind === "authenticated-admin" && app.state.listUsers(),
     (state) =>
@@ -82,7 +89,7 @@ export function configureRoutes(
     (state) =>
       state.kind === "authenticated-admin" &&
       state.state.kind === "admin-delete-user" &&
-      `/admin/users/${state.state.user.userId}/delete`,
+      ` / admin/users/${state.state.user.userId}/delete`,
   );
   router.route(
     "/apartments",

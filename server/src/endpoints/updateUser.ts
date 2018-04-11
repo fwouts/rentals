@@ -2,6 +2,7 @@ import { passwordValid } from "@/auth/salting";
 import { authenticate } from "@/auth/token";
 import { connection } from "@/db/connections";
 import { User } from "@/db/entities/user";
+import { sendEmailUpdateVerification } from "@/emails/user-email-update";
 import emailValidator from "email-validator";
 import owasp from "owasp-password-strength-test";
 import { AuthRequired, UpdateUserRequest, UpdateUserResponse } from "../api";
@@ -21,11 +22,22 @@ export async function updateUser(
       message: "No such user.",
     };
   }
-  if (request.email && !emailValidator.validate(request.email)) {
-    return {
-      status: "error",
-      message: "Invalid email address format.",
-    };
+  if (request.email) {
+    if (!emailValidator.validate(request.email)) {
+      return {
+        status: "error",
+        message: "Invalid email address format.",
+      };
+    }
+    const existingUser = await connection.manager.findOne(User, {
+      email: request.email,
+    });
+    if (existingUser) {
+      return {
+        status: "error",
+        message: "This email address is already registered.",
+      };
+    }
   }
   if (request.newPassword) {
     const passwordTest = owasp.test(request.newPassword);
@@ -49,50 +61,49 @@ export async function updateUser(
         message: "Incorrect password.",
       };
     }
-    updateUserProps(user, request);
-    return saveUser(user, "Your account was updated successfully.");
+    if (request.email) {
+      user.setPendingEmail(request.email);
+    }
+    if (request.name) {
+      user.name = request.name;
+    }
+    if (request.newPassword) {
+      user.setPassword(request.newPassword);
+    }
+    await connection.manager.save(user);
+    if (request.email) {
+      await sendEmailUpdateVerification(user);
+      return {
+        status: "success",
+        message: "Please check your email to confirm your new email address.",
+      };
+    } else {
+      return {
+        status: "success",
+        message: "Your account was updated successfully.",
+      };
+    }
   } else {
     if (currentUser.role === "admin") {
-      updateUserProps(user, request);
-      return saveUser(user, "The account was updated successfully.");
+      if (request.email) {
+        user.email = request.email;
+      }
+      if (request.name) {
+        user.name = request.name;
+      }
+      if (request.newPassword) {
+        user.setPassword(request.newPassword);
+      }
+      await connection.manager.save(user);
+      return {
+        status: "success",
+        message: "The account was updated successfully.",
+      };
     } else {
       return {
         status: "error",
         message: "Users can only update their own account.",
       };
     }
-  }
-}
-
-function updateUserProps(user: User, request: UpdateUserRequest) {
-  if (request.email) {
-    user.email = request.email;
-  }
-  if (request.name) {
-    user.name = request.name;
-  }
-  if (request.newPassword) {
-    user.setPassword(request.newPassword);
-  }
-}
-
-async function saveUser(
-  user: User,
-  successMessage: string,
-): Promise<UpdateUserResponse> {
-  try {
-    await connection.manager.save(user);
-    return {
-      status: "success",
-      message: successMessage,
-    };
-  } catch (e) {
-    if (e.message.indexOf("duplicate key value") !== -1) {
-      return {
-        status: "error",
-        message: "This email address is already registered.",
-      };
-    }
-    throw e;
   }
 }

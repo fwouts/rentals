@@ -23,42 +23,60 @@ export const GEORGE_PASSWORD = "george!123";
 
 export async function createTestUsers() {
   await connection.manager.save([
-    User.create({
-      email: CLIENT_ANNA,
-      password: ANNA_PASSWORD,
-      name: "Anna",
-      role: "client",
-    }),
-    User.create({
-      email: CLIENT_BRIAN,
-      password: BRIAN_PASSWORD,
-      name: "Brian",
-      role: "client",
-    }),
-    User.create({
-      email: REALTOR_JOHN,
-      password: JOHN_PASSWORD,
-      name: "John",
-      role: "realtor",
-    }),
-    User.create({
-      email: REALTOR_HELENA,
-      password: HELENA_PASSWORD,
-      name: "Helena",
-      role: "realtor",
-    }),
-    User.create({
-      email: ADMIN_FRANK,
-      password: FRANK_PASSWORD,
-      name: "Frank",
-      role: "admin",
-    }),
-    User.create({
-      email: ADMIN_GEORGE,
-      password: GEORGE_PASSWORD,
-      name: "George",
-      role: "admin",
-    }),
+    User.create(
+      {
+        email: CLIENT_ANNA,
+        password: ANNA_PASSWORD,
+        name: "Anna",
+        role: "client",
+      },
+      { verified: true },
+    ),
+    User.create(
+      {
+        email: CLIENT_BRIAN,
+        password: BRIAN_PASSWORD,
+        name: "Brian",
+        role: "client",
+      },
+      { verified: true },
+    ),
+    User.create(
+      {
+        email: REALTOR_JOHN,
+        password: JOHN_PASSWORD,
+        name: "John",
+        role: "realtor",
+      },
+      { verified: true },
+    ),
+    User.create(
+      {
+        email: REALTOR_HELENA,
+        password: HELENA_PASSWORD,
+        name: "Helena",
+        role: "realtor",
+      },
+      { verified: true },
+    ),
+    User.create(
+      {
+        email: ADMIN_FRANK,
+        password: FRANK_PASSWORD,
+        name: "Frank",
+        role: "admin",
+      },
+      { verified: true },
+    ),
+    User.create(
+      {
+        email: ADMIN_GEORGE,
+        password: GEORGE_PASSWORD,
+        name: "George",
+        role: "admin",
+      },
+      { verified: true },
+    ),
   ]);
 }
 

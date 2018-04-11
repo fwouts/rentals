@@ -1,5 +1,6 @@
 import { passwordValid } from "@/auth/salting";
 import { updateUser } from "@/endpoints/updateUser";
+import { verifyEmailAddress } from "@/endpoints/verifyEmailAddress";
 import { useTestingDatabase } from "@/testing/db";
 import { GOOD_PASSWORD_1 } from "@/testing/passwords";
 import {
@@ -34,7 +35,11 @@ test("admins can update their own account", async () => {
   );
   expect(response).toMatchObject({
     status: "success",
-    message: "Your account was updated successfully.",
+    message: "Please check your email to confirm your new email address.",
+  });
+  const userPendingVerification = await findUser(ADMIN_FRANK);
+  await verifyEmailAddress({
+    token: userPendingVerification.pendingEmailToken!,
   });
   const updatedUser = await findUser("newemail@gmail.com");
   expect(updatedUser).toMatchObject({

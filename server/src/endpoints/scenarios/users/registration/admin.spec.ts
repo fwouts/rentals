@@ -15,24 +15,33 @@ import "jest";
 useTestingDatabase();
 
 beforeEach(async () => {
-  const admin = User.create({
-    email: "admin1@gmail.com",
-    password: GOOD_PASSWORD_1,
-    name: "Admin 1",
-    role: "admin",
-  });
-  const realtor = User.create({
-    email: "realtor@gmail.com",
-    password: GOOD_PASSWORD_2,
-    name: "Realtor",
-    role: "realtor",
-  });
-  const client = User.create({
-    email: "client@gmail.com",
-    password: GOOD_PASSWORD_3,
-    name: "Client",
-    role: "client",
-  });
+  const admin = User.create(
+    {
+      email: "admin1@gmail.com",
+      password: GOOD_PASSWORD_1,
+      name: "Admin 1",
+      role: "admin",
+    },
+    { verified: true },
+  );
+  const realtor = User.create(
+    {
+      email: "realtor@gmail.com",
+      password: GOOD_PASSWORD_2,
+      name: "Realtor",
+      role: "realtor",
+    },
+    { verified: true },
+  );
+  const client = User.create(
+    {
+      email: "client@gmail.com",
+      password: GOOD_PASSWORD_3,
+      name: "Client",
+      role: "client",
+    },
+    { verified: true },
+  );
   await connection.manager.save([admin, realtor, client]);
 });
 

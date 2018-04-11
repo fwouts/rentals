@@ -30,6 +30,15 @@ type RegisterUserResponse = {
   message: string
 }
 
+// Endpoint to verify an email address.
+endpoint verifyEmailAddress: POST /users/verify VerifyEmailRequest -> VerifyEmailResponse
+
+type VerifyEmailRequest = {
+  token: string
+}
+
+type VerifyEmailResponse = LoginUserResponse
+
 // Endpoint to login users.
 //
 // Used by clients, realtors and admins.

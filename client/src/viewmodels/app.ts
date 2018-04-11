@@ -10,6 +10,7 @@ import { RegisterViewModel } from "./register";
 import { configureRoutes } from "./routes";
 import { SessionInfo, SignInViewModel } from "./signin";
 import { UnauthenticatedViewModel } from "./unauthenticated";
+import { VerifyViewModel } from "./verify";
 
 const LOCAL_STORAGE_AUTHENTICATION_KEY = "auth";
 
@@ -90,6 +91,12 @@ export class AppController {
     this.router.push();
   }
 
+  public verify = (token: string) => {
+    this.state = new VerifyViewModel(token, this.onAuthenticated);
+    this.state.submit();
+    this.router.push();
+  }
+
   public signIn = () => {
     this.state = new SignInViewModel(this.onAuthenticated);
     this.router.push();
@@ -158,6 +165,7 @@ export class AppController {
 export type AppViewModel =
   | UnauthenticatedViewModel
   | RegisterViewModel
+  | VerifyViewModel
   | SignInViewModel
   | AuthenticatedAdminViewModel
   | AuthenticatedRealtorViewModel

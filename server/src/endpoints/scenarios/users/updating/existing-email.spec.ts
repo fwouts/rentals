@@ -1,5 +1,6 @@
 import { registerUser } from "@/endpoints/registerUser";
 import { updateUser } from "@/endpoints/updateUser";
+import { verifyEmailAddress } from "@/endpoints/verifyEmailAddress";
 import { useTestingDatabase } from "@/testing/db";
 import { GOOD_PASSWORD_1 } from "@/testing/passwords";
 import {
@@ -28,9 +29,12 @@ test("account cannot be updated to an existing email address", async () => {
   );
   expect(registerAccountResponse).toMatchObject({
     status: "success",
-    message: "Congratulations, you are now registered!",
+    message: "Great! Please check your email inbox now.",
   });
   const user = await findUser("hello@gmail.com");
+  await verifyEmailAddress({
+    token: user.pendingEmailToken!,
+  });
   const updateAccountResponse = await updateUser(
     await authHeaders("hello@gmail.com", GOOD_PASSWORD_1),
     user.userId,
