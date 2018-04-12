@@ -25,6 +25,21 @@ export async function registerUser(
       data: "Only an admin can register another admin.",
     };
   }
+  // Trim the inputs in case the user's keyboard added an extra space (on mobile).
+  request.email = request.email.trim();
+  request.name = request.name.trim();
+  if (!request.email) {
+    return {
+      kind: "failure",
+      data: "Please fill in an email address.",
+    };
+  }
+  if (!request.name) {
+    return {
+      kind: "failure",
+      data: "Please fill in a name.",
+    };
+  }
   if (!emailValidator.validate(request.email)) {
     return {
       kind: "failure",

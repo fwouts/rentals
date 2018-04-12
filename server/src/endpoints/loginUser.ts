@@ -7,6 +7,8 @@ import { User } from "../db/entities/user";
 export async function loginUser(
   request: LoginUserRequest,
 ): Promise<LoginUser_Response> {
+  // Trim the email in case the user's keyboard added an extra space (on mobile).
+  request.email = request.email.trim();
   const potentialUser = await connection.manager.findOne(User, {
     email: request.email,
   });

@@ -5,47 +5,33 @@ import "jest";
 
 useTestingDatabase();
 
-test("invalid emails cannot be registered", async () => {
+test("empty names cannot be registered", async () => {
   expect(
     await registerUser(
       {},
       {
-        email: "",
+        email: "test@gmail.com",
         password: GOOD_PASSWORD_1,
-        name: "Realtor",
+        name: "",
         role: "realtor",
       },
     ),
   ).toMatchObject({
     kind: "failure",
-    data: "Please fill in an email address.",
+    data: "Please fill in a name.",
   });
   expect(
     await registerUser(
       {},
       {
-        email: " ",
+        email: "test@gmail.com",
         password: GOOD_PASSWORD_1,
-        name: "Realtor",
+        name: "   ",
         role: "realtor",
       },
     ),
   ).toMatchObject({
     kind: "failure",
-    data: "Please fill in an email address.",
-  });
-  expect(
-    await registerUser(
-      {},
-      {
-        email: "hello-gmail.com",
-        password: GOOD_PASSWORD_1,
-        name: "Realtor",
-        role: "realtor",
-      },
-    ),
-  ).toMatchObject({
-    kind: "failure",
-    data: "Invalid email address format.",
+    data: "Please fill in a name.",
   });
 });

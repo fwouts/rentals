@@ -29,6 +29,13 @@ export async function updateUser(
       kind: "notfound",
     };
   }
+  // Trim the inputs in case the user's keyboard added an extra space (on mobile).
+  if (request.email) {
+    request.email = request.email.trim();
+  }
+  if (request.name) {
+    request.name = request.name.trim();
+  }
   if (request.email) {
     if (!emailValidator.validate(request.email)) {
       return {
