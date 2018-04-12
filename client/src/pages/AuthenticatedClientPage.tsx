@@ -2,6 +2,7 @@ import { Menu } from "element-react";
 import { observer } from "mobx-react";
 import * as React from "react";
 import { ListApartments} from "../components/apartments/ListApartments";
+import { UserInfo } from "../components/UserInfo";
 import { SelfDeleteUser } from "../components/users/SelfDeleteUser";
 import { SelfUpdateUser } from "../components/users/SelfUpdateUser";
 import { AuthenticatedClientViewModel } from "../viewmodels/authenticated/client";
@@ -44,6 +45,7 @@ export class AuthenticatedClientPage extends React.Component<{viewModel: Authent
             <Menu.Item index="account-delete">Delete my account</Menu.Item>
             <Menu.Item index="account-signout">Sign out</Menu.Item>
           </Menu.SubMenu>
+          <UserInfo sessionInfo={this.props.viewModel.authenticated} />
         </Menu>
         <main>
           {element}

@@ -4,6 +4,7 @@ import * as React from "react";
 import { CreateApartment } from "../components/apartments/CreatingApartment";
 import { ListApartments } from "../components/apartments/ListApartments";
 import { UpdateApartment } from "../components/apartments/UpdateApartment";
+import { UserInfo } from "../components/UserInfo";
 import { SelfDeleteUser } from "../components/users/SelfDeleteUser";
 import { SelfUpdateUser } from "../components/users/SelfUpdateUser";
 import { AuthenticatedRealtorViewModel } from "../viewmodels/authenticated/realtor";
@@ -71,6 +72,7 @@ export class AuthenticatedRealtorPage extends React.Component<{viewModel: Authen
             <Menu.Item index="account-delete">Delete my account</Menu.Item>
             <Menu.Item index="account-signout">Sign out</Menu.Item>
           </Menu.SubMenu>
+          <UserInfo sessionInfo={this.props.viewModel.authenticated} />
         </Menu>
         <main>
           {element}

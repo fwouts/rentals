@@ -13,6 +13,7 @@ export async function checkAuth(
         authToken,
         role: currentUser.role,
         userId: currentUser.userId,
+        name: currentUser.name,
       },
     };
   } catch (e) {

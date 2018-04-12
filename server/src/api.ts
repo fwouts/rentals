@@ -27,6 +27,7 @@ export interface LoginUserRequest {
 export interface LoginUserResponse {
   authToken: string;
   userId: string;
+  name: string;
   role: Role;
 }
 
@@ -144,130 +145,166 @@ export interface Realtor {
   name: string;
 }
 
-export type RegisterUser_Response = {
-  kind: "success";
-  data: string;
-} | {
-  kind: "unauthorized";
-  data: string;
-} | {
-  kind: "failure";
-  data: string;
-};
+export type RegisterUser_Response =
+  | {
+      kind: "success";
+      data: string;
+    }
+  | {
+      kind: "unauthorized";
+      data: string;
+    }
+  | {
+      kind: "failure";
+      data: string;
+    };
 
-export type VerifyEmailAddress_Response = {
-  kind: "success";
-  data: VerifyEmailResponse;
-} | {
-  kind: "failure";
-  data: string;
-};
+export type VerifyEmailAddress_Response =
+  | {
+      kind: "success";
+      data: VerifyEmailResponse;
+    }
+  | {
+      kind: "failure";
+      data: string;
+    };
 
-export type LoginUser_Response = {
-  kind: "success";
-  data: LoginUserResponse;
-} | {
-  kind: "failure";
-  data: string;
-};
+export type LoginUser_Response =
+  | {
+      kind: "success";
+      data: LoginUserResponse;
+    }
+  | {
+      kind: "failure";
+      data: string;
+    };
 
-export type CheckAuth_Response = {
-  kind: "success";
-  data: LoginUserResponse;
-} | {
-  kind: "failure";
-  data: string;
-};
+export type CheckAuth_Response =
+  | {
+      kind: "success";
+      data: LoginUserResponse;
+    }
+  | {
+      kind: "failure";
+      data: string;
+    };
 
-export type UpdateUser_Response = {
-  kind: "success";
-  data: string;
-} | {
-  kind: "unauthorized";
-  data: string;
-} | {
-  kind: "failure";
-  data: string;
-} | {
-  kind: "notfound";
-};
+export type UpdateUser_Response =
+  | {
+      kind: "success";
+      data: string;
+    }
+  | {
+      kind: "unauthorized";
+      data: string;
+    }
+  | {
+      kind: "failure";
+      data: string;
+    }
+  | {
+      kind: "notfound";
+    };
 
-export type DeleteUser_Response = {
-  kind: "success";
-  data: string;
-} | {
-  kind: "unauthorized";
-  data: string;
-} | {
-  kind: "notfound";
-};
+export type DeleteUser_Response =
+  | {
+      kind: "success";
+      data: string;
+    }
+  | {
+      kind: "unauthorized";
+      data: string;
+    }
+  | {
+      kind: "notfound";
+    };
 
-export type ListUsers_Response = {
-  kind: "success";
-  data: ListUsersResponse;
-} | {
-  kind: "unauthorized";
-  data: string;
-};
+export type ListUsers_Response =
+  | {
+      kind: "success";
+      data: ListUsersResponse;
+    }
+  | {
+      kind: "unauthorized";
+      data: string;
+    };
 
-export type GetUser_Response = {
-  kind: "success";
-  data: UserDetails;
-} | {
-  kind: "unauthorized";
-  data: string;
-} | {
-  kind: "notfound";
-};
+export type GetUser_Response =
+  | {
+      kind: "success";
+      data: UserDetails;
+    }
+  | {
+      kind: "unauthorized";
+      data: string;
+    }
+  | {
+      kind: "notfound";
+    };
 
-export type CreateApartment_Response = {
-  kind: "success";
-  data: CreateApartmentResponse;
-} | {
-  kind: "unauthorized";
-  data: string;
-} | {
-  kind: "failure";
-  data: string;
-};
+export type CreateApartment_Response =
+  | {
+      kind: "success";
+      data: CreateApartmentResponse;
+    }
+  | {
+      kind: "unauthorized";
+      data: string;
+    }
+  | {
+      kind: "failure";
+      data: string;
+    };
 
-export type UpdateApartment_Response = {
-  kind: "success";
-  data: string;
-} | {
-  kind: "unauthorized";
-  data: string;
-} | {
-  kind: "failure";
-  data: string;
-} | {
-  kind: "notfound";
-};
+export type UpdateApartment_Response =
+  | {
+      kind: "success";
+      data: string;
+    }
+  | {
+      kind: "unauthorized";
+      data: string;
+    }
+  | {
+      kind: "failure";
+      data: string;
+    }
+  | {
+      kind: "notfound";
+    };
 
-export type DeleteApartment_Response = {
-  kind: "success";
-  data: string;
-} | {
-  kind: "unauthorized";
-  data: string;
-} | {
-  kind: "notfound";
-};
+export type DeleteApartment_Response =
+  | {
+      kind: "success";
+      data: string;
+    }
+  | {
+      kind: "unauthorized";
+      data: string;
+    }
+  | {
+      kind: "notfound";
+    };
 
-export type ListApartments_Response = {
-  kind: "success";
-  data: ListApartmentsResponse;
-} | {
-  kind: "unauthorized";
-  data: string;
-};
+export type ListApartments_Response =
+  | {
+      kind: "success";
+      data: ListApartmentsResponse;
+    }
+  | {
+      kind: "unauthorized";
+      data: string;
+    };
 
-export type GetApartment_Response = {
-  kind: "success";
-  data: ApartmentDetails;
-} | {
-  kind: "unauthorized";
-  data: string;
-} | {
-  kind: "notfound";
-};
+export type GetApartment_Response =
+  | {
+      kind: "success";
+      data: ApartmentDetails;
+    }
+  | {
+      kind: "unauthorized";
+      data: string;
+    }
+  | {
+      kind: "notfound";
+    };

@@ -29,8 +29,8 @@ export class AuthenticatedAdminViewModel {
     | AdminDeleteUserViewModel;
   public readonly signOut: () => void;
 
+  public readonly authenticated: SessionInfo;
   private readonly router: Router<AppViewModel>;
-  private readonly authenticated: SessionInfo;
 
   public constructor(
     router: Router<AppViewModel>,

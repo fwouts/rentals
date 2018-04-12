@@ -4,6 +4,7 @@ import * as React from "react";
 import { CreateApartment } from "../components/apartments/CreatingApartment";
 import { ListApartments} from "../components/apartments/ListApartments";
 import { UpdateApartment} from "../components/apartments/UpdateApartment";
+import { UserInfo } from "../components/UserInfo";
 import { AdminCreateUser } from "../components/users/AdminCreateUser";
 import { AdminDeleteUser } from "../components/users/AdminDeleteUser";
 import { AdminListUsers} from "../components/users/AdminListUsers";
@@ -106,6 +107,7 @@ export class AuthenticatedAdminPage extends React.Component<{viewModel: Authenti
             <Menu.Item index="account-delete">Delete my account</Menu.Item>
             <Menu.Item index="account-signout">Sign out</Menu.Item>
           </Menu.SubMenu>
+          <UserInfo sessionInfo={this.props.viewModel.authenticated} />
         </Menu>
         <main>
           {element}

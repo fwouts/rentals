@@ -29,6 +29,7 @@ export async function loginUser(
       authToken: await createSessionToken(confirmedUser),
       role: confirmedUser.role,
       userId: confirmedUser.userId,
+      name: confirmedUser.name,
     },
   };
 }

@@ -27,7 +27,7 @@ export class SignInViewModel {
         case "success":
           Message({
             type: "success",
-            message: "Hi there!",
+            message: `Hi ${response.data.name}!`,
           });
           this.onSuccess(response.data);
           break;
@@ -58,4 +58,5 @@ export interface SessionInfo {
   authToken: string;
   role: Role;
   userId: string;
+  name: string;
 }

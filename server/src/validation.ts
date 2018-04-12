@@ -114,6 +114,9 @@ export function validate_LoginUserResponse(value: any): boolean {
   if (!validate_LoginUserResponse_userId(value.userId)) {
     return false;
   }
+  if (!validate_LoginUserResponse_name(value.name)) {
+    return false;
+  }
   if (!validate_LoginUserResponse_role(value.role)) {
     return false;
   }
@@ -125,6 +128,10 @@ export function validate_LoginUserResponse_authToken(value: any): boolean {
 }
 
 export function validate_LoginUserResponse_userId(value: any): boolean {
+  return typeof value === "string";
+}
+
+export function validate_LoginUserResponse_name(value: any): boolean {
   return typeof value === "string";
 }
 

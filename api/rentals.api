@@ -54,6 +54,7 @@ type LoginUserRequest = {
 type LoginUserResponse = {
   authToken: string
   userId: string
+  name: string
   role: Role
 }
 

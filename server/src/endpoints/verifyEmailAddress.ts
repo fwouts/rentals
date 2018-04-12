@@ -30,6 +30,7 @@ export async function verifyEmailAddress(
         authToken: await createSessionToken(user),
         role: user.role,
         userId: user.userId,
+        name: user.name,
       },
     };
   } catch (e) {
