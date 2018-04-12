@@ -33,8 +33,8 @@ test("clients can update their own account", async () => {
     },
   );
   expect(response).toMatchObject({
-    status: "success",
-    message: "Please check your email to confirm your new email address.",
+    kind: "success",
+    data: "Please check your email to confirm your new email address.",
   });
   const userPendingVerification = await findUser(CLIENT_ANNA);
   await verifyEmailAddress({
@@ -61,8 +61,8 @@ test("clients cannot update their account without entering password", async () =
     },
   );
   expect(response).toMatchObject({
-    status: "error",
-    message: "For security reasons, a password must be provided.",
+    kind: "unauthorized",
+    data: "For security reasons, a password must be provided.",
   });
 });
 
@@ -79,8 +79,8 @@ test("clients cannot update their account with an incorrect password", async () 
     },
   );
   expect(response).toMatchObject({
-    status: "error",
-    message: "Incorrect password.",
+    kind: "unauthorized",
+    data: "Incorrect password.",
   });
 });
 
@@ -97,7 +97,7 @@ test("clients cannot update others' accounts", async () => {
     },
   );
   expect(response).toMatchObject({
-    status: "error",
-    message: "Users can only update their own account.",
+    kind: "unauthorized",
+    data: "Users can only update their own account.",
   });
 });

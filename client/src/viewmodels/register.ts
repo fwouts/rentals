@@ -39,19 +39,20 @@ export class RegisterViewModel {
           role: this.role,
         },
       );
-      switch (response.status) {
+      switch (response.kind) {
         case "success":
           Message({
             type: "success",
-            message: response.message,
+            message: response.data,
           });
           this.onSuccess();
           break;
-        case "error":
+        case "failure":
+        case "unauthorized":
         default:
           Message({
             type: "error",
-            message: response.message,
+            message: response.data,
           });
           break;
       }

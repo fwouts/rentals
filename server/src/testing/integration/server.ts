@@ -4,12 +4,14 @@ import { initDatabase } from "@/db";
 import bodyParser from "body-parser";
 import cors from "cors";
 import express from "express";
+import * as api from "./api";
 import { resetDatabase } from "./endpoints/resetDatabase";
 
 const PORT = 3020;
 
 const app = express();
 app.use(bodyParser.json());
+// TODO: Change CORS configuration.
 app.use(
   cors({
     origin: (origin, callback) => {
@@ -27,8 +29,17 @@ app.use(
 
 app.post("/reset", async (req, res, next) => {
   try {
-    await resetDatabase();
-    res.end();
+    const response: api.ResetDatabase_Response = await resetDatabase();
+    switch (response.kind) {
+      case "success":
+        res.status(200);
+        res.end();
+        break;
+      default:
+        throw new Error(
+          `Invalid response: ${JSON.stringify(response, null, 2)}`,
+        );
+    }
   } catch (err) {
     next(err);
   }

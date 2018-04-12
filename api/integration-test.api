@@ -1,1 +1,2 @@
-endpoint resetDatabase: POST /reset void -> void
+endpoint resetDatabase: POST /reset void
+-> success 200 void

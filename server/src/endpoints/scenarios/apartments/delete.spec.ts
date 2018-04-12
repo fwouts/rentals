@@ -45,8 +45,8 @@ test("clients cannot delete apartment listings", async () => {
     apartment.apartmentId,
   );
   expect(response).toMatchObject({
-    status: "error",
-    message: "Clients cannot delete apartment listings.",
+    kind: "unauthorized",
+    data: "Clients cannot delete apartment listings.",
   });
 });
 
@@ -60,8 +60,8 @@ test("realtors can delete their own apartment listings", async () => {
     apartment.apartmentId,
   );
   expect(response).toMatchObject({
-    status: "success",
-    message: "The apartment listing was deleted successfully.",
+    kind: "success",
+    data: "The apartment listing was deleted successfully.",
   });
 });
 
@@ -75,8 +75,8 @@ test("realtors cannot delete other realtors' apartment listings", async () => {
     apartment.apartmentId,
   );
   expect(response).toMatchObject({
-    status: "error",
-    message: "Realtors cannot delete other realtors' apartment listings.",
+    kind: "unauthorized",
+    data: "Realtors cannot delete other realtors' apartment listings.",
   });
 });
 
@@ -90,8 +90,8 @@ test("admins can any realtor's apartment listings", async () => {
     apartment.apartmentId,
   );
   expect(response).toMatchObject({
-    status: "success",
-    message: "The apartment listing was deleted successfully.",
+    kind: "success",
+    data: "The apartment listing was deleted successfully.",
   });
 });
 
@@ -101,7 +101,6 @@ test("missing apartment listings raise error", async () => {
     "missing",
   );
   expect(response).toMatchObject({
-    status: "error",
-    message: "No such apartment.",
+    kind: "notfound",
   });
 });

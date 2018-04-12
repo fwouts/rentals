@@ -37,8 +37,8 @@ test("realtors can update their own account", async () => {
     token: userPendingVerification.pendingEmailToken!,
   });
   expect(response).toMatchObject({
-    status: "success",
-    message: "Please check your email to confirm your new email address.",
+    kind: "success",
+    data: "Please check your email to confirm your new email address.",
   });
   const updatedUser = await findUser("newemail@gmail.com");
   expect(updatedUser).toMatchObject({
@@ -61,8 +61,8 @@ test("realtors cannot update their account without entering password", async () 
     },
   );
   expect(response).toMatchObject({
-    status: "error",
-    message: "For security reasons, a password must be provided.",
+    kind: "unauthorized",
+    data: "For security reasons, a password must be provided.",
   });
 });
 
@@ -79,8 +79,8 @@ test("realtors cannot update their account with an incorrect password", async ()
     },
   );
   expect(response).toMatchObject({
-    status: "error",
-    message: "Incorrect password.",
+    kind: "unauthorized",
+    data: "Incorrect password.",
   });
 });
 
@@ -97,7 +97,7 @@ test("realtors cannot update others' accounts", async () => {
     },
   );
   expect(response).toMatchObject({
-    status: "error",
-    message: "Users can only update their own account.",
+    kind: "unauthorized",
+    data: "Users can only update their own account.",
   });
 });

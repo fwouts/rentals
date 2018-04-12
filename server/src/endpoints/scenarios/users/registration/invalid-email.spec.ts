@@ -16,7 +16,7 @@ test("invalid emails cannot be registered", async () => {
     },
   );
   expect(response).toMatchObject({
-    status: "error",
-    message: "Invalid email address format.",
+    kind: "failure",
+    data: "Invalid email address format.",
   });
 });

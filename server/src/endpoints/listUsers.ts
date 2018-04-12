@@ -3,8 +3,8 @@ import { connection } from "@/db/connections";
 import { User } from "@/db/entities/user";
 import {
   AuthRequired,
+  ListUsers_Response,
   ListUsersRequest,
-  ListUsersResponse,
   UserDetails,
 } from "../api";
 
@@ -13,23 +13,23 @@ const MAX_RESULTS_PER_PAGE = 100;
 export async function listUsers(
   headers: AuthRequired,
   request: ListUsersRequest,
-): Promise<ListUsersResponse> {
+): Promise<ListUsers_Response> {
   const maxResultsPerPage = request.maxPerPage
     ? Math.min(MAX_RESULTS_PER_PAGE, request.maxPerPage)
     : MAX_RESULTS_PER_PAGE;
-  let currentUser = {
-    role: "unknown",
-  };
+  let currentUser;
   try {
     currentUser = await authenticate(headers.Authorization);
   } catch {
-    // Ignore.
+    return {
+      kind: "unauthorized",
+      data: "Invalid credentials.",
+    };
   }
   if (currentUser.role !== "admin") {
     return {
-      results: [],
-      totalResults: 0,
-      pageCount: 0,
+      kind: "unauthorized",
+      data: "Only admins can list users.",
     };
   }
   const whereQueries: string[] = [];
@@ -58,9 +58,12 @@ export async function listUsers(
     .take(maxResultsPerPage)
     .getManyAndCount();
   return {
-    results: results.map(toUserDetails),
-    totalResults: totalCount,
-    pageCount: Math.ceil(totalCount / maxResultsPerPage),
+    kind: "success",
+    data: {
+      results: results.map(toUserDetails),
+      totalResults: totalCount,
+      pageCount: Math.ceil(totalCount / maxResultsPerPage),
+    },
   };
 }
 

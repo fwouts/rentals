@@ -23,8 +23,8 @@ test("missing auth", async () => {
     Authorization: "",
   });
   expect(response).toMatchObject({
-    status: "error",
-    message: "Invalid credentials.",
+    kind: "failure",
+    data: "Invalid credentials.",
   });
 });
 
@@ -33,8 +33,8 @@ test("wrong auth", async () => {
     Authorization: "wrong!",
   });
   expect(response).toMatchObject({
-    status: "error",
-    message: "Invalid credentials.",
+    kind: "failure",
+    data: "Invalid credentials.",
   });
 });
 
@@ -43,8 +43,10 @@ test("client auth", async () => {
     await authHeaders(CLIENT_ANNA, ANNA_PASSWORD),
   );
   expect(response).toMatchObject({
-    status: "success",
-    role: "client",
+    kind: "success",
+    data: {
+      role: "client",
+    },
   });
 });
 
@@ -53,8 +55,10 @@ test("realtor auth", async () => {
     await authHeaders(REALTOR_HELENA, HELENA_PASSWORD),
   );
   expect(response).toMatchObject({
-    status: "success",
-    role: "realtor",
+    kind: "success",
+    data: {
+      role: "realtor",
+    },
   });
 });
 
@@ -63,7 +67,9 @@ test("admin auth", async () => {
     await authHeaders(ADMIN_FRANK, FRANK_PASSWORD),
   );
   expect(response).toMatchObject({
-    status: "success",
-    role: "admin",
+    kind: "success",
+    data: {
+      role: "admin",
+    },
   });
 });

@@ -22,38 +22,45 @@ beforeEach(async () => {
 
 test("non-admins cannot get users", async () => {
   const user = await findUser(CLIENT_ANNA);
-  await expect(
-    getUser(
+  expect(
+    await getUser(
       {
         Authorization: "",
       },
       user.userId,
     ),
-  ).rejects.toMatchObject({
-    message: "Invalid session token.",
+  ).toMatchObject({
+    kind: "unauthorized",
+    data: "Invalid credentials.",
   });
-  await expect(
-    getUser(await authHeaders(CLIENT_BRIAN, BRIAN_PASSWORD), user.userId),
-  ).rejects.toMatchObject({
-    message: "Only admins can get users.",
+  expect(
+    await getUser(await authHeaders(CLIENT_BRIAN, BRIAN_PASSWORD), user.userId),
+  ).toMatchObject({
+    kind: "unauthorized",
+    data: "Only admins can get users.",
   });
-  await expect(
-    getUser(await authHeaders(REALTOR_HELENA, HELENA_PASSWORD), user.userId),
-  ).rejects.toMatchObject({
-    message: "Only admins can get users.",
+  expect(
+    await getUser(
+      await authHeaders(REALTOR_HELENA, HELENA_PASSWORD),
+      user.userId,
+    ),
+  ).toMatchObject({
+    kind: "unauthorized",
+    data: "Only admins can get users.",
   });
 });
 
 test("admins can get users", async () => {
   const user = await findUser(CLIENT_ANNA);
-  const response = await getUser(
-    await authHeaders(ADMIN_FRANK, FRANK_PASSWORD),
-    user.userId,
-  );
-  expect(response).toEqual({
-    userId: user.userId,
-    email: CLIENT_ANNA,
-    name: "Anna",
-    role: "client",
+  expect(
+    await getUser(await authHeaders(ADMIN_FRANK, FRANK_PASSWORD), user.userId),
+  ).toEqual({
+    kind: "success",
+    data: {
+      userId: user.userId,
+      email: CLIENT_ANNA,
+      name: "Anna",
+      role: "client",
+    },
   });
 });

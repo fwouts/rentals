@@ -5,6 +5,7 @@
   ],
   "jsRules": {},
   "rules": {
+    "class-name": false,
     "interface-name": false,
     "object-literal-sort-keys": false
   }

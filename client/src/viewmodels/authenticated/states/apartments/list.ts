@@ -1,3 +1,4 @@
+import { Message } from "element-react";
 import { isEqual } from "lodash";
 import { observable } from "mobx";
 import {
@@ -146,11 +147,21 @@ export class ListApartmentsViewModel {
         },
         request,
       );
-      this.apartments = response.results;
-      this.total = response.totalResults;
-      this.pageCount = response.pageCount;
-      this.currentPage = pageNumber;
-      return true;
+      switch (response.kind) {
+        case "success":
+          this.apartments = response.data.results;
+          this.total = response.data.totalResults;
+          this.pageCount = response.data.pageCount;
+          this.currentPage = pageNumber;
+          break;
+        case "unauthorized":
+        default:
+          Message({
+            type: "error",
+            message: response.data,
+          });
+          break;
+      }
     } finally {
       this.loading = false;
     }

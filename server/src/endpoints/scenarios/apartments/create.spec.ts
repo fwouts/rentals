@@ -38,8 +38,8 @@ test("clients cannot create apartment listings", async () => {
     },
   );
   expect(response).toMatchObject({
-    status: "error",
-    message: "Clients cannot create apartment listings.",
+    kind: "unauthorized",
+    data: "Clients cannot create apartment listings.",
   });
 });
 
@@ -61,8 +61,10 @@ test("realtors can create apartment listings", async () => {
     },
   );
   expect(response).toMatchObject({
-    status: "success",
-    message: "Apartment listing was created successfully.",
+    kind: "success",
+    data: {
+      message: "Apartment listing was created successfully.",
+    },
   });
   const apartment = await findNewestApartment();
   expect(apartment.realtor.userId).toBe(realtor.userId);
@@ -89,8 +91,10 @@ test("realtors cannot set another realtor create apartment listings", async () =
     },
   );
   expect(response).toMatchObject({
-    status: "success",
-    message: "Apartment listing was created successfully.",
+    kind: "success",
+    data: {
+      message: "Apartment listing was created successfully.",
+    },
   });
   const apartment = await findNewestApartment();
   expect(apartment.realtor.userId).toBe(realtor.userId);
@@ -115,8 +119,10 @@ test("admins can create apartment listings for realtors", async () => {
     },
   );
   expect(response).toMatchObject({
-    status: "success",
-    message: "Apartment listing was created successfully.",
+    kind: "success",
+    data: {
+      message: "Apartment listing was created successfully.",
+    },
   });
   const apartment = await findNewestApartment();
   expect(apartment.realtor.userId).toBe(realtor.userId);

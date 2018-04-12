@@ -1,33 +1,40 @@
 import { authenticate } from "@/auth/token";
 import { connection } from "@/db/connections";
 import { Apartment } from "@/db/entities/apartment";
-import { AuthRequired, DeleteApartmentResponse } from "../api";
+import { AuthRequired, DeleteApartment_Response } from "../api";
 
 export async function deleteApartment(
   headers: AuthRequired,
   apartmentId: string,
-): Promise<DeleteApartmentResponse> {
-  const currentUser = await authenticate(headers.Authorization);
+): Promise<DeleteApartment_Response> {
+  let currentUser;
+  try {
+    currentUser = await authenticate(headers.Authorization);
+  } catch (e) {
+    return {
+      kind: "unauthorized",
+      data: "Invalid credentials.",
+    };
+  }
   const apartment = await connection.manager.findOne(Apartment, {
     apartmentId,
   });
   if (!apartment) {
     return {
-      status: "error",
-      message: "No such apartment.",
+      kind: "notfound",
     };
   }
   switch (currentUser.role) {
     case "client":
       return {
-        status: "error",
-        message: "Clients cannot delete apartment listings.",
+        kind: "unauthorized",
+        data: "Clients cannot delete apartment listings.",
       };
     case "realtor":
       if (apartment.realtor.userId !== currentUser.userId) {
         return {
-          status: "error",
-          message: "Realtors cannot delete other realtors' apartment listings.",
+          kind: "unauthorized",
+          data: "Realtors cannot delete other realtors' apartment listings.",
         };
       }
       await connection.manager.delete(Apartment, {
@@ -35,16 +42,16 @@ export async function deleteApartment(
         realtor: currentUser,
       });
       return {
-        status: "success",
-        message: "The apartment listing was deleted successfully.",
+        kind: "success",
+        data: "The apartment listing was deleted successfully.",
       };
     case "admin":
       await connection.manager.delete(Apartment, {
         apartmentId,
       });
       return {
-        status: "success",
-        message: "The apartment listing was deleted successfully.",
+        kind: "success",
+        data: "The apartment listing was deleted successfully.",
       };
     default:
       throw new Error(`Unknown role: ${currentUser.role}.`);

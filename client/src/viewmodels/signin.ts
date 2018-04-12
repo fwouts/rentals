@@ -23,19 +23,19 @@ export class SignInViewModel {
         email: this.email,
         password: this.password,
       });
-      switch (response.status) {
+      switch (response.kind) {
         case "success":
           Message({
             type: "success",
             message: "Hi there!",
           });
-          this.onSuccess(response);
+          this.onSuccess(response.data);
           break;
-        case "error":
+        case "failure":
         default:
           Message({
             type: "error",
-            message: response.message,
+            message: response.data,
           });
           break;
       }

@@ -25,7 +25,7 @@ test("account cannot be updated to an invalid email address", async () => {
     },
   );
   expect(response).toMatchObject({
-    status: "error",
-    message: "Invalid email address format.",
+    kind: "failure",
+    data: "Invalid email address format.",
   });
 });

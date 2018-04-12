@@ -4,8 +4,8 @@ import emailValidator from "email-validator";
 import owasp from "owasp-password-strength-test";
 import {
   AuthOptional,
+  RegisterUser_Response,
   RegisterUserRequest,
-  RegisterUserResponse,
 } from "../api";
 import { connection } from "../db/connections";
 import { User } from "../db/entities/user";
@@ -13,7 +13,7 @@ import { User } from "../db/entities/user";
 export async function registerUser(
   headers: AuthOptional,
   request: RegisterUserRequest,
-): Promise<RegisterUserResponse> {
+): Promise<RegisterUser_Response> {
   let isAdmin = false;
   if (headers.Authorization) {
     const currentUser = await authenticate(headers.Authorization);
@@ -21,21 +21,21 @@ export async function registerUser(
   }
   if (request.role === "admin" && !isAdmin) {
     return {
-      status: "error",
-      message: "Only an admin can register another admin.",
+      kind: "unauthorized",
+      data: "Only an admin can register another admin.",
     };
   }
   if (!emailValidator.validate(request.email)) {
     return {
-      status: "error",
-      message: "Invalid email address format.",
+      kind: "failure",
+      data: "Invalid email address format.",
     };
   }
   const passwordTest = owasp.test(request.password);
   if (!passwordTest.strong) {
     return {
-      status: "error",
-      message: "Password too weak: " + passwordTest.errors[0],
+      kind: "failure",
+      data: "Password too weak: " + passwordTest.errors[0],
     };
   }
   const user = User.create({
@@ -53,16 +53,16 @@ export async function registerUser(
     await connection.manager.save(user);
     await sendUserRegistrationVerification(user);
     return {
-      status: "success",
-      message: isAdmin
+      kind: "success",
+      data: isAdmin
         ? "User successfully registered."
         : "Great! Please check your email inbox now.",
     };
   } catch (e) {
     if (e.message.indexOf("duplicate key value") !== -1) {
       return {
-        status: "error",
-        message: "This email address is already registered.",
+        kind: "failure",
+        data: "This email address is already registered.",
       };
     }
     throw e;

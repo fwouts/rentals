@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import * as api from "./api";
 import * as validation from "./validation";
 
@@ -7,7 +7,7 @@ const URL = "http://localhost:3010";
 export async function registerUser(
   headers: api.AuthOptional,
   request: api.RegisterUserRequest,
-): Promise<api.RegisterUserResponse> {
+): Promise<api.RegisterUser_Response> {
   if (!validation.validate_AuthOptional(headers)) {
     throw new Error(`Invalid headers: ${JSON.stringify(headers, null, 2)}`);
   }
@@ -15,85 +15,225 @@ export async function registerUser(
     throw new Error(`Invalid request: ${JSON.stringify(request, null, 2)}`);
   }
   const url = `${URL}/users/register`;
-  const response = await axios({
-    url,
-    method: "POST",
-    data: request,
-    headers,
-  });
-  if (!validation.validate_RegisterUserResponse(response.data)) {
-    throw new Error(
-      `Invalid response: ${JSON.stringify(response.data, null, 2)}`,
-    );
+  let data: any;
+  let statusCode: number;
+  let statusText: string;
+  try {
+    const response = await axios({
+      url,
+      method: "POST",
+      responseType: "json",
+      data: request,
+      headers,
+    });
+    data = response.data;
+    statusCode = response.status;
+    statusText = response.statusText;
+  } catch (e) {
+    const axiosError = e as AxiosError;
+    if (axiosError.response) {
+      data = axiosError.response.data;
+      statusCode = axiosError.response.status;
+      statusText = axiosError.response.statusText;
+    } else {
+      statusCode = 503;
+      statusText = axiosError.code || axiosError.message;
+    }
   }
-  return response.data;
+  switch (statusCode) {
+    case 200:
+      if (!validation.validate_string(data)) {
+        throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
+      }
+      return {
+        kind: "success",
+        data,
+      };
+    case 403:
+      if (!validation.validate_string(data)) {
+        throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
+      }
+      return {
+        kind: "unauthorized",
+        data,
+      };
+    case 409:
+      if (!validation.validate_string(data)) {
+        throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
+      }
+      return {
+        kind: "failure",
+        data,
+      };
+    default:
+      throw new Error(`Unexpected status: ${statusCode} ${statusText}`);
+  }
 }
 
 export async function verifyEmailAddress(
   request: api.VerifyEmailRequest,
-): Promise<api.VerifyEmailResponse> {
+): Promise<api.VerifyEmailAddress_Response> {
   if (!validation.validate_VerifyEmailRequest(request)) {
     throw new Error(`Invalid request: ${JSON.stringify(request, null, 2)}`);
   }
   const url = `${URL}/users/verify`;
-  const response = await axios({
-    url,
-    method: "POST",
-    data: request,
-  });
-  if (!validation.validate_VerifyEmailResponse(response.data)) {
-    throw new Error(
-      `Invalid response: ${JSON.stringify(response.data, null, 2)}`,
-    );
+  let data: any;
+  let statusCode: number;
+  let statusText: string;
+  try {
+    const response = await axios({
+      url,
+      method: "POST",
+      responseType: "json",
+      data: request,
+    });
+    data = response.data;
+    statusCode = response.status;
+    statusText = response.statusText;
+  } catch (e) {
+    const axiosError = e as AxiosError;
+    if (axiosError.response) {
+      data = axiosError.response.data;
+      statusCode = axiosError.response.status;
+      statusText = axiosError.response.statusText;
+    } else {
+      statusCode = 503;
+      statusText = axiosError.code || axiosError.message;
+    }
   }
-  return response.data;
+  switch (statusCode) {
+    case 200:
+      if (!validation.validate_VerifyEmailResponse(data)) {
+        throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
+      }
+      return {
+        kind: "success",
+        data,
+      };
+    case 409:
+      if (!validation.validate_string(data)) {
+        throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
+      }
+      return {
+        kind: "failure",
+        data,
+      };
+    default:
+      throw new Error(`Unexpected status: ${statusCode} ${statusText}`);
+  }
 }
 
 export async function loginUser(
   request: api.LoginUserRequest,
-): Promise<api.LoginUserResponse> {
+): Promise<api.LoginUser_Response> {
   if (!validation.validate_LoginUserRequest(request)) {
     throw new Error(`Invalid request: ${JSON.stringify(request, null, 2)}`);
   }
   const url = `${URL}/users/login`;
-  const response = await axios({
-    url,
-    method: "POST",
-    data: request,
-  });
-  if (!validation.validate_LoginUserResponse(response.data)) {
-    throw new Error(
-      `Invalid response: ${JSON.stringify(response.data, null, 2)}`,
-    );
+  let data: any;
+  let statusCode: number;
+  let statusText: string;
+  try {
+    const response = await axios({
+      url,
+      method: "POST",
+      responseType: "json",
+      data: request,
+    });
+    data = response.data;
+    statusCode = response.status;
+    statusText = response.statusText;
+  } catch (e) {
+    const axiosError = e as AxiosError;
+    if (axiosError.response) {
+      data = axiosError.response.data;
+      statusCode = axiosError.response.status;
+      statusText = axiosError.response.statusText;
+    } else {
+      statusCode = 503;
+      statusText = axiosError.code || axiosError.message;
+    }
   }
-  return response.data;
+  switch (statusCode) {
+    case 200:
+      if (!validation.validate_LoginUserResponse(data)) {
+        throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
+      }
+      return {
+        kind: "success",
+        data,
+      };
+    case 401:
+      if (!validation.validate_string(data)) {
+        throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
+      }
+      return {
+        kind: "failure",
+        data,
+      };
+    default:
+      throw new Error(`Unexpected status: ${statusCode} ${statusText}`);
+  }
 }
 
 export async function checkAuth(
   headers: api.AuthRequired,
-): Promise<api.LoginUserResponse> {
+): Promise<api.CheckAuth_Response> {
   if (!validation.validate_AuthRequired(headers)) {
     throw new Error(`Invalid headers: ${JSON.stringify(headers, null, 2)}`);
   }
   const url = `${URL}/users/auth`;
-  const response = await axios({
-    url,
-    method: "POST",
-    headers,
-  });
-  if (!validation.validate_LoginUserResponse(response.data)) {
-    throw new Error(
-      `Invalid response: ${JSON.stringify(response.data, null, 2)}`,
-    );
+  let data: any;
+  let statusCode: number;
+  let statusText: string;
+  try {
+    const response = await axios({
+      url,
+      method: "POST",
+      responseType: "json",
+      headers,
+    });
+    data = response.data;
+    statusCode = response.status;
+    statusText = response.statusText;
+  } catch (e) {
+    const axiosError = e as AxiosError;
+    if (axiosError.response) {
+      data = axiosError.response.data;
+      statusCode = axiosError.response.status;
+      statusText = axiosError.response.statusText;
+    } else {
+      statusCode = 503;
+      statusText = axiosError.code || axiosError.message;
+    }
   }
-  return response.data;
+  switch (statusCode) {
+    case 200:
+      if (!validation.validate_LoginUserResponse(data)) {
+        throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
+      }
+      return {
+        kind: "success",
+        data,
+      };
+    case 401:
+      if (!validation.validate_string(data)) {
+        throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
+      }
+      return {
+        kind: "failure",
+        data,
+      };
+    default:
+      throw new Error(`Unexpected status: ${statusCode} ${statusText}`);
+  }
 }
 
 export async function updateUser(
   headers: api.AuthRequired,
   id: string,
   request: api.UpdateUserRequest,
-): Promise<api.UpdateUserResponse> {
+): Promise<api.UpdateUser_Response> {
   if (!validation.validate_AuthRequired(headers)) {
     throw new Error(`Invalid headers: ${JSON.stringify(headers, null, 2)}`);
   }
@@ -101,25 +241,70 @@ export async function updateUser(
     throw new Error(`Invalid request: ${JSON.stringify(request, null, 2)}`);
   }
   const url = `${URL}/users/${id}`;
-  const response = await axios({
-    url,
-    method: "PUT",
-    data: request,
-    headers,
-  });
-  if (!validation.validate_UpdateUserResponse(response.data)) {
-    throw new Error(
-      `Invalid response: ${JSON.stringify(response.data, null, 2)}`,
-    );
+  let data: any;
+  let statusCode: number;
+  let statusText: string;
+  try {
+    const response = await axios({
+      url,
+      method: "PUT",
+      responseType: "json",
+      data: request,
+      headers,
+    });
+    data = response.data;
+    statusCode = response.status;
+    statusText = response.statusText;
+  } catch (e) {
+    const axiosError = e as AxiosError;
+    if (axiosError.response) {
+      data = axiosError.response.data;
+      statusCode = axiosError.response.status;
+      statusText = axiosError.response.statusText;
+    } else {
+      statusCode = 503;
+      statusText = axiosError.code || axiosError.message;
+    }
   }
-  return response.data;
+  switch (statusCode) {
+    case 200:
+      if (!validation.validate_string(data)) {
+        throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
+      }
+      return {
+        kind: "success",
+        data,
+      };
+    case 403:
+      if (!validation.validate_string(data)) {
+        throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
+      }
+      return {
+        kind: "unauthorized",
+        data,
+      };
+    case 409:
+      if (!validation.validate_string(data)) {
+        throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
+      }
+      return {
+        kind: "failure",
+        data,
+      };
+    case 404:
+      return {
+        kind: "notfound",
+      };
+    default:
+      throw new Error(`Unexpected status: ${statusCode} ${statusText}`);
+  }
 }
 
 export async function deleteUser(
   headers: api.AuthRequired,
   id: string,
   request: api.DeleteUserRequest,
-): Promise<api.DeleteUserResponse> {
+): Promise<api.DeleteUser_Response> {
   if (!validation.validate_AuthRequired(headers)) {
     throw new Error(`Invalid headers: ${JSON.stringify(headers, null, 2)}`);
   }
@@ -127,24 +312,61 @@ export async function deleteUser(
     throw new Error(`Invalid request: ${JSON.stringify(request, null, 2)}`);
   }
   const url = `${URL}/users/${id}`;
-  const response = await axios({
-    url,
-    method: "DELETE",
-    data: request,
-    headers,
-  });
-  if (!validation.validate_DeleteUserResponse(response.data)) {
-    throw new Error(
-      `Invalid response: ${JSON.stringify(response.data, null, 2)}`,
-    );
+  let data: any;
+  let statusCode: number;
+  let statusText: string;
+  try {
+    const response = await axios({
+      url,
+      method: "DELETE",
+      responseType: "json",
+      data: request,
+      headers,
+    });
+    data = response.data;
+    statusCode = response.status;
+    statusText = response.statusText;
+  } catch (e) {
+    const axiosError = e as AxiosError;
+    if (axiosError.response) {
+      data = axiosError.response.data;
+      statusCode = axiosError.response.status;
+      statusText = axiosError.response.statusText;
+    } else {
+      statusCode = 503;
+      statusText = axiosError.code || axiosError.message;
+    }
   }
-  return response.data;
+  switch (statusCode) {
+    case 200:
+      if (!validation.validate_string(data)) {
+        throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
+      }
+      return {
+        kind: "success",
+        data,
+      };
+    case 403:
+      if (!validation.validate_string(data)) {
+        throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
+      }
+      return {
+        kind: "unauthorized",
+        data,
+      };
+    case 404:
+      return {
+        kind: "notfound",
+      };
+    default:
+      throw new Error(`Unexpected status: ${statusCode} ${statusText}`);
+  }
 }
 
 export async function listUsers(
   headers: api.AuthRequired,
   request: api.ListUsersRequest,
-): Promise<api.ListUsersResponse> {
+): Promise<api.ListUsers_Response> {
   if (!validation.validate_AuthRequired(headers)) {
     throw new Error(`Invalid headers: ${JSON.stringify(headers, null, 2)}`);
   }
@@ -152,45 +374,115 @@ export async function listUsers(
     throw new Error(`Invalid request: ${JSON.stringify(request, null, 2)}`);
   }
   const url = `${URL}/users/list`;
-  const response = await axios({
-    url,
-    method: "POST",
-    data: request,
-    headers,
-  });
-  if (!validation.validate_ListUsersResponse(response.data)) {
-    throw new Error(
-      `Invalid response: ${JSON.stringify(response.data, null, 2)}`,
-    );
+  let data: any;
+  let statusCode: number;
+  let statusText: string;
+  try {
+    const response = await axios({
+      url,
+      method: "POST",
+      responseType: "json",
+      data: request,
+      headers,
+    });
+    data = response.data;
+    statusCode = response.status;
+    statusText = response.statusText;
+  } catch (e) {
+    const axiosError = e as AxiosError;
+    if (axiosError.response) {
+      data = axiosError.response.data;
+      statusCode = axiosError.response.status;
+      statusText = axiosError.response.statusText;
+    } else {
+      statusCode = 503;
+      statusText = axiosError.code || axiosError.message;
+    }
   }
-  return response.data;
+  switch (statusCode) {
+    case 200:
+      if (!validation.validate_ListUsersResponse(data)) {
+        throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
+      }
+      return {
+        kind: "success",
+        data,
+      };
+    case 403:
+      if (!validation.validate_string(data)) {
+        throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
+      }
+      return {
+        kind: "unauthorized",
+        data,
+      };
+    default:
+      throw new Error(`Unexpected status: ${statusCode} ${statusText}`);
+  }
 }
 
 export async function getUser(
   headers: api.AuthRequired,
   id: string,
-): Promise<api.UserDetails> {
+): Promise<api.GetUser_Response> {
   if (!validation.validate_AuthRequired(headers)) {
     throw new Error(`Invalid headers: ${JSON.stringify(headers, null, 2)}`);
   }
   const url = `${URL}/users/${id}`;
-  const response = await axios({
-    url,
-    method: "GET",
-    headers,
-  });
-  if (!validation.validate_UserDetails(response.data)) {
-    throw new Error(
-      `Invalid response: ${JSON.stringify(response.data, null, 2)}`,
-    );
+  let data: any;
+  let statusCode: number;
+  let statusText: string;
+  try {
+    const response = await axios({
+      url,
+      method: "GET",
+      responseType: "json",
+      headers,
+    });
+    data = response.data;
+    statusCode = response.status;
+    statusText = response.statusText;
+  } catch (e) {
+    const axiosError = e as AxiosError;
+    if (axiosError.response) {
+      data = axiosError.response.data;
+      statusCode = axiosError.response.status;
+      statusText = axiosError.response.statusText;
+    } else {
+      statusCode = 503;
+      statusText = axiosError.code || axiosError.message;
+    }
   }
-  return response.data;
+  switch (statusCode) {
+    case 200:
+      if (!validation.validate_UserDetails(data)) {
+        throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
+      }
+      return {
+        kind: "success",
+        data,
+      };
+    case 403:
+      if (!validation.validate_string(data)) {
+        throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
+      }
+      return {
+        kind: "unauthorized",
+        data,
+      };
+    case 404:
+      return {
+        kind: "notfound",
+      };
+    default:
+      throw new Error(`Unexpected status: ${statusCode} ${statusText}`);
+  }
 }
 
 export async function createApartment(
   headers: api.AuthRequired,
   request: api.CreateApartmentRequest,
-): Promise<api.CreateApartmentResponse> {
+): Promise<api.CreateApartment_Response> {
   if (!validation.validate_AuthRequired(headers)) {
     throw new Error(`Invalid headers: ${JSON.stringify(headers, null, 2)}`);
   }
@@ -198,25 +490,66 @@ export async function createApartment(
     throw new Error(`Invalid request: ${JSON.stringify(request, null, 2)}`);
   }
   const url = `${URL}/apartments/create`;
-  const response = await axios({
-    url,
-    method: "POST",
-    data: request,
-    headers,
-  });
-  if (!validation.validate_CreateApartmentResponse(response.data)) {
-    throw new Error(
-      `Invalid response: ${JSON.stringify(response.data, null, 2)}`,
-    );
+  let data: any;
+  let statusCode: number;
+  let statusText: string;
+  try {
+    const response = await axios({
+      url,
+      method: "POST",
+      responseType: "json",
+      data: request,
+      headers,
+    });
+    data = response.data;
+    statusCode = response.status;
+    statusText = response.statusText;
+  } catch (e) {
+    const axiosError = e as AxiosError;
+    if (axiosError.response) {
+      data = axiosError.response.data;
+      statusCode = axiosError.response.status;
+      statusText = axiosError.response.statusText;
+    } else {
+      statusCode = 503;
+      statusText = axiosError.code || axiosError.message;
+    }
   }
-  return response.data;
+  switch (statusCode) {
+    case 200:
+      if (!validation.validate_CreateApartmentResponse(data)) {
+        throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
+      }
+      return {
+        kind: "success",
+        data,
+      };
+    case 403:
+      if (!validation.validate_string(data)) {
+        throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
+      }
+      return {
+        kind: "unauthorized",
+        data,
+      };
+    case 409:
+      if (!validation.validate_string(data)) {
+        throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
+      }
+      return {
+        kind: "failure",
+        data,
+      };
+    default:
+      throw new Error(`Unexpected status: ${statusCode} ${statusText}`);
+  }
 }
 
 export async function updateApartment(
   headers: api.AuthRequired,
   id: string,
   request: api.UpdateApartmentRequest,
-): Promise<api.UpdateApartmentResponse> {
+): Promise<api.UpdateApartment_Response> {
   if (!validation.validate_AuthRequired(headers)) {
     throw new Error(`Invalid headers: ${JSON.stringify(headers, null, 2)}`);
   }
@@ -224,45 +557,127 @@ export async function updateApartment(
     throw new Error(`Invalid request: ${JSON.stringify(request, null, 2)}`);
   }
   const url = `${URL}/apartments/${id}`;
-  const response = await axios({
-    url,
-    method: "PUT",
-    data: request,
-    headers,
-  });
-  if (!validation.validate_UpdateApartmentResponse(response.data)) {
-    throw new Error(
-      `Invalid response: ${JSON.stringify(response.data, null, 2)}`,
-    );
+  let data: any;
+  let statusCode: number;
+  let statusText: string;
+  try {
+    const response = await axios({
+      url,
+      method: "PUT",
+      responseType: "json",
+      data: request,
+      headers,
+    });
+    data = response.data;
+    statusCode = response.status;
+    statusText = response.statusText;
+  } catch (e) {
+    const axiosError = e as AxiosError;
+    if (axiosError.response) {
+      data = axiosError.response.data;
+      statusCode = axiosError.response.status;
+      statusText = axiosError.response.statusText;
+    } else {
+      statusCode = 503;
+      statusText = axiosError.code || axiosError.message;
+    }
   }
-  return response.data;
+  switch (statusCode) {
+    case 200:
+      if (!validation.validate_string(data)) {
+        throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
+      }
+      return {
+        kind: "success",
+        data,
+      };
+    case 403:
+      if (!validation.validate_string(data)) {
+        throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
+      }
+      return {
+        kind: "unauthorized",
+        data,
+      };
+    case 409:
+      if (!validation.validate_string(data)) {
+        throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
+      }
+      return {
+        kind: "failure",
+        data,
+      };
+    case 404:
+      return {
+        kind: "notfound",
+      };
+    default:
+      throw new Error(`Unexpected status: ${statusCode} ${statusText}`);
+  }
 }
 
 export async function deleteApartment(
   headers: api.AuthRequired,
   id: string,
-): Promise<api.DeleteApartmentResponse> {
+): Promise<api.DeleteApartment_Response> {
   if (!validation.validate_AuthRequired(headers)) {
     throw new Error(`Invalid headers: ${JSON.stringify(headers, null, 2)}`);
   }
   const url = `${URL}/apartments/${id}`;
-  const response = await axios({
-    url,
-    method: "DELETE",
-    headers,
-  });
-  if (!validation.validate_DeleteApartmentResponse(response.data)) {
-    throw new Error(
-      `Invalid response: ${JSON.stringify(response.data, null, 2)}`,
-    );
+  let data: any;
+  let statusCode: number;
+  let statusText: string;
+  try {
+    const response = await axios({
+      url,
+      method: "DELETE",
+      responseType: "json",
+      headers,
+    });
+    data = response.data;
+    statusCode = response.status;
+    statusText = response.statusText;
+  } catch (e) {
+    const axiosError = e as AxiosError;
+    if (axiosError.response) {
+      data = axiosError.response.data;
+      statusCode = axiosError.response.status;
+      statusText = axiosError.response.statusText;
+    } else {
+      statusCode = 503;
+      statusText = axiosError.code || axiosError.message;
+    }
   }
-  return response.data;
+  switch (statusCode) {
+    case 200:
+      if (!validation.validate_string(data)) {
+        throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
+      }
+      return {
+        kind: "success",
+        data,
+      };
+    case 403:
+      if (!validation.validate_string(data)) {
+        throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
+      }
+      return {
+        kind: "unauthorized",
+        data,
+      };
+    case 404:
+      return {
+        kind: "notfound",
+      };
+    default:
+      throw new Error(`Unexpected status: ${statusCode} ${statusText}`);
+  }
 }
 
 export async function listApartments(
   headers: api.AuthRequired,
   request: api.ListApartmentsRequest,
-): Promise<api.ListApartmentsResponse> {
+): Promise<api.ListApartments_Response> {
   if (!validation.validate_AuthRequired(headers)) {
     throw new Error(`Invalid headers: ${JSON.stringify(headers, null, 2)}`);
   }
@@ -270,37 +685,107 @@ export async function listApartments(
     throw new Error(`Invalid request: ${JSON.stringify(request, null, 2)}`);
   }
   const url = `${URL}/apartments/list`;
-  const response = await axios({
-    url,
-    method: "POST",
-    data: request,
-    headers,
-  });
-  if (!validation.validate_ListApartmentsResponse(response.data)) {
-    throw new Error(
-      `Invalid response: ${JSON.stringify(response.data, null, 2)}`,
-    );
+  let data: any;
+  let statusCode: number;
+  let statusText: string;
+  try {
+    const response = await axios({
+      url,
+      method: "POST",
+      responseType: "json",
+      data: request,
+      headers,
+    });
+    data = response.data;
+    statusCode = response.status;
+    statusText = response.statusText;
+  } catch (e) {
+    const axiosError = e as AxiosError;
+    if (axiosError.response) {
+      data = axiosError.response.data;
+      statusCode = axiosError.response.status;
+      statusText = axiosError.response.statusText;
+    } else {
+      statusCode = 503;
+      statusText = axiosError.code || axiosError.message;
+    }
   }
-  return response.data;
+  switch (statusCode) {
+    case 200:
+      if (!validation.validate_ListApartmentsResponse(data)) {
+        throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
+      }
+      return {
+        kind: "success",
+        data,
+      };
+    case 403:
+      if (!validation.validate_string(data)) {
+        throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
+      }
+      return {
+        kind: "unauthorized",
+        data,
+      };
+    default:
+      throw new Error(`Unexpected status: ${statusCode} ${statusText}`);
+  }
 }
 
 export async function getApartment(
   headers: api.AuthRequired,
   id: string,
-): Promise<api.ApartmentDetails> {
+): Promise<api.GetApartment_Response> {
   if (!validation.validate_AuthRequired(headers)) {
     throw new Error(`Invalid headers: ${JSON.stringify(headers, null, 2)}`);
   }
   const url = `${URL}/apartments/${id}`;
-  const response = await axios({
-    url,
-    method: "GET",
-    headers,
-  });
-  if (!validation.validate_ApartmentDetails(response.data)) {
-    throw new Error(
-      `Invalid response: ${JSON.stringify(response.data, null, 2)}`,
-    );
+  let data: any;
+  let statusCode: number;
+  let statusText: string;
+  try {
+    const response = await axios({
+      url,
+      method: "GET",
+      responseType: "json",
+      headers,
+    });
+    data = response.data;
+    statusCode = response.status;
+    statusText = response.statusText;
+  } catch (e) {
+    const axiosError = e as AxiosError;
+    if (axiosError.response) {
+      data = axiosError.response.data;
+      statusCode = axiosError.response.status;
+      statusText = axiosError.response.statusText;
+    } else {
+      statusCode = 503;
+      statusText = axiosError.code || axiosError.message;
+    }
   }
-  return response.data;
+  switch (statusCode) {
+    case 200:
+      if (!validation.validate_ApartmentDetails(data)) {
+        throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
+      }
+      return {
+        kind: "success",
+        data,
+      };
+    case 403:
+      if (!validation.validate_string(data)) {
+        throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
+      }
+      return {
+        kind: "unauthorized",
+        data,
+      };
+    case 404:
+      return {
+        kind: "notfound",
+      };
+    default:
+      throw new Error(`Unexpected status: ${statusCode} ${statusText}`);
+  }
 }

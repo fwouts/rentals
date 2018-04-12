@@ -52,13 +52,17 @@ export class AuthenticatedRealtorViewModel {
   }
 
   public async fetchThenUpdateApartment(apartmentId: string) {
-    const apartment = await getApartment(
+    const response = await getApartment(
       {
         Authorization: this.authenticated.authToken,
       },
       apartmentId,
     );
-    this.updateApartment(apartment);
+    switch (response.kind) {
+      case "success":
+        this.updateApartment(response.data);
+        break;
+    }
   }
 
   public updateApartment = async (apartment: ApartmentDetails) => {

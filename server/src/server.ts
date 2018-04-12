@@ -52,14 +52,43 @@ app.post("/users/register", async (req, res, next) => {
     if (!validation.validate_RegisterUserRequest(request)) {
       throw new Error(`Invalid request: ${JSON.stringify(request, null, 2)}`);
     }
-    const response: api.RegisterUserResponse = await registerUser(
+    const response: api.RegisterUser_Response = await registerUser(
       headers,
       request,
     );
-    if (!validation.validate_RegisterUserResponse(response)) {
-      throw new Error(`Invalid response: ${JSON.stringify(response, null, 2)}`);
+    switch (response.kind) {
+      case "success":
+        if (!validation.validate_string(response.data)) {
+          throw new Error(
+            `Invalid response: ${JSON.stringify(response, null, 2)}`,
+          );
+        }
+        res.status(200);
+        res.json(response.data);
+        break;
+      case "unauthorized":
+        if (!validation.validate_string(response.data)) {
+          throw new Error(
+            `Invalid response: ${JSON.stringify(response, null, 2)}`,
+          );
+        }
+        res.status(403);
+        res.json(response.data);
+        break;
+      case "failure":
+        if (!validation.validate_string(response.data)) {
+          throw new Error(
+            `Invalid response: ${JSON.stringify(response, null, 2)}`,
+          );
+        }
+        res.status(409);
+        res.json(response.data);
+        break;
+      default:
+        throw new Error(
+          `Invalid response: ${JSON.stringify(response, null, 2)}`,
+        );
     }
-    res.json(response);
   } catch (err) {
     next(err);
   }
@@ -71,11 +100,33 @@ app.post("/users/verify", async (req, res, next) => {
     if (!validation.validate_VerifyEmailRequest(request)) {
       throw new Error(`Invalid request: ${JSON.stringify(request, null, 2)}`);
     }
-    const response: api.VerifyEmailResponse = await verifyEmailAddress(request);
-    if (!validation.validate_VerifyEmailResponse(response)) {
-      throw new Error(`Invalid response: ${JSON.stringify(response, null, 2)}`);
+    const response: api.VerifyEmailAddress_Response = await verifyEmailAddress(
+      request,
+    );
+    switch (response.kind) {
+      case "success":
+        if (!validation.validate_VerifyEmailResponse(response.data)) {
+          throw new Error(
+            `Invalid response: ${JSON.stringify(response, null, 2)}`,
+          );
+        }
+        res.status(200);
+        res.json(response.data);
+        break;
+      case "failure":
+        if (!validation.validate_string(response.data)) {
+          throw new Error(
+            `Invalid response: ${JSON.stringify(response, null, 2)}`,
+          );
+        }
+        res.status(409);
+        res.json(response.data);
+        break;
+      default:
+        throw new Error(
+          `Invalid response: ${JSON.stringify(response, null, 2)}`,
+        );
     }
-    res.json(response);
   } catch (err) {
     next(err);
   }
@@ -87,11 +138,31 @@ app.post("/users/login", async (req, res, next) => {
     if (!validation.validate_LoginUserRequest(request)) {
       throw new Error(`Invalid request: ${JSON.stringify(request, null, 2)}`);
     }
-    const response: api.LoginUserResponse = await loginUser(request);
-    if (!validation.validate_LoginUserResponse(response)) {
-      throw new Error(`Invalid response: ${JSON.stringify(response, null, 2)}`);
+    const response: api.LoginUser_Response = await loginUser(request);
+    switch (response.kind) {
+      case "success":
+        if (!validation.validate_LoginUserResponse(response.data)) {
+          throw new Error(
+            `Invalid response: ${JSON.stringify(response, null, 2)}`,
+          );
+        }
+        res.status(200);
+        res.json(response.data);
+        break;
+      case "failure":
+        if (!validation.validate_string(response.data)) {
+          throw new Error(
+            `Invalid response: ${JSON.stringify(response, null, 2)}`,
+          );
+        }
+        res.status(401);
+        res.json(response.data);
+        break;
+      default:
+        throw new Error(
+          `Invalid response: ${JSON.stringify(response, null, 2)}`,
+        );
     }
-    res.json(response);
   } catch (err) {
     next(err);
   }
@@ -105,11 +176,31 @@ app.post("/users/auth", async (req, res, next) => {
     if (!validation.validate_AuthRequired(headers)) {
       throw new Error(`Invalid headers: ${JSON.stringify(headers, null, 2)}`);
     }
-    const response: api.LoginUserResponse = await checkAuth(headers);
-    if (!validation.validate_LoginUserResponse(response)) {
-      throw new Error(`Invalid response: ${JSON.stringify(response, null, 2)}`);
+    const response: api.CheckAuth_Response = await checkAuth(headers);
+    switch (response.kind) {
+      case "success":
+        if (!validation.validate_LoginUserResponse(response.data)) {
+          throw new Error(
+            `Invalid response: ${JSON.stringify(response, null, 2)}`,
+          );
+        }
+        res.status(200);
+        res.json(response.data);
+        break;
+      case "failure":
+        if (!validation.validate_string(response.data)) {
+          throw new Error(
+            `Invalid response: ${JSON.stringify(response, null, 2)}`,
+          );
+        }
+        res.status(401);
+        res.json(response.data);
+        break;
+      default:
+        throw new Error(
+          `Invalid response: ${JSON.stringify(response, null, 2)}`,
+        );
     }
-    res.json(response);
   } catch (err) {
     next(err);
   }
@@ -128,15 +219,48 @@ app.put("/users/:id", async (req, res, next) => {
     if (!validation.validate_UpdateUserRequest(request)) {
       throw new Error(`Invalid request: ${JSON.stringify(request, null, 2)}`);
     }
-    const response: api.UpdateUserResponse = await updateUser(
+    const response: api.UpdateUser_Response = await updateUser(
       headers,
       id,
       request,
     );
-    if (!validation.validate_UpdateUserResponse(response)) {
-      throw new Error(`Invalid response: ${JSON.stringify(response, null, 2)}`);
+    switch (response.kind) {
+      case "success":
+        if (!validation.validate_string(response.data)) {
+          throw new Error(
+            `Invalid response: ${JSON.stringify(response, null, 2)}`,
+          );
+        }
+        res.status(200);
+        res.json(response.data);
+        break;
+      case "unauthorized":
+        if (!validation.validate_string(response.data)) {
+          throw new Error(
+            `Invalid response: ${JSON.stringify(response, null, 2)}`,
+          );
+        }
+        res.status(403);
+        res.json(response.data);
+        break;
+      case "failure":
+        if (!validation.validate_string(response.data)) {
+          throw new Error(
+            `Invalid response: ${JSON.stringify(response, null, 2)}`,
+          );
+        }
+        res.status(409);
+        res.json(response.data);
+        break;
+      case "notfound":
+        res.status(404);
+        res.end();
+        break;
+      default:
+        throw new Error(
+          `Invalid response: ${JSON.stringify(response, null, 2)}`,
+        );
     }
-    res.json(response);
   } catch (err) {
     next(err);
   }
@@ -155,15 +279,39 @@ app.delete("/users/:id", async (req, res, next) => {
     if (!validation.validate_DeleteUserRequest(request)) {
       throw new Error(`Invalid request: ${JSON.stringify(request, null, 2)}`);
     }
-    const response: api.DeleteUserResponse = await deleteUser(
+    const response: api.DeleteUser_Response = await deleteUser(
       headers,
       id,
       request,
     );
-    if (!validation.validate_DeleteUserResponse(response)) {
-      throw new Error(`Invalid response: ${JSON.stringify(response, null, 2)}`);
+    switch (response.kind) {
+      case "success":
+        if (!validation.validate_string(response.data)) {
+          throw new Error(
+            `Invalid response: ${JSON.stringify(response, null, 2)}`,
+          );
+        }
+        res.status(200);
+        res.json(response.data);
+        break;
+      case "unauthorized":
+        if (!validation.validate_string(response.data)) {
+          throw new Error(
+            `Invalid response: ${JSON.stringify(response, null, 2)}`,
+          );
+        }
+        res.status(403);
+        res.json(response.data);
+        break;
+      case "notfound":
+        res.status(404);
+        res.end();
+        break;
+      default:
+        throw new Error(
+          `Invalid response: ${JSON.stringify(response, null, 2)}`,
+        );
     }
-    res.json(response);
   } catch (err) {
     next(err);
   }
@@ -181,11 +329,31 @@ app.post("/users/list", async (req, res, next) => {
     if (!validation.validate_ListUsersRequest(request)) {
       throw new Error(`Invalid request: ${JSON.stringify(request, null, 2)}`);
     }
-    const response: api.ListUsersResponse = await listUsers(headers, request);
-    if (!validation.validate_ListUsersResponse(response)) {
-      throw new Error(`Invalid response: ${JSON.stringify(response, null, 2)}`);
+    const response: api.ListUsers_Response = await listUsers(headers, request);
+    switch (response.kind) {
+      case "success":
+        if (!validation.validate_ListUsersResponse(response.data)) {
+          throw new Error(
+            `Invalid response: ${JSON.stringify(response, null, 2)}`,
+          );
+        }
+        res.status(200);
+        res.json(response.data);
+        break;
+      case "unauthorized":
+        if (!validation.validate_string(response.data)) {
+          throw new Error(
+            `Invalid response: ${JSON.stringify(response, null, 2)}`,
+          );
+        }
+        res.status(403);
+        res.json(response.data);
+        break;
+      default:
+        throw new Error(
+          `Invalid response: ${JSON.stringify(response, null, 2)}`,
+        );
     }
-    res.json(response);
   } catch (err) {
     next(err);
   }
@@ -200,11 +368,35 @@ app.get("/users/:id", async (req, res, next) => {
       throw new Error(`Invalid headers: ${JSON.stringify(headers, null, 2)}`);
     }
     const id = req.params.id;
-    const response: api.UserDetails = await getUser(headers, id);
-    if (!validation.validate_UserDetails(response)) {
-      throw new Error(`Invalid response: ${JSON.stringify(response, null, 2)}`);
+    const response: api.GetUser_Response = await getUser(headers, id);
+    switch (response.kind) {
+      case "success":
+        if (!validation.validate_UserDetails(response.data)) {
+          throw new Error(
+            `Invalid response: ${JSON.stringify(response, null, 2)}`,
+          );
+        }
+        res.status(200);
+        res.json(response.data);
+        break;
+      case "unauthorized":
+        if (!validation.validate_string(response.data)) {
+          throw new Error(
+            `Invalid response: ${JSON.stringify(response, null, 2)}`,
+          );
+        }
+        res.status(403);
+        res.json(response.data);
+        break;
+      case "notfound":
+        res.status(404);
+        res.end();
+        break;
+      default:
+        throw new Error(
+          `Invalid response: ${JSON.stringify(response, null, 2)}`,
+        );
     }
-    res.json(response);
   } catch (err) {
     next(err);
   }
@@ -222,14 +414,43 @@ app.post("/apartments/create", async (req, res, next) => {
     if (!validation.validate_CreateApartmentRequest(request)) {
       throw new Error(`Invalid request: ${JSON.stringify(request, null, 2)}`);
     }
-    const response: api.CreateApartmentResponse = await createApartment(
+    const response: api.CreateApartment_Response = await createApartment(
       headers,
       request,
     );
-    if (!validation.validate_CreateApartmentResponse(response)) {
-      throw new Error(`Invalid response: ${JSON.stringify(response, null, 2)}`);
+    switch (response.kind) {
+      case "success":
+        if (!validation.validate_CreateApartmentResponse(response.data)) {
+          throw new Error(
+            `Invalid response: ${JSON.stringify(response, null, 2)}`,
+          );
+        }
+        res.status(200);
+        res.json(response.data);
+        break;
+      case "unauthorized":
+        if (!validation.validate_string(response.data)) {
+          throw new Error(
+            `Invalid response: ${JSON.stringify(response, null, 2)}`,
+          );
+        }
+        res.status(403);
+        res.json(response.data);
+        break;
+      case "failure":
+        if (!validation.validate_string(response.data)) {
+          throw new Error(
+            `Invalid response: ${JSON.stringify(response, null, 2)}`,
+          );
+        }
+        res.status(409);
+        res.json(response.data);
+        break;
+      default:
+        throw new Error(
+          `Invalid response: ${JSON.stringify(response, null, 2)}`,
+        );
     }
-    res.json(response);
   } catch (err) {
     next(err);
   }
@@ -248,15 +469,48 @@ app.put("/apartments/:id", async (req, res, next) => {
     if (!validation.validate_UpdateApartmentRequest(request)) {
       throw new Error(`Invalid request: ${JSON.stringify(request, null, 2)}`);
     }
-    const response: api.UpdateApartmentResponse = await updateApartment(
+    const response: api.UpdateApartment_Response = await updateApartment(
       headers,
       id,
       request,
     );
-    if (!validation.validate_UpdateApartmentResponse(response)) {
-      throw new Error(`Invalid response: ${JSON.stringify(response, null, 2)}`);
+    switch (response.kind) {
+      case "success":
+        if (!validation.validate_string(response.data)) {
+          throw new Error(
+            `Invalid response: ${JSON.stringify(response, null, 2)}`,
+          );
+        }
+        res.status(200);
+        res.json(response.data);
+        break;
+      case "unauthorized":
+        if (!validation.validate_string(response.data)) {
+          throw new Error(
+            `Invalid response: ${JSON.stringify(response, null, 2)}`,
+          );
+        }
+        res.status(403);
+        res.json(response.data);
+        break;
+      case "failure":
+        if (!validation.validate_string(response.data)) {
+          throw new Error(
+            `Invalid response: ${JSON.stringify(response, null, 2)}`,
+          );
+        }
+        res.status(409);
+        res.json(response.data);
+        break;
+      case "notfound":
+        res.status(404);
+        res.end();
+        break;
+      default:
+        throw new Error(
+          `Invalid response: ${JSON.stringify(response, null, 2)}`,
+        );
     }
-    res.json(response);
   } catch (err) {
     next(err);
   }
@@ -271,14 +525,38 @@ app.delete("/apartments/:id", async (req, res, next) => {
       throw new Error(`Invalid headers: ${JSON.stringify(headers, null, 2)}`);
     }
     const id = req.params.id;
-    const response: api.DeleteApartmentResponse = await deleteApartment(
+    const response: api.DeleteApartment_Response = await deleteApartment(
       headers,
       id,
     );
-    if (!validation.validate_DeleteApartmentResponse(response)) {
-      throw new Error(`Invalid response: ${JSON.stringify(response, null, 2)}`);
+    switch (response.kind) {
+      case "success":
+        if (!validation.validate_string(response.data)) {
+          throw new Error(
+            `Invalid response: ${JSON.stringify(response, null, 2)}`,
+          );
+        }
+        res.status(200);
+        res.json(response.data);
+        break;
+      case "unauthorized":
+        if (!validation.validate_string(response.data)) {
+          throw new Error(
+            `Invalid response: ${JSON.stringify(response, null, 2)}`,
+          );
+        }
+        res.status(403);
+        res.json(response.data);
+        break;
+      case "notfound":
+        res.status(404);
+        res.end();
+        break;
+      default:
+        throw new Error(
+          `Invalid response: ${JSON.stringify(response, null, 2)}`,
+        );
     }
-    res.json(response);
   } catch (err) {
     next(err);
   }
@@ -296,14 +574,34 @@ app.post("/apartments/list", async (req, res, next) => {
     if (!validation.validate_ListApartmentsRequest(request)) {
       throw new Error(`Invalid request: ${JSON.stringify(request, null, 2)}`);
     }
-    const response: api.ListApartmentsResponse = await listApartments(
+    const response: api.ListApartments_Response = await listApartments(
       headers,
       request,
     );
-    if (!validation.validate_ListApartmentsResponse(response)) {
-      throw new Error(`Invalid response: ${JSON.stringify(response, null, 2)}`);
+    switch (response.kind) {
+      case "success":
+        if (!validation.validate_ListApartmentsResponse(response.data)) {
+          throw new Error(
+            `Invalid response: ${JSON.stringify(response, null, 2)}`,
+          );
+        }
+        res.status(200);
+        res.json(response.data);
+        break;
+      case "unauthorized":
+        if (!validation.validate_string(response.data)) {
+          throw new Error(
+            `Invalid response: ${JSON.stringify(response, null, 2)}`,
+          );
+        }
+        res.status(403);
+        res.json(response.data);
+        break;
+      default:
+        throw new Error(
+          `Invalid response: ${JSON.stringify(response, null, 2)}`,
+        );
     }
-    res.json(response);
   } catch (err) {
     next(err);
   }
@@ -318,11 +616,35 @@ app.get("/apartments/:id", async (req, res, next) => {
       throw new Error(`Invalid headers: ${JSON.stringify(headers, null, 2)}`);
     }
     const id = req.params.id;
-    const response: api.ApartmentDetails = await getApartment(headers, id);
-    if (!validation.validate_ApartmentDetails(response)) {
-      throw new Error(`Invalid response: ${JSON.stringify(response, null, 2)}`);
+    const response: api.GetApartment_Response = await getApartment(headers, id);
+    switch (response.kind) {
+      case "success":
+        if (!validation.validate_ApartmentDetails(response.data)) {
+          throw new Error(
+            `Invalid response: ${JSON.stringify(response, null, 2)}`,
+          );
+        }
+        res.status(200);
+        res.json(response.data);
+        break;
+      case "unauthorized":
+        if (!validation.validate_string(response.data)) {
+          throw new Error(
+            `Invalid response: ${JSON.stringify(response, null, 2)}`,
+          );
+        }
+        res.status(403);
+        res.json(response.data);
+        break;
+      case "notfound":
+        res.status(404);
+        res.end();
+        break;
+      default:
+        throw new Error(
+          `Invalid response: ${JSON.stringify(response, null, 2)}`,
+        );
     }
-    res.json(response);
   } catch (err) {
     next(err);
   }

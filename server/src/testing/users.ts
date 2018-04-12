@@ -97,12 +97,12 @@ export async function authHeaders(
     password,
   });
   expect(loginResponse).toMatchObject({
-    status: "success",
+    kind: "success",
   });
-  if (loginResponse.status !== "success") {
+  if (loginResponse.kind !== "success") {
     throw new Error();
   }
   return {
-    Authorization: loginResponse.authToken,
+    Authorization: loginResponse.data.authToken,
   };
 }

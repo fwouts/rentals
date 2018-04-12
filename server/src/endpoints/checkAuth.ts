@@ -1,22 +1,24 @@
 import { authenticate } from "@/auth/token";
-import { AuthRequired, LoginUserResponse } from "../api";
+import { AuthRequired, CheckAuth_Response } from "../api";
 
 export async function checkAuth(
   headers: AuthRequired,
-): Promise<LoginUserResponse> {
+): Promise<CheckAuth_Response> {
   try {
     const authToken = headers.Authorization;
     const currentUser = await authenticate(authToken);
     return {
-      status: "success",
-      authToken,
-      role: currentUser.role,
-      userId: currentUser.userId,
+      kind: "success",
+      data: {
+        authToken,
+        role: currentUser.role,
+        userId: currentUser.userId,
+      },
     };
   } catch (e) {
     return {
-      status: "error",
-      message: "Invalid credentials.",
+      kind: "failure",
+      data: "Invalid credentials.",
     };
   }
 }

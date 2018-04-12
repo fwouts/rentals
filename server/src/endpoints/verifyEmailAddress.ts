@@ -1,18 +1,18 @@
 import { createSessionToken } from "@/auth/token";
 import { connection } from "@/db/connections";
 import { User } from "@/db/entities/user";
-import { VerifyEmailRequest, VerifyEmailResponse } from "../api";
+import { VerifyEmailAddress_Response, VerifyEmailRequest } from "../api";
 
 export async function verifyEmailAddress(
   request: VerifyEmailRequest,
-): Promise<VerifyEmailResponse> {
+): Promise<VerifyEmailAddress_Response> {
   const user = await connection.manager.findOne(User, {
     pendingEmailToken: request.token,
   });
   if (!user) {
     return {
-      status: "error",
-      message: "We couldn't find a match in our database. Try signing in?",
+      kind: "failure",
+      data: "We couldn't find a match in our database. Try signing in?",
     };
   }
   if (!user.pendingEmail) {
@@ -25,16 +25,18 @@ export async function verifyEmailAddress(
   try {
     await connection.manager.save(user);
     return {
-      status: "success",
-      authToken: await createSessionToken(user),
-      role: user.role,
-      userId: user.userId,
+      kind: "success",
+      data: {
+        authToken: await createSessionToken(user),
+        role: user.role,
+        userId: user.userId,
+      },
     };
   } catch (e) {
     if (e.message.indexOf("duplicate key value") !== -1) {
       return {
-        status: "error",
-        message: "This email address is already registered.",
+        kind: "failure",
+        data: "This email address is already registered.",
       };
     }
     throw e;

@@ -40,7 +40,10 @@ export class UserPickerViewModel {
         maxPerPage: 10,
       },
     );
-    return response.results.map((user) => {
+    if (response.kind !== "success") {
+      return [];
+    }
+    return response.data.results.map((user) => {
       return {
         value: user.name,
         user,

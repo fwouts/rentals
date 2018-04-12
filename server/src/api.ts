@@ -13,11 +13,6 @@ export interface RegisterUserRequest {
   role: Role;
 }
 
-export interface RegisterUserResponse {
-  status: "success" | "error";
-  message: string;
-}
-
 export interface VerifyEmailRequest {
   token: string;
 }
@@ -29,17 +24,11 @@ export interface LoginUserRequest {
   password: string;
 }
 
-export type LoginUserResponse =
-  | {
-      status: "error";
-      message: string;
-    }
-  | {
-      status: "success";
-      authToken: string;
-      userId: string;
-      role: Role;
-    };
+export interface LoginUserResponse {
+  authToken: string;
+  userId: string;
+  role: Role;
+}
 
 export interface UpdateUserRequest {
   email?: string;
@@ -48,18 +37,8 @@ export interface UpdateUserRequest {
   newPassword?: string;
 }
 
-export interface UpdateUserResponse {
-  status: "success" | "error";
-  message: string;
-}
-
 export interface DeleteUserRequest {
   password?: string;
-}
-
-export interface DeleteUserResponse {
-  status: "success" | "error";
-  message: string;
 }
 
 export interface ListUsersRequest {
@@ -93,30 +72,14 @@ export interface CreateApartmentRequest {
   realtorId?: string;
 }
 
-export type CreateApartmentResponse =
-  | {
-      status: "error";
-      message: string;
-    }
-  | {
-      status: "success";
-      message: string;
-      apartmentId: string;
-    };
+export interface CreateApartmentResponse {
+  message: string;
+  apartmentId: string;
+}
 
 export interface UpdateApartmentRequest {
   info: ApartmentInfo;
   realtorId?: string;
-}
-
-export interface UpdateApartmentResponse {
-  status: "success" | "error";
-  message: string;
-}
-
-export interface DeleteApartmentResponse {
-  status: "success" | "error";
-  message: string;
 }
 
 export interface ListApartmentsRequest {
@@ -180,3 +143,131 @@ export interface Realtor {
   realtorId: string;
   name: string;
 }
+
+export type RegisterUser_Response = {
+  kind: "success";
+  data: string;
+} | {
+  kind: "unauthorized";
+  data: string;
+} | {
+  kind: "failure";
+  data: string;
+};
+
+export type VerifyEmailAddress_Response = {
+  kind: "success";
+  data: VerifyEmailResponse;
+} | {
+  kind: "failure";
+  data: string;
+};
+
+export type LoginUser_Response = {
+  kind: "success";
+  data: LoginUserResponse;
+} | {
+  kind: "failure";
+  data: string;
+};
+
+export type CheckAuth_Response = {
+  kind: "success";
+  data: LoginUserResponse;
+} | {
+  kind: "failure";
+  data: string;
+};
+
+export type UpdateUser_Response = {
+  kind: "success";
+  data: string;
+} | {
+  kind: "unauthorized";
+  data: string;
+} | {
+  kind: "failure";
+  data: string;
+} | {
+  kind: "notfound";
+};
+
+export type DeleteUser_Response = {
+  kind: "success";
+  data: string;
+} | {
+  kind: "unauthorized";
+  data: string;
+} | {
+  kind: "notfound";
+};
+
+export type ListUsers_Response = {
+  kind: "success";
+  data: ListUsersResponse;
+} | {
+  kind: "unauthorized";
+  data: string;
+};
+
+export type GetUser_Response = {
+  kind: "success";
+  data: UserDetails;
+} | {
+  kind: "unauthorized";
+  data: string;
+} | {
+  kind: "notfound";
+};
+
+export type CreateApartment_Response = {
+  kind: "success";
+  data: CreateApartmentResponse;
+} | {
+  kind: "unauthorized";
+  data: string;
+} | {
+  kind: "failure";
+  data: string;
+};
+
+export type UpdateApartment_Response = {
+  kind: "success";
+  data: string;
+} | {
+  kind: "unauthorized";
+  data: string;
+} | {
+  kind: "failure";
+  data: string;
+} | {
+  kind: "notfound";
+};
+
+export type DeleteApartment_Response = {
+  kind: "success";
+  data: string;
+} | {
+  kind: "unauthorized";
+  data: string;
+} | {
+  kind: "notfound";
+};
+
+export type ListApartments_Response = {
+  kind: "success";
+  data: ListApartmentsResponse;
+} | {
+  kind: "unauthorized";
+  data: string;
+};
+
+export type GetApartment_Response = {
+  kind: "success";
+  data: ApartmentDetails;
+} | {
+  kind: "unauthorized";
+  data: string;
+} | {
+  kind: "notfound";
+};

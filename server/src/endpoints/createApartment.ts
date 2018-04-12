@@ -3,21 +3,29 @@ import { connection } from "@/db/connections";
 import { Apartment } from "@/db/entities/apartment";
 import {
   AuthRequired,
+  CreateApartment_Response,
   CreateApartmentRequest,
-  CreateApartmentResponse,
 } from "../api";
 
 export async function createApartment(
   headers: AuthRequired,
   request: CreateApartmentRequest,
-): Promise<CreateApartmentResponse> {
-  const currentUser = await authenticate(headers.Authorization);
+): Promise<CreateApartment_Response> {
+  let currentUser;
+  try {
+    currentUser = await authenticate(headers.Authorization);
+  } catch (e) {
+    return {
+      kind: "unauthorized",
+      data: "Invalid credentials.",
+    };
+  }
   let realtorId;
   switch (currentUser.role) {
     case "client":
       return {
-        status: "error",
-        message: "Clients cannot create apartment listings.",
+        kind: "unauthorized",
+        data: "Clients cannot create apartment listings.",
       };
     case "realtor":
       realtorId = currentUser.userId;
@@ -31,8 +39,10 @@ export async function createApartment(
   const apartment = Apartment.create(request.info, realtorId);
   await connection.manager.save(apartment);
   return {
-    status: "success",
-    apartmentId: apartment.apartmentId,
-    message: "Apartment listing was created successfully.",
+    kind: "success",
+    data: {
+      apartmentId: apartment.apartmentId,
+      message: "Apartment listing was created successfully.",
+    },
   };
 }

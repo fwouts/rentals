@@ -23,17 +23,17 @@ export class VerifyViewModel {
       const response = await verifyEmailAddress({
         token: this.token,
       });
-      switch (response.status) {
+      switch (response.kind) {
         case "success":
           Message({
             type: "success",
             message: "Thanks, your email address is now verified!",
           });
-          this.onSuccess(response);
+          this.onSuccess(response.data);
           break;
-        case "error":
+        case "failure":
         default:
-          this.error = response.message;
+          this.error = response.data;
           break;
       }
     } catch (e) {

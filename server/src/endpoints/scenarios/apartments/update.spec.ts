@@ -45,8 +45,8 @@ test("clients cannot update apartments", async () => {
     },
   );
   expect(response).toEqual({
-    status: "error",
-    message: "Clients cannot update apartment listings.",
+    kind: "unauthorized",
+    data: "Clients cannot update apartment listings.",
   });
   const updatedApartment = await findNewestApartment(REALTOR_JOHN);
   expect(updatedApartment).toEqual(apartment);
@@ -81,8 +81,8 @@ test("realtors can update their own apartments", async () => {
     },
   );
   expect(response).toEqual({
-    status: "success",
-    message: "The apartment listing was updated successfully.",
+    kind: "success",
+    data: "The apartment listing was updated successfully.",
   });
   const updatedApartment = await findNewestApartment(REALTOR_JOHN);
   expect(updatedApartment).toMatchObject({
@@ -118,8 +118,8 @@ test("realtors cannot update others' apartments", async () => {
     },
   );
   expect(response).toEqual({
-    status: "error",
-    message: "Realtors cannot update other realtors' apartment listings.",
+    kind: "unauthorized",
+    data: "Realtors cannot update other realtors' apartment listings.",
   });
   const updatedApartment = await findNewestApartment(REALTOR_JOHN);
   expect(updatedApartment).toEqual(apartment);
@@ -145,8 +145,8 @@ test("realtors cannot change apartment realtors", async () => {
     },
   );
   expect(response).toEqual({
-    status: "error",
-    message: "Realtors cannot reassign apartments to other realtors.",
+    kind: "unauthorized",
+    data: "Realtors cannot reassign apartments to other realtors.",
   });
   const updatedApartment = await findNewestApartment(REALTOR_JOHN);
   expect(updatedApartment).toEqual(apartment);
@@ -181,8 +181,8 @@ test("admins can update all apartments", async () => {
     },
   );
   expect(response).toEqual({
-    status: "success",
-    message: "The apartment listing was updated successfully.",
+    kind: "success",
+    data: "The apartment listing was updated successfully.",
   });
   const updatedApartment = await findNewestApartment(REALTOR_JOHN);
   expect(updatedApartment).toMatchObject({
@@ -229,8 +229,8 @@ test("admins can change apartment realtors", async () => {
     },
   );
   expect(response).toEqual({
-    status: "success",
-    message: "The apartment listing was updated successfully.",
+    kind: "success",
+    data: "The apartment listing was updated successfully.",
   });
   const updatedApartment = await findNewestApartment(REALTOR_HELENA);
   expect(updatedApartment).toMatchObject({

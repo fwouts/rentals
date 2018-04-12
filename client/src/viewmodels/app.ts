@@ -43,32 +43,32 @@ export class AppController {
         Authorization: authenticated.authToken,
       })
         .then((response) => {
-          switch (response.status) {
+          switch (response.kind) {
             case "success":
               // If the user ID has changed, refresh.
-              if (response.userId !== authenticated!.userId) {
+              if (response.data.userId !== authenticated!.userId) {
                 Message({
                   message:
                     "An unexpected error occurred but we signed you back in. You're good to go!",
                   type: "warning",
                 });
-                this.onAuthenticated(response);
+                this.onAuthenticated(response.data);
               }
               if (
-                response.userId !== authenticated!.userId ||
-                response.role !== authenticated!.role
+                response.data.userId !== authenticated!.userId ||
+                response.data.role !== authenticated!.role
               ) {
                 Message({
                   message: `You are now ${humanizeRole(
-                    response.role,
+                    response.data.role,
                     true,
                   )}. Congratulations!`,
                   type: "info",
                 });
-                this.onAuthenticated(response);
+                this.onAuthenticated(response.data);
               }
               break;
-            case "error":
+            case "failure":
             default:
               this.signOut();
           }

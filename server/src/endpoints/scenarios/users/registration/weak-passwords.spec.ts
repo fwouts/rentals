@@ -33,8 +33,8 @@ async function expectRejected(password: string, expectedMessage: string) {
     },
   );
   expect(response).toMatchObject({
-    status: "error",
-    message: expectedMessage,
+    kind: "failure",
+    data: expectedMessage,
   });
 }
 
@@ -49,6 +49,6 @@ async function expectAccepted(password: string) {
     },
   );
   expect(response).toMatchObject({
-    status: "success",
+    kind: "success",
   });
 }

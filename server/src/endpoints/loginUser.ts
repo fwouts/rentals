@@ -1,32 +1,34 @@
 import { passwordValid } from "@/auth/salting";
 import { createSessionToken } from "@/auth/token";
-import { LoginUserRequest, LoginUserResponse } from "../api";
+import { LoginUser_Response, LoginUserRequest } from "../api";
 import { connection } from "../db/connections";
 import { User } from "../db/entities/user";
 
 export async function loginUser(
   request: LoginUserRequest,
-): Promise<LoginUserResponse> {
+): Promise<LoginUser_Response> {
   const potentialUser = await connection.manager.findOne(User, {
     email: request.email,
   });
   if (!potentialUser) {
     return {
-      status: "error",
-      message: "Invalid credentials.",
+      kind: "failure",
+      data: "Invalid credentials.",
     };
   }
   if (!passwordValid(request.password, potentialUser)) {
     return {
-      status: "error",
-      message: "Invalid credentials.",
+      kind: "failure",
+      data: "Invalid credentials.",
     };
   }
   const confirmedUser = potentialUser;
   return {
-    status: "success",
-    authToken: await createSessionToken(confirmedUser),
-    role: confirmedUser.role,
-    userId: confirmedUser.userId,
+    kind: "success",
+    data: {
+      authToken: await createSessionToken(confirmedUser),
+      role: confirmedUser.role,
+      userId: confirmedUser.userId,
+    },
   };
 }

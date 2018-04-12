@@ -4,16 +4,24 @@ import { Apartment } from "@/db/entities/apartment";
 import { User } from "@/db/entities/user";
 import {
   AuthRequired,
+  UpdateApartment_Response,
   UpdateApartmentRequest,
-  UpdateApartmentResponse,
 } from "../api";
 
 export async function updateApartment(
   headers: AuthRequired,
   apartmentId: string,
   request: UpdateApartmentRequest,
-): Promise<UpdateApartmentResponse> {
-  const currentUser = await authenticate(headers.Authorization);
+): Promise<UpdateApartment_Response> {
+  let currentUser;
+  try {
+    currentUser = await authenticate(headers.Authorization);
+  } catch (e) {
+    return {
+      kind: "unauthorized",
+      data: "Invalid credentials.",
+    };
+  }
   const apartment = await connection.manager.findOne(Apartment, {
     where: {
       apartmentId,
@@ -21,34 +29,33 @@ export async function updateApartment(
   });
   if (!apartment) {
     return {
-      status: "error",
-      message: "No such apartment.",
+      kind: "notfound",
     };
   }
   switch (currentUser.role) {
     case "client":
       return {
-        status: "error",
-        message: "Clients cannot update apartment listings.",
+        kind: "unauthorized",
+        data: "Clients cannot update apartment listings.",
       };
     case "realtor":
       if (apartment.realtor.userId !== currentUser.userId) {
         return {
-          status: "error",
-          message: "Realtors cannot update other realtors' apartment listings.",
+          kind: "unauthorized",
+          data: "Realtors cannot update other realtors' apartment listings.",
         };
       }
       if (request.realtorId) {
         return {
-          status: "error",
-          message: "Realtors cannot reassign apartments to other realtors.",
+          kind: "unauthorized",
+          data: "Realtors cannot reassign apartments to other realtors.",
         };
       }
       Apartment.updateInfo(apartment, request.info);
       await connection.manager.save(apartment);
       return {
-        status: "success",
-        message: "The apartment listing was updated successfully.",
+        kind: "success",
+        data: "The apartment listing was updated successfully.",
       };
     case "admin":
       Apartment.updateInfo(apartment, request.info);
@@ -57,8 +64,8 @@ export async function updateApartment(
       }
       await connection.manager.save(apartment);
       return {
-        status: "success",
-        message: "The apartment listing was updated successfully.",
+        kind: "success",
+        data: "The apartment listing was updated successfully.",
       };
     default:
       throw new Error(`Unknown role: ${currentUser.role}.`);

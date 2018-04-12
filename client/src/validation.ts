@@ -65,41 +65,6 @@ export function validate_RegisterUserRequest_role(value: any): boolean {
   return validate_Role(value);
 }
 
-export function validate_RegisterUserResponse(value: any): boolean {
-  if (!(value instanceof Object)) {
-    return false;
-  }
-  if (!validate_RegisterUserResponse_status(value.status)) {
-    return false;
-  }
-  if (!validate_RegisterUserResponse_message(value.message)) {
-    return false;
-  }
-  return true;
-}
-
-export function validate_RegisterUserResponse_status(value: any): boolean {
-  if (validate_RegisterUserResponse_status_0(value)) {
-    return true;
-  }
-  if (validate_RegisterUserResponse_status_1(value)) {
-    return true;
-  }
-  return false;
-}
-
-export function validate_RegisterUserResponse_status_0(value: any): boolean {
-  return value === "success";
-}
-
-export function validate_RegisterUserResponse_status_1(value: any): boolean {
-  return value === "error";
-}
-
-export function validate_RegisterUserResponse_message(value: any): boolean {
-  return typeof value === "string";
-}
-
 export function validate_VerifyEmailRequest(value: any): boolean {
   if (!(value instanceof Object)) {
     return false;
@@ -140,68 +105,30 @@ export function validate_LoginUserRequest_password(value: any): boolean {
 }
 
 export function validate_LoginUserResponse(value: any): boolean {
-  if (validate_LoginUserResponse_0(value)) {
-    return true;
-  }
-  if (validate_LoginUserResponse_1(value)) {
-    return true;
-  }
-  return false;
-}
-
-export function validate_LoginUserResponse_0(value: any): boolean {
   if (!(value instanceof Object)) {
     return false;
   }
-  if (!validate_LoginUserResponse_0_status(value.status)) {
+  if (!validate_LoginUserResponse_authToken(value.authToken)) {
     return false;
   }
-  if (!validate_LoginUserResponse_0_message(value.message)) {
+  if (!validate_LoginUserResponse_userId(value.userId)) {
+    return false;
+  }
+  if (!validate_LoginUserResponse_role(value.role)) {
     return false;
   }
   return true;
 }
 
-export function validate_LoginUserResponse_0_status(value: any): boolean {
-  return value === "error";
-}
-
-export function validate_LoginUserResponse_0_message(value: any): boolean {
+export function validate_LoginUserResponse_authToken(value: any): boolean {
   return typeof value === "string";
 }
 
-export function validate_LoginUserResponse_1(value: any): boolean {
-  if (!(value instanceof Object)) {
-    return false;
-  }
-  if (!validate_LoginUserResponse_1_status(value.status)) {
-    return false;
-  }
-  if (!validate_LoginUserResponse_1_authToken(value.authToken)) {
-    return false;
-  }
-  if (!validate_LoginUserResponse_1_userId(value.userId)) {
-    return false;
-  }
-  if (!validate_LoginUserResponse_1_role(value.role)) {
-    return false;
-  }
-  return true;
-}
-
-export function validate_LoginUserResponse_1_status(value: any): boolean {
-  return value === "success";
-}
-
-export function validate_LoginUserResponse_1_authToken(value: any): boolean {
+export function validate_LoginUserResponse_userId(value: any): boolean {
   return typeof value === "string";
 }
 
-export function validate_LoginUserResponse_1_userId(value: any): boolean {
-  return typeof value === "string";
-}
-
-export function validate_LoginUserResponse_1_role(value: any): boolean {
+export function validate_LoginUserResponse_role(value: any): boolean {
   return validate_Role(value);
 }
 
@@ -256,41 +183,6 @@ export function validate_UpdateUserRequest_newPassword_present(value: any): bool
   return typeof value === "string";
 }
 
-export function validate_UpdateUserResponse(value: any): boolean {
-  if (!(value instanceof Object)) {
-    return false;
-  }
-  if (!validate_UpdateUserResponse_status(value.status)) {
-    return false;
-  }
-  if (!validate_UpdateUserResponse_message(value.message)) {
-    return false;
-  }
-  return true;
-}
-
-export function validate_UpdateUserResponse_status(value: any): boolean {
-  if (validate_UpdateUserResponse_status_0(value)) {
-    return true;
-  }
-  if (validate_UpdateUserResponse_status_1(value)) {
-    return true;
-  }
-  return false;
-}
-
-export function validate_UpdateUserResponse_status_0(value: any): boolean {
-  return value === "success";
-}
-
-export function validate_UpdateUserResponse_status_1(value: any): boolean {
-  return value === "error";
-}
-
-export function validate_UpdateUserResponse_message(value: any): boolean {
-  return typeof value === "string";
-}
-
 export function validate_DeleteUserRequest(value: any): boolean {
   if (!(value instanceof Object)) {
     return false;
@@ -306,41 +198,6 @@ export function validate_DeleteUserRequest_password(value: any): boolean {
 }
 
 export function validate_DeleteUserRequest_password_present(value: any): boolean {
-  return typeof value === "string";
-}
-
-export function validate_DeleteUserResponse(value: any): boolean {
-  if (!(value instanceof Object)) {
-    return false;
-  }
-  if (!validate_DeleteUserResponse_status(value.status)) {
-    return false;
-  }
-  if (!validate_DeleteUserResponse_message(value.message)) {
-    return false;
-  }
-  return true;
-}
-
-export function validate_DeleteUserResponse_status(value: any): boolean {
-  if (validate_DeleteUserResponse_status_0(value)) {
-    return true;
-  }
-  if (validate_DeleteUserResponse_status_1(value)) {
-    return true;
-  }
-  return false;
-}
-
-export function validate_DeleteUserResponse_status_0(value: any): boolean {
-  return value === "success";
-}
-
-export function validate_DeleteUserResponse_status_1(value: any): boolean {
-  return value === "error";
-}
-
-export function validate_DeleteUserResponse_message(value: any): boolean {
   return typeof value === "string";
 }
 
@@ -539,61 +396,23 @@ export function validate_CreateApartmentRequest_realtorId_present(value: any): b
 }
 
 export function validate_CreateApartmentResponse(value: any): boolean {
-  if (validate_CreateApartmentResponse_0(value)) {
-    return true;
-  }
-  if (validate_CreateApartmentResponse_1(value)) {
-    return true;
-  }
-  return false;
-}
-
-export function validate_CreateApartmentResponse_0(value: any): boolean {
   if (!(value instanceof Object)) {
     return false;
   }
-  if (!validate_CreateApartmentResponse_0_status(value.status)) {
+  if (!validate_CreateApartmentResponse_message(value.message)) {
     return false;
   }
-  if (!validate_CreateApartmentResponse_0_message(value.message)) {
+  if (!validate_CreateApartmentResponse_apartmentId(value.apartmentId)) {
     return false;
   }
   return true;
 }
 
-export function validate_CreateApartmentResponse_0_status(value: any): boolean {
-  return value === "error";
-}
-
-export function validate_CreateApartmentResponse_0_message(value: any): boolean {
+export function validate_CreateApartmentResponse_message(value: any): boolean {
   return typeof value === "string";
 }
 
-export function validate_CreateApartmentResponse_1(value: any): boolean {
-  if (!(value instanceof Object)) {
-    return false;
-  }
-  if (!validate_CreateApartmentResponse_1_status(value.status)) {
-    return false;
-  }
-  if (!validate_CreateApartmentResponse_1_message(value.message)) {
-    return false;
-  }
-  if (!validate_CreateApartmentResponse_1_apartmentId(value.apartmentId)) {
-    return false;
-  }
-  return true;
-}
-
-export function validate_CreateApartmentResponse_1_status(value: any): boolean {
-  return value === "success";
-}
-
-export function validate_CreateApartmentResponse_1_message(value: any): boolean {
-  return typeof value === "string";
-}
-
-export function validate_CreateApartmentResponse_1_apartmentId(value: any): boolean {
+export function validate_CreateApartmentResponse_apartmentId(value: any): boolean {
   return typeof value === "string";
 }
 
@@ -619,76 +438,6 @@ export function validate_UpdateApartmentRequest_realtorId(value: any): boolean {
 }
 
 export function validate_UpdateApartmentRequest_realtorId_present(value: any): boolean {
-  return typeof value === "string";
-}
-
-export function validate_UpdateApartmentResponse(value: any): boolean {
-  if (!(value instanceof Object)) {
-    return false;
-  }
-  if (!validate_UpdateApartmentResponse_status(value.status)) {
-    return false;
-  }
-  if (!validate_UpdateApartmentResponse_message(value.message)) {
-    return false;
-  }
-  return true;
-}
-
-export function validate_UpdateApartmentResponse_status(value: any): boolean {
-  if (validate_UpdateApartmentResponse_status_0(value)) {
-    return true;
-  }
-  if (validate_UpdateApartmentResponse_status_1(value)) {
-    return true;
-  }
-  return false;
-}
-
-export function validate_UpdateApartmentResponse_status_0(value: any): boolean {
-  return value === "success";
-}
-
-export function validate_UpdateApartmentResponse_status_1(value: any): boolean {
-  return value === "error";
-}
-
-export function validate_UpdateApartmentResponse_message(value: any): boolean {
-  return typeof value === "string";
-}
-
-export function validate_DeleteApartmentResponse(value: any): boolean {
-  if (!(value instanceof Object)) {
-    return false;
-  }
-  if (!validate_DeleteApartmentResponse_status(value.status)) {
-    return false;
-  }
-  if (!validate_DeleteApartmentResponse_message(value.message)) {
-    return false;
-  }
-  return true;
-}
-
-export function validate_DeleteApartmentResponse_status(value: any): boolean {
-  if (validate_DeleteApartmentResponse_status_0(value)) {
-    return true;
-  }
-  if (validate_DeleteApartmentResponse_status_1(value)) {
-    return true;
-  }
-  return false;
-}
-
-export function validate_DeleteApartmentResponse_status_0(value: any): boolean {
-  return value === "success";
-}
-
-export function validate_DeleteApartmentResponse_status_1(value: any): boolean {
-  return value === "error";
-}
-
-export function validate_DeleteApartmentResponse_message(value: any): boolean {
   return typeof value === "string";
 }
 
@@ -1038,4 +787,906 @@ export function validate_Realtor_realtorId(value: any): boolean {
 
 export function validate_Realtor_name(value: any): boolean {
   return typeof value === "string";
+}
+
+export function validate_RegisterUser_Response(value: any): boolean {
+  if (validate_RegisterUser_Response_0(value)) {
+    return true;
+  }
+  if (validate_RegisterUser_Response_1(value)) {
+    return true;
+  }
+  if (validate_RegisterUser_Response_2(value)) {
+    return true;
+  }
+  return false;
+}
+
+export function validate_RegisterUser_Response_0(value: any): boolean {
+  if (!(value instanceof Object)) {
+    return false;
+  }
+  if (!validate_RegisterUser_Response_0_kind(value.kind)) {
+    return false;
+  }
+  if (!validate_RegisterUser_Response_0_data(value.data)) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_RegisterUser_Response_0_kind(value: any): boolean {
+  return value === "success";
+}
+
+export function validate_RegisterUser_Response_0_data(value: any): boolean {
+  return typeof value === "string";
+}
+
+export function validate_RegisterUser_Response_1(value: any): boolean {
+  if (!(value instanceof Object)) {
+    return false;
+  }
+  if (!validate_RegisterUser_Response_1_kind(value.kind)) {
+    return false;
+  }
+  if (!validate_RegisterUser_Response_1_data(value.data)) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_RegisterUser_Response_1_kind(value: any): boolean {
+  return value === "unauthorized";
+}
+
+export function validate_RegisterUser_Response_1_data(value: any): boolean {
+  return typeof value === "string";
+}
+
+export function validate_RegisterUser_Response_2(value: any): boolean {
+  if (!(value instanceof Object)) {
+    return false;
+  }
+  if (!validate_RegisterUser_Response_2_kind(value.kind)) {
+    return false;
+  }
+  if (!validate_RegisterUser_Response_2_data(value.data)) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_RegisterUser_Response_2_kind(value: any): boolean {
+  return value === "failure";
+}
+
+export function validate_RegisterUser_Response_2_data(value: any): boolean {
+  return typeof value === "string";
+}
+
+export function validate_VerifyEmailAddress_Response(value: any): boolean {
+  if (validate_VerifyEmailAddress_Response_0(value)) {
+    return true;
+  }
+  if (validate_VerifyEmailAddress_Response_1(value)) {
+    return true;
+  }
+  return false;
+}
+
+export function validate_VerifyEmailAddress_Response_0(value: any): boolean {
+  if (!(value instanceof Object)) {
+    return false;
+  }
+  if (!validate_VerifyEmailAddress_Response_0_kind(value.kind)) {
+    return false;
+  }
+  if (!validate_VerifyEmailAddress_Response_0_data(value.data)) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_VerifyEmailAddress_Response_0_kind(value: any): boolean {
+  return value === "success";
+}
+
+export function validate_VerifyEmailAddress_Response_0_data(value: any): boolean {
+  return validate_VerifyEmailResponse(value);
+}
+
+export function validate_VerifyEmailAddress_Response_1(value: any): boolean {
+  if (!(value instanceof Object)) {
+    return false;
+  }
+  if (!validate_VerifyEmailAddress_Response_1_kind(value.kind)) {
+    return false;
+  }
+  if (!validate_VerifyEmailAddress_Response_1_data(value.data)) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_VerifyEmailAddress_Response_1_kind(value: any): boolean {
+  return value === "failure";
+}
+
+export function validate_VerifyEmailAddress_Response_1_data(value: any): boolean {
+  return typeof value === "string";
+}
+
+export function validate_LoginUser_Response(value: any): boolean {
+  if (validate_LoginUser_Response_0(value)) {
+    return true;
+  }
+  if (validate_LoginUser_Response_1(value)) {
+    return true;
+  }
+  return false;
+}
+
+export function validate_LoginUser_Response_0(value: any): boolean {
+  if (!(value instanceof Object)) {
+    return false;
+  }
+  if (!validate_LoginUser_Response_0_kind(value.kind)) {
+    return false;
+  }
+  if (!validate_LoginUser_Response_0_data(value.data)) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_LoginUser_Response_0_kind(value: any): boolean {
+  return value === "success";
+}
+
+export function validate_LoginUser_Response_0_data(value: any): boolean {
+  return validate_LoginUserResponse(value);
+}
+
+export function validate_LoginUser_Response_1(value: any): boolean {
+  if (!(value instanceof Object)) {
+    return false;
+  }
+  if (!validate_LoginUser_Response_1_kind(value.kind)) {
+    return false;
+  }
+  if (!validate_LoginUser_Response_1_data(value.data)) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_LoginUser_Response_1_kind(value: any): boolean {
+  return value === "failure";
+}
+
+export function validate_LoginUser_Response_1_data(value: any): boolean {
+  return typeof value === "string";
+}
+
+export function validate_CheckAuth_Response(value: any): boolean {
+  if (validate_CheckAuth_Response_0(value)) {
+    return true;
+  }
+  if (validate_CheckAuth_Response_1(value)) {
+    return true;
+  }
+  return false;
+}
+
+export function validate_CheckAuth_Response_0(value: any): boolean {
+  if (!(value instanceof Object)) {
+    return false;
+  }
+  if (!validate_CheckAuth_Response_0_kind(value.kind)) {
+    return false;
+  }
+  if (!validate_CheckAuth_Response_0_data(value.data)) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_CheckAuth_Response_0_kind(value: any): boolean {
+  return value === "success";
+}
+
+export function validate_CheckAuth_Response_0_data(value: any): boolean {
+  return validate_LoginUserResponse(value);
+}
+
+export function validate_CheckAuth_Response_1(value: any): boolean {
+  if (!(value instanceof Object)) {
+    return false;
+  }
+  if (!validate_CheckAuth_Response_1_kind(value.kind)) {
+    return false;
+  }
+  if (!validate_CheckAuth_Response_1_data(value.data)) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_CheckAuth_Response_1_kind(value: any): boolean {
+  return value === "failure";
+}
+
+export function validate_CheckAuth_Response_1_data(value: any): boolean {
+  return typeof value === "string";
+}
+
+export function validate_UpdateUser_Response(value: any): boolean {
+  if (validate_UpdateUser_Response_0(value)) {
+    return true;
+  }
+  if (validate_UpdateUser_Response_1(value)) {
+    return true;
+  }
+  if (validate_UpdateUser_Response_2(value)) {
+    return true;
+  }
+  if (validate_UpdateUser_Response_3(value)) {
+    return true;
+  }
+  return false;
+}
+
+export function validate_UpdateUser_Response_0(value: any): boolean {
+  if (!(value instanceof Object)) {
+    return false;
+  }
+  if (!validate_UpdateUser_Response_0_kind(value.kind)) {
+    return false;
+  }
+  if (!validate_UpdateUser_Response_0_data(value.data)) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_UpdateUser_Response_0_kind(value: any): boolean {
+  return value === "success";
+}
+
+export function validate_UpdateUser_Response_0_data(value: any): boolean {
+  return typeof value === "string";
+}
+
+export function validate_UpdateUser_Response_1(value: any): boolean {
+  if (!(value instanceof Object)) {
+    return false;
+  }
+  if (!validate_UpdateUser_Response_1_kind(value.kind)) {
+    return false;
+  }
+  if (!validate_UpdateUser_Response_1_data(value.data)) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_UpdateUser_Response_1_kind(value: any): boolean {
+  return value === "unauthorized";
+}
+
+export function validate_UpdateUser_Response_1_data(value: any): boolean {
+  return typeof value === "string";
+}
+
+export function validate_UpdateUser_Response_2(value: any): boolean {
+  if (!(value instanceof Object)) {
+    return false;
+  }
+  if (!validate_UpdateUser_Response_2_kind(value.kind)) {
+    return false;
+  }
+  if (!validate_UpdateUser_Response_2_data(value.data)) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_UpdateUser_Response_2_kind(value: any): boolean {
+  return value === "failure";
+}
+
+export function validate_UpdateUser_Response_2_data(value: any): boolean {
+  return typeof value === "string";
+}
+
+export function validate_UpdateUser_Response_3(value: any): boolean {
+  if (!(value instanceof Object)) {
+    return false;
+  }
+  if (!validate_UpdateUser_Response_3_kind(value.kind)) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_UpdateUser_Response_3_kind(value: any): boolean {
+  return value === "notfound";
+}
+
+export function validate_DeleteUser_Response(value: any): boolean {
+  if (validate_DeleteUser_Response_0(value)) {
+    return true;
+  }
+  if (validate_DeleteUser_Response_1(value)) {
+    return true;
+  }
+  if (validate_DeleteUser_Response_2(value)) {
+    return true;
+  }
+  return false;
+}
+
+export function validate_DeleteUser_Response_0(value: any): boolean {
+  if (!(value instanceof Object)) {
+    return false;
+  }
+  if (!validate_DeleteUser_Response_0_kind(value.kind)) {
+    return false;
+  }
+  if (!validate_DeleteUser_Response_0_data(value.data)) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_DeleteUser_Response_0_kind(value: any): boolean {
+  return value === "success";
+}
+
+export function validate_DeleteUser_Response_0_data(value: any): boolean {
+  return typeof value === "string";
+}
+
+export function validate_DeleteUser_Response_1(value: any): boolean {
+  if (!(value instanceof Object)) {
+    return false;
+  }
+  if (!validate_DeleteUser_Response_1_kind(value.kind)) {
+    return false;
+  }
+  if (!validate_DeleteUser_Response_1_data(value.data)) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_DeleteUser_Response_1_kind(value: any): boolean {
+  return value === "unauthorized";
+}
+
+export function validate_DeleteUser_Response_1_data(value: any): boolean {
+  return typeof value === "string";
+}
+
+export function validate_DeleteUser_Response_2(value: any): boolean {
+  if (!(value instanceof Object)) {
+    return false;
+  }
+  if (!validate_DeleteUser_Response_2_kind(value.kind)) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_DeleteUser_Response_2_kind(value: any): boolean {
+  return value === "notfound";
+}
+
+export function validate_ListUsers_Response(value: any): boolean {
+  if (validate_ListUsers_Response_0(value)) {
+    return true;
+  }
+  if (validate_ListUsers_Response_1(value)) {
+    return true;
+  }
+  return false;
+}
+
+export function validate_ListUsers_Response_0(value: any): boolean {
+  if (!(value instanceof Object)) {
+    return false;
+  }
+  if (!validate_ListUsers_Response_0_kind(value.kind)) {
+    return false;
+  }
+  if (!validate_ListUsers_Response_0_data(value.data)) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_ListUsers_Response_0_kind(value: any): boolean {
+  return value === "success";
+}
+
+export function validate_ListUsers_Response_0_data(value: any): boolean {
+  return validate_ListUsersResponse(value);
+}
+
+export function validate_ListUsers_Response_1(value: any): boolean {
+  if (!(value instanceof Object)) {
+    return false;
+  }
+  if (!validate_ListUsers_Response_1_kind(value.kind)) {
+    return false;
+  }
+  if (!validate_ListUsers_Response_1_data(value.data)) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_ListUsers_Response_1_kind(value: any): boolean {
+  return value === "unauthorized";
+}
+
+export function validate_ListUsers_Response_1_data(value: any): boolean {
+  return typeof value === "string";
+}
+
+export function validate_GetUser_Response(value: any): boolean {
+  if (validate_GetUser_Response_0(value)) {
+    return true;
+  }
+  if (validate_GetUser_Response_1(value)) {
+    return true;
+  }
+  if (validate_GetUser_Response_2(value)) {
+    return true;
+  }
+  return false;
+}
+
+export function validate_GetUser_Response_0(value: any): boolean {
+  if (!(value instanceof Object)) {
+    return false;
+  }
+  if (!validate_GetUser_Response_0_kind(value.kind)) {
+    return false;
+  }
+  if (!validate_GetUser_Response_0_data(value.data)) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_GetUser_Response_0_kind(value: any): boolean {
+  return value === "success";
+}
+
+export function validate_GetUser_Response_0_data(value: any): boolean {
+  return validate_UserDetails(value);
+}
+
+export function validate_GetUser_Response_1(value: any): boolean {
+  if (!(value instanceof Object)) {
+    return false;
+  }
+  if (!validate_GetUser_Response_1_kind(value.kind)) {
+    return false;
+  }
+  if (!validate_GetUser_Response_1_data(value.data)) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_GetUser_Response_1_kind(value: any): boolean {
+  return value === "unauthorized";
+}
+
+export function validate_GetUser_Response_1_data(value: any): boolean {
+  return typeof value === "string";
+}
+
+export function validate_GetUser_Response_2(value: any): boolean {
+  if (!(value instanceof Object)) {
+    return false;
+  }
+  if (!validate_GetUser_Response_2_kind(value.kind)) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_GetUser_Response_2_kind(value: any): boolean {
+  return value === "notfound";
+}
+
+export function validate_CreateApartment_Response(value: any): boolean {
+  if (validate_CreateApartment_Response_0(value)) {
+    return true;
+  }
+  if (validate_CreateApartment_Response_1(value)) {
+    return true;
+  }
+  if (validate_CreateApartment_Response_2(value)) {
+    return true;
+  }
+  return false;
+}
+
+export function validate_CreateApartment_Response_0(value: any): boolean {
+  if (!(value instanceof Object)) {
+    return false;
+  }
+  if (!validate_CreateApartment_Response_0_kind(value.kind)) {
+    return false;
+  }
+  if (!validate_CreateApartment_Response_0_data(value.data)) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_CreateApartment_Response_0_kind(value: any): boolean {
+  return value === "success";
+}
+
+export function validate_CreateApartment_Response_0_data(value: any): boolean {
+  return validate_CreateApartmentResponse(value);
+}
+
+export function validate_CreateApartment_Response_1(value: any): boolean {
+  if (!(value instanceof Object)) {
+    return false;
+  }
+  if (!validate_CreateApartment_Response_1_kind(value.kind)) {
+    return false;
+  }
+  if (!validate_CreateApartment_Response_1_data(value.data)) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_CreateApartment_Response_1_kind(value: any): boolean {
+  return value === "unauthorized";
+}
+
+export function validate_CreateApartment_Response_1_data(value: any): boolean {
+  return typeof value === "string";
+}
+
+export function validate_CreateApartment_Response_2(value: any): boolean {
+  if (!(value instanceof Object)) {
+    return false;
+  }
+  if (!validate_CreateApartment_Response_2_kind(value.kind)) {
+    return false;
+  }
+  if (!validate_CreateApartment_Response_2_data(value.data)) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_CreateApartment_Response_2_kind(value: any): boolean {
+  return value === "failure";
+}
+
+export function validate_CreateApartment_Response_2_data(value: any): boolean {
+  return typeof value === "string";
+}
+
+export function validate_UpdateApartment_Response(value: any): boolean {
+  if (validate_UpdateApartment_Response_0(value)) {
+    return true;
+  }
+  if (validate_UpdateApartment_Response_1(value)) {
+    return true;
+  }
+  if (validate_UpdateApartment_Response_2(value)) {
+    return true;
+  }
+  if (validate_UpdateApartment_Response_3(value)) {
+    return true;
+  }
+  return false;
+}
+
+export function validate_UpdateApartment_Response_0(value: any): boolean {
+  if (!(value instanceof Object)) {
+    return false;
+  }
+  if (!validate_UpdateApartment_Response_0_kind(value.kind)) {
+    return false;
+  }
+  if (!validate_UpdateApartment_Response_0_data(value.data)) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_UpdateApartment_Response_0_kind(value: any): boolean {
+  return value === "success";
+}
+
+export function validate_UpdateApartment_Response_0_data(value: any): boolean {
+  return typeof value === "string";
+}
+
+export function validate_UpdateApartment_Response_1(value: any): boolean {
+  if (!(value instanceof Object)) {
+    return false;
+  }
+  if (!validate_UpdateApartment_Response_1_kind(value.kind)) {
+    return false;
+  }
+  if (!validate_UpdateApartment_Response_1_data(value.data)) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_UpdateApartment_Response_1_kind(value: any): boolean {
+  return value === "unauthorized";
+}
+
+export function validate_UpdateApartment_Response_1_data(value: any): boolean {
+  return typeof value === "string";
+}
+
+export function validate_UpdateApartment_Response_2(value: any): boolean {
+  if (!(value instanceof Object)) {
+    return false;
+  }
+  if (!validate_UpdateApartment_Response_2_kind(value.kind)) {
+    return false;
+  }
+  if (!validate_UpdateApartment_Response_2_data(value.data)) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_UpdateApartment_Response_2_kind(value: any): boolean {
+  return value === "failure";
+}
+
+export function validate_UpdateApartment_Response_2_data(value: any): boolean {
+  return typeof value === "string";
+}
+
+export function validate_UpdateApartment_Response_3(value: any): boolean {
+  if (!(value instanceof Object)) {
+    return false;
+  }
+  if (!validate_UpdateApartment_Response_3_kind(value.kind)) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_UpdateApartment_Response_3_kind(value: any): boolean {
+  return value === "notfound";
+}
+
+export function validate_DeleteApartment_Response(value: any): boolean {
+  if (validate_DeleteApartment_Response_0(value)) {
+    return true;
+  }
+  if (validate_DeleteApartment_Response_1(value)) {
+    return true;
+  }
+  if (validate_DeleteApartment_Response_2(value)) {
+    return true;
+  }
+  return false;
+}
+
+export function validate_DeleteApartment_Response_0(value: any): boolean {
+  if (!(value instanceof Object)) {
+    return false;
+  }
+  if (!validate_DeleteApartment_Response_0_kind(value.kind)) {
+    return false;
+  }
+  if (!validate_DeleteApartment_Response_0_data(value.data)) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_DeleteApartment_Response_0_kind(value: any): boolean {
+  return value === "success";
+}
+
+export function validate_DeleteApartment_Response_0_data(value: any): boolean {
+  return typeof value === "string";
+}
+
+export function validate_DeleteApartment_Response_1(value: any): boolean {
+  if (!(value instanceof Object)) {
+    return false;
+  }
+  if (!validate_DeleteApartment_Response_1_kind(value.kind)) {
+    return false;
+  }
+  if (!validate_DeleteApartment_Response_1_data(value.data)) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_DeleteApartment_Response_1_kind(value: any): boolean {
+  return value === "unauthorized";
+}
+
+export function validate_DeleteApartment_Response_1_data(value: any): boolean {
+  return typeof value === "string";
+}
+
+export function validate_DeleteApartment_Response_2(value: any): boolean {
+  if (!(value instanceof Object)) {
+    return false;
+  }
+  if (!validate_DeleteApartment_Response_2_kind(value.kind)) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_DeleteApartment_Response_2_kind(value: any): boolean {
+  return value === "notfound";
+}
+
+export function validate_ListApartments_Response(value: any): boolean {
+  if (validate_ListApartments_Response_0(value)) {
+    return true;
+  }
+  if (validate_ListApartments_Response_1(value)) {
+    return true;
+  }
+  return false;
+}
+
+export function validate_ListApartments_Response_0(value: any): boolean {
+  if (!(value instanceof Object)) {
+    return false;
+  }
+  if (!validate_ListApartments_Response_0_kind(value.kind)) {
+    return false;
+  }
+  if (!validate_ListApartments_Response_0_data(value.data)) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_ListApartments_Response_0_kind(value: any): boolean {
+  return value === "success";
+}
+
+export function validate_ListApartments_Response_0_data(value: any): boolean {
+  return validate_ListApartmentsResponse(value);
+}
+
+export function validate_ListApartments_Response_1(value: any): boolean {
+  if (!(value instanceof Object)) {
+    return false;
+  }
+  if (!validate_ListApartments_Response_1_kind(value.kind)) {
+    return false;
+  }
+  if (!validate_ListApartments_Response_1_data(value.data)) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_ListApartments_Response_1_kind(value: any): boolean {
+  return value === "unauthorized";
+}
+
+export function validate_ListApartments_Response_1_data(value: any): boolean {
+  return typeof value === "string";
+}
+
+export function validate_GetApartment_Response(value: any): boolean {
+  if (validate_GetApartment_Response_0(value)) {
+    return true;
+  }
+  if (validate_GetApartment_Response_1(value)) {
+    return true;
+  }
+  if (validate_GetApartment_Response_2(value)) {
+    return true;
+  }
+  return false;
+}
+
+export function validate_GetApartment_Response_0(value: any): boolean {
+  if (!(value instanceof Object)) {
+    return false;
+  }
+  if (!validate_GetApartment_Response_0_kind(value.kind)) {
+    return false;
+  }
+  if (!validate_GetApartment_Response_0_data(value.data)) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_GetApartment_Response_0_kind(value: any): boolean {
+  return value === "success";
+}
+
+export function validate_GetApartment_Response_0_data(value: any): boolean {
+  return validate_ApartmentDetails(value);
+}
+
+export function validate_GetApartment_Response_1(value: any): boolean {
+  if (!(value instanceof Object)) {
+    return false;
+  }
+  if (!validate_GetApartment_Response_1_kind(value.kind)) {
+    return false;
+  }
+  if (!validate_GetApartment_Response_1_data(value.data)) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_GetApartment_Response_1_kind(value: any): boolean {
+  return value === "unauthorized";
+}
+
+export function validate_GetApartment_Response_1_data(value: any): boolean {
+  return typeof value === "string";
+}
+
+export function validate_GetApartment_Response_2(value: any): boolean {
+  if (!(value instanceof Object)) {
+    return false;
+  }
+  if (!validate_GetApartment_Response_2_kind(value.kind)) {
+    return false;
+  }
+  return true;
+}
+
+export function validate_GetApartment_Response_2_kind(value: any): boolean {
+  return value === "notfound";
+}
+
+export function validate_bool(value: any): boolean {
+  return typeof value === "boolean";
+}
+
+export function validate_int(value: any): boolean {
+  return typeof value === "number" && Number.isInteger(value);
+}
+
+export function validate_long(value: any): boolean {
+  return typeof value === "number" && Number.isInteger(value);
+}
+
+export function validate_float(value: any): boolean {
+  return typeof value === "number";
+}
+
+export function validate_double(value: any): boolean {
+  return typeof value === "number";
+}
+
+export function validate_string(value: any): boolean {
+  return typeof value === "string";
+}
+
+export function validate_null(value: any): boolean {
+  return value === null;
 }

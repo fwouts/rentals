@@ -38,8 +38,8 @@ async function expectRejected(password: string, expectedMessage: string) {
     },
   );
   expect(updateResponse).toMatchObject({
-    status: "error",
-    message: expectedMessage,
+    kind: "failure",
+    data: expectedMessage,
   });
 }
 
@@ -54,7 +54,7 @@ async function expectAccepted(password: string) {
     },
   );
   expect(updateResponse).toMatchObject({
-    status: "success",
+    kind: "success",
   });
 }
 
@@ -70,8 +70,8 @@ async function createUser(): Promise<User> {
     },
   );
   expect(registerResponse).toEqual({
-    status: "success",
-    message: "Great! Please check your email inbox now.",
+    kind: "success",
+    data: "Great! Please check your email inbox now.",
   });
   const user = await findUser(email);
   await verifyEmailAddress({

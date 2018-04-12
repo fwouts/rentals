@@ -3,8 +3,8 @@ import { connection } from "@/db/connections";
 import { Apartment } from "@/db/entities/apartment";
 import {
   AuthRequired,
+  ListApartments_Response,
   ListApartmentsRequest,
-  ListApartmentsResponse,
 } from "../api";
 
 const MAX_RESULTS_PER_PAGE = 500;
@@ -12,7 +12,7 @@ const MAX_RESULTS_PER_PAGE = 500;
 export async function listApartments(
   headers: AuthRequired,
   request: ListApartmentsRequest,
-): Promise<ListApartmentsResponse> {
+): Promise<ListApartments_Response> {
   const maxResultsPerPage = request.maxPerPage
     ? Math.min(MAX_RESULTS_PER_PAGE, request.maxPerPage)
     : MAX_RESULTS_PER_PAGE;
@@ -21,9 +21,8 @@ export async function listApartments(
     currentUser = await authenticate(headers.Authorization);
   } catch (e) {
     return {
-      results: [],
-      totalResults: 0,
-      pageCount: 0,
+      kind: "unauthorized",
+      data: "Invalid credentials.",
     };
   }
   const requestFilter = request.filter || {};
@@ -31,9 +30,8 @@ export async function listApartments(
     if (requestFilter.rented) {
       // Don't show rented apartments to clients.
       return {
-        results: [],
-        totalResults: 0,
-        pageCount: 0,
+        kind: "unauthorized",
+        data: "Clients cannot see rented apartments.",
       };
     } else {
       requestFilter.rented = false;
@@ -47,9 +45,8 @@ export async function listApartments(
       // Don't show other realtors' rented apartments to realtors.
       if (requestFilter.rented) {
         return {
-          results: [],
-          totalResults: 0,
-          pageCount: 0,
+          kind: "unauthorized",
+          data: "Realtors cannot see others' rented apartments.",
         };
       } else {
         requestFilter.rented = false;
@@ -140,8 +137,11 @@ export async function listApartments(
     .take(maxResultsPerPage)
     .getManyAndCount();
   return {
-    results: results.map(Apartment.toApi),
-    totalResults: totalCount,
-    pageCount: Math.ceil(totalCount / maxResultsPerPage),
+    kind: "success",
+    data: {
+      results: results.map(Apartment.toApi),
+      totalResults: totalCount,
+      pageCount: Math.ceil(totalCount / maxResultsPerPage),
+    },
   };
 }

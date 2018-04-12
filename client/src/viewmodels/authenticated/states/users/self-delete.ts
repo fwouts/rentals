@@ -29,19 +29,25 @@ export class SelfDeleteUserViewModel {
           password: this.password,
         },
       );
-      switch (response.status) {
+      switch (response.kind) {
         case "success":
           Message({
             type: "success",
-            message: response.message,
+            message: response.data,
           });
           this.callbacks.onDone();
           break;
-        case "error":
+        case "notfound":
+          Message({
+            type: "error",
+            message: "This account does not exist anymore.",
+          });
+          break;
+        case "unauthorized":
         default:
           Message({
             type: "error",
-            message: response.message,
+            message: response.data,
           });
           break;
       }

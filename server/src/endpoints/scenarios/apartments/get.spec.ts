@@ -26,15 +26,16 @@ beforeEach(async () => {
 
 test("guests cannot see apartments", async () => {
   const apartment = await findNewestApartment();
-  await expect(
-    getApartment(
+  expect(
+    await getApartment(
       {
         Authorization: "",
       },
       apartment.apartmentId,
     ),
-  ).rejects.toMatchObject({
-    message: "Invalid session token.",
+  ).toMatchObject({
+    kind: "unauthorized",
+    data: "Invalid credentials.",
   });
 });
 
@@ -42,24 +43,28 @@ test("clients can only see rentable apartments", async () => {
   const apartment = await findNewestApartment();
   apartment.rented = false;
   await connection.manager.save(apartment);
-  await expect(
-    getApartment(
+  expect(
+    await getApartment(
       await authHeaders(CLIENT_BRIAN, BRIAN_PASSWORD),
       apartment.apartmentId,
     ),
-  ).resolves.toMatchObject({
-    apartmentId: apartment.apartmentId,
+  ).toMatchObject({
+    kind: "success",
+    data: {
+      apartmentId: apartment.apartmentId,
+    },
   });
 
   apartment.rented = true;
   await connection.manager.save(apartment);
-  await expect(
-    getApartment(
+  expect(
+    await getApartment(
       await authHeaders(CLIENT_BRIAN, BRIAN_PASSWORD),
       apartment.apartmentId,
     ),
-  ).rejects.toMatchObject({
-    message: "Clients cannot see rented apartments.",
+  ).toMatchObject({
+    kind: "unauthorized",
+    data: "Clients cannot see rented apartments.",
   });
 });
 
@@ -67,24 +72,30 @@ test("realtors can see all their own apartments", async () => {
   const apartment = await findNewestApartment(REALTOR_HELENA);
   apartment.rented = false;
   await connection.manager.save(apartment);
-  await expect(
-    getApartment(
+  expect(
+    await getApartment(
       await authHeaders(REALTOR_HELENA, HELENA_PASSWORD),
       apartment.apartmentId,
     ),
-  ).resolves.toMatchObject({
-    apartmentId: apartment.apartmentId,
+  ).toMatchObject({
+    kind: "success",
+    data: {
+      apartmentId: apartment.apartmentId,
+    },
   });
 
   apartment.rented = true;
   await connection.manager.save(apartment);
-  await expect(
-    getApartment(
+  expect(
+    await getApartment(
       await authHeaders(REALTOR_HELENA, HELENA_PASSWORD),
       apartment.apartmentId,
     ),
-  ).resolves.toMatchObject({
-    apartmentId: apartment.apartmentId,
+  ).toMatchObject({
+    kind: "success",
+    data: {
+      apartmentId: apartment.apartmentId,
+    },
   });
 });
 
@@ -92,24 +103,28 @@ test("realtors can only see other realtors' rentable apartments", async () => {
   const apartment = await findNewestApartment(REALTOR_JOHN);
   apartment.rented = false;
   await connection.manager.save(apartment);
-  await expect(
-    getApartment(
+  expect(
+    await getApartment(
       await authHeaders(REALTOR_HELENA, HELENA_PASSWORD),
       apartment.apartmentId,
     ),
-  ).resolves.toMatchObject({
-    apartmentId: apartment.apartmentId,
+  ).toMatchObject({
+    kind: "success",
+    data: {
+      apartmentId: apartment.apartmentId,
+    },
   });
 
   apartment.rented = true;
   await connection.manager.save(apartment);
-  await expect(
-    getApartment(
+  expect(
+    await getApartment(
       await authHeaders(REALTOR_HELENA, HELENA_PASSWORD),
       apartment.apartmentId,
     ),
-  ).rejects.toMatchObject({
-    message: "Realtors cannot see others' rented apartments.",
+  ).toMatchObject({
+    kind: "unauthorized",
+    data: "Realtors cannot see others' rented apartments.",
   });
 });
 
@@ -117,23 +132,29 @@ test("admins can see all apartments", async () => {
   const apartment = await findNewestApartment(REALTOR_HELENA);
   apartment.rented = false;
   await connection.manager.save(apartment);
-  await expect(
-    getApartment(
+  expect(
+    await getApartment(
       await authHeaders(ADMIN_FRANK, FRANK_PASSWORD),
       apartment.apartmentId,
     ),
-  ).resolves.toMatchObject({
-    apartmentId: apartment.apartmentId,
+  ).toMatchObject({
+    kind: "success",
+    data: {
+      apartmentId: apartment.apartmentId,
+    },
   });
 
   apartment.rented = true;
   await connection.manager.save(apartment);
-  await expect(
-    getApartment(
+  expect(
+    await getApartment(
       await authHeaders(ADMIN_FRANK, FRANK_PASSWORD),
       apartment.apartmentId,
     ),
-  ).resolves.toMatchObject({
-    apartmentId: apartment.apartmentId,
+  ).toMatchObject({
+    kind: "success",
+    data: {
+      apartmentId: apartment.apartmentId,
+    },
   });
 });

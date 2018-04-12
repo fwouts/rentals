@@ -28,10 +28,9 @@ test("guests cannot see apartments", async () => {
     },
     {},
   );
-  expect(response).toEqual({
-    results: [],
-    totalResults: 0,
-    pageCount: 0,
+  expect(response).toMatchObject({
+    kind: "unauthorized",
+    data: "Invalid credentials.",
   });
 });
 
@@ -40,9 +39,14 @@ test("clients can only see rentable apartments", async () => {
     await authHeaders(CLIENT_BRIAN, BRIAN_PASSWORD),
     {},
   );
-  expect(response.totalResults).toBe(68);
-  expect(response.pageCount).toBe(1);
-  response.results.forEach((apartment) =>
+  if (response.kind !== "success") {
+    throw expect(response.kind).toMatchObject({
+      kind: "success",
+    });
+  }
+  expect(response.data.totalResults).toBe(68);
+  expect(response.data.pageCount).toBe(1);
+  response.data.results.forEach((apartment) =>
     expect(apartment.info.rented).toBeFalsy(),
   );
 
@@ -65,9 +69,8 @@ test("clients can only see rentable apartments", async () => {
     },
   );
   expect(responseWithRentedTrueFilter).toEqual({
-    totalResults: 0,
-    results: [],
-    pageCount: 0,
+    kind: "unauthorized",
+    data: "Clients cannot see rented apartments.",
   });
 });
 
@@ -81,7 +84,12 @@ test("clients can use realtor filter", async () => {
       },
     },
   );
-  expect(response.totalResults).toBe(34);
+  if (response.kind !== "success") {
+    throw expect(response.kind).toMatchObject({
+      kind: "success",
+    });
+  }
+  expect(response.data.totalResults).toBe(34);
 
   const responseMissingRealtorId = await listApartments(
     await authHeaders(CLIENT_BRIAN, BRIAN_PASSWORD),
@@ -91,7 +99,12 @@ test("clients can use realtor filter", async () => {
       },
     },
   );
-  expect(responseMissingRealtorId.totalResults).toBe(0);
+  if (responseMissingRealtorId.kind !== "success") {
+    throw expect(responseMissingRealtorId.kind).toMatchObject({
+      kind: "success",
+    });
+  }
+  expect(responseMissingRealtorId.data.totalResults).toBe(0);
 });
 
 test("clients can use size range filter", async () => {
@@ -106,7 +119,12 @@ test("clients can use size range filter", async () => {
       },
     },
   );
-  expect(responseRange1.totalResults).toBe(2);
+  if (responseRange1.kind !== "success") {
+    throw expect(responseRange1.kind).toMatchObject({
+      kind: "success",
+    });
+  }
+  expect(responseRange1.data.totalResults).toBe(2);
 
   const responseRange2 = await listApartments(
     await authHeaders(CLIENT_BRIAN, BRIAN_PASSWORD),
@@ -119,7 +137,12 @@ test("clients can use size range filter", async () => {
       },
     },
   );
-  expect(responseRange2.totalResults).toBe(62);
+  if (responseRange2.kind !== "success") {
+    throw expect(responseRange2.kind).toMatchObject({
+      kind: "success",
+    });
+  }
+  expect(responseRange2.data.totalResults).toBe(62);
 
   const responseRange3 = await listApartments(
     await authHeaders(CLIENT_BRIAN, BRIAN_PASSWORD),
@@ -132,7 +155,12 @@ test("clients can use size range filter", async () => {
       },
     },
   );
-  expect(responseRange3.totalResults).toBe(14);
+  if (responseRange3.kind !== "success") {
+    throw expect(responseRange3.kind).toMatchObject({
+      kind: "success",
+    });
+  }
+  expect(responseRange3.data.totalResults).toBe(14);
 });
 
 test("clients can use price range filter", async () => {
@@ -147,7 +175,12 @@ test("clients can use price range filter", async () => {
       },
     },
   );
-  expect(responseRange1.totalResults).toBe(4);
+  if (responseRange1.kind !== "success") {
+    throw expect(responseRange1.kind).toMatchObject({
+      kind: "success",
+    });
+  }
+  expect(responseRange1.data.totalResults).toBe(4);
 
   const responseRange2 = await listApartments(
     await authHeaders(CLIENT_BRIAN, BRIAN_PASSWORD),
@@ -160,7 +193,12 @@ test("clients can use price range filter", async () => {
       },
     },
   );
-  expect(responseRange2.totalResults).toBe(34);
+  if (responseRange2.kind !== "success") {
+    throw expect(responseRange2.kind).toMatchObject({
+      kind: "success",
+    });
+  }
+  expect(responseRange2.data.totalResults).toBe(34);
 
   const responseRange3 = await listApartments(
     await authHeaders(CLIENT_BRIAN, BRIAN_PASSWORD),
@@ -173,7 +211,12 @@ test("clients can use price range filter", async () => {
       },
     },
   );
-  expect(responseRange3.totalResults).toBe(14);
+  if (responseRange3.kind !== "success") {
+    throw expect(responseRange3.kind).toMatchObject({
+      kind: "success",
+    });
+  }
+  expect(responseRange3.data.totalResults).toBe(14);
 });
 
 test("clients can use number of rooms filter", async () => {
@@ -188,7 +231,12 @@ test("clients can use number of rooms filter", async () => {
       },
     },
   );
-  expect(responseRange1.totalResults).toBe(2);
+  if (responseRange1.kind !== "success") {
+    throw expect(responseRange1.kind).toMatchObject({
+      kind: "success",
+    });
+  }
+  expect(responseRange1.data.totalResults).toBe(2);
 
   const responseRange2 = await listApartments(
     await authHeaders(CLIENT_BRIAN, BRIAN_PASSWORD),
@@ -201,7 +249,12 @@ test("clients can use number of rooms filter", async () => {
       },
     },
   );
-  expect(responseRange2.totalResults).toBe(12);
+  if (responseRange2.kind !== "success") {
+    throw expect(responseRange2.kind).toMatchObject({
+      kind: "success",
+    });
+  }
+  expect(responseRange2.data.totalResults).toBe(12);
 
   const responseRange3 = await listApartments(
     await authHeaders(CLIENT_BRIAN, BRIAN_PASSWORD),
@@ -214,7 +267,12 @@ test("clients can use number of rooms filter", async () => {
       },
     },
   );
-  expect(responseRange3.totalResults).toBe(6);
+  if (responseRange3.kind !== "success") {
+    throw expect(responseRange3.kind).toMatchObject({
+      kind: "success",
+    });
+  }
+  expect(responseRange3.data.totalResults).toBe(6);
 });
 
 test("clients can combine filters", async () => {
@@ -239,7 +297,12 @@ test("clients can combine filters", async () => {
       },
     },
   );
-  expect(response.totalResults).toBe(2);
+  if (response.kind !== "success") {
+    throw expect(response.kind).toMatchObject({
+      kind: "success",
+    });
+  }
+  expect(response.data.totalResults).toBe(2);
 });
 
 test("realtors can see all their own apartments", async () => {
@@ -252,9 +315,15 @@ test("realtors can see all their own apartments", async () => {
       },
     },
   );
-  const rentedApartments = response.results.filter((a) => a.info.rented).length;
-  const rentableApartments = response.results.length - rentedApartments;
-  expect(response.totalResults).toBe(100);
+  if (response.kind !== "success") {
+    throw expect(response.kind).toMatchObject({
+      kind: "success",
+    });
+  }
+  const rentedApartments = response.data.results.filter((a) => a.info.rented)
+    .length;
+  const rentableApartments = response.data.results.length - rentedApartments;
+  expect(response.data.totalResults).toBe(100);
   expect(rentedApartments).toBe(66);
   expect(rentableApartments).toBe(34);
 });
@@ -269,9 +338,15 @@ test("realtors can only see other realtors' rentable apartments", async () => {
       },
     },
   );
-  const rentedApartments = response.results.filter((a) => a.info.rented).length;
-  const rentableApartments = response.results.length - rentedApartments;
-  expect(response.totalResults).toBe(34);
+  if (response.kind !== "success") {
+    throw expect(response.kind).toMatchObject({
+      kind: "success",
+    });
+  }
+  const rentedApartments = response.data.results.filter((a) => a.info.rented)
+    .length;
+  const rentableApartments = response.data.results.length - rentedApartments;
+  expect(response.data.totalResults).toBe(34);
   expect(rentedApartments).toBe(0);
   expect(rentableApartments).toBe(34);
 
@@ -284,7 +359,10 @@ test("realtors can only see other realtors' rentable apartments", async () => {
       },
     },
   );
-  expect(responseWithRentedTrueFilter.totalResults).toBe(0);
+  expect(responseWithRentedTrueFilter).toEqual({
+    kind: "unauthorized",
+    data: "Realtors cannot see others' rented apartments.",
+  });
 
   const responseWithRentedFalseFilter = await listApartments(
     await authHeaders(REALTOR_HELENA, HELENA_PASSWORD),
@@ -320,7 +398,12 @@ test("realtors can combine filters", async () => {
       },
     },
   );
-  expect(response.totalResults).toBe(2);
+  if (response.kind !== "success") {
+    throw expect(response.kind).toMatchObject({
+      kind: "success",
+    });
+  }
+  expect(response.data.totalResults).toBe(2);
 });
 
 test("admins can see all apartments", async () => {
@@ -328,7 +411,12 @@ test("admins can see all apartments", async () => {
     await authHeaders(ADMIN_FRANK, FRANK_PASSWORD),
     {},
   );
-  expect(response.totalResults).toBe(200);
+  if (response.kind !== "success") {
+    throw expect(response.kind).toMatchObject({
+      kind: "success",
+    });
+  }
+  expect(response.data.totalResults).toBe(200);
 });
 
 test("admins can combine filters", async () => {
@@ -354,7 +442,12 @@ test("admins can combine filters", async () => {
       },
     },
   );
-  expect(response.totalResults).toBe(4);
+  if (response.kind !== "success") {
+    throw expect(response.kind).toMatchObject({
+      kind: "success",
+    });
+  }
+  expect(response.data.totalResults).toBe(4);
 });
 
 test("apartments pagination without filters", async () => {
@@ -366,23 +459,38 @@ test("apartments pagination without filters", async () => {
     maxPerPage: apartmentsPerPage,
     page: 1,
   });
-  expect(page1.totalResults).toBe(68);
-  expect(page1.results.length).toBe(30);
-  expect(page1.pageCount).toBe(3);
+  if (page1.kind !== "success") {
+    throw expect(page1.kind).toMatchObject({
+      kind: "success",
+    });
+  }
+  expect(page1.data.totalResults).toBe(68);
+  expect(page1.data.results.length).toBe(30);
+  expect(page1.data.pageCount).toBe(3);
   const page2 = await listApartments(headers, {
     maxPerPage: apartmentsPerPage,
     page: 2,
   });
-  expect(page2.totalResults).toBe(68);
-  expect(page2.results.length).toBe(30);
-  expect(page2.pageCount).toBe(3);
+  if (page2.kind !== "success") {
+    throw expect(page2.kind).toMatchObject({
+      kind: "success",
+    });
+  }
+  expect(page2.data.totalResults).toBe(68);
+  expect(page2.data.results.length).toBe(30);
+  expect(page2.data.pageCount).toBe(3);
   const page3 = await listApartments(headers, {
     maxPerPage: apartmentsPerPage,
     page: 3,
   });
-  expect(page3.totalResults).toBe(68);
-  expect(page3.results.length).toBe(8);
-  expect(page3.pageCount).toBe(3);
+  if (page3.kind !== "success") {
+    throw expect(page3.kind).toMatchObject({
+      kind: "success",
+    });
+  }
+  expect(page3.data.totalResults).toBe(68);
+  expect(page3.data.results.length).toBe(8);
+  expect(page3.data.pageCount).toBe(3);
 });
 
 test("apartments pagination stops exactly when required", async () => {
@@ -390,11 +498,21 @@ test("apartments pagination stops exactly when required", async () => {
   // but two pages when requesting 67.
   const headers = await authHeaders(CLIENT_BRIAN, BRIAN_PASSWORD);
   const requesting67 = await listApartments(headers, { maxPerPage: 67 });
+  if (requesting67.kind !== "success") {
+    throw expect(requesting67.kind).toMatchObject({
+      kind: "success",
+    });
+  }
   const requesting68 = await listApartments(headers, { maxPerPage: 68 });
-  expect(requesting67.totalResults).toBe(68);
-  expect(requesting68.totalResults).toBe(68);
-  expect(requesting67.pageCount).toBe(2);
-  expect(requesting68.pageCount).toBe(1);
+  if (requesting68.kind !== "success") {
+    throw expect(requesting68.kind).toMatchObject({
+      kind: "success",
+    });
+  }
+  expect(requesting67.data.totalResults).toBe(68);
+  expect(requesting68.data.totalResults).toBe(68);
+  expect(requesting67.data.pageCount).toBe(2);
+  expect(requesting68.data.pageCount).toBe(1);
 });
 
 test("apartments pagination with filters", async () => {
@@ -413,9 +531,14 @@ test("apartments pagination with filters", async () => {
       page: 1,
     },
   );
-  expect(page1.totalResults).toBe(6);
-  expect(page1.results.length).toBe(5);
-  expect(page1.pageCount).toBe(2);
+  if (page1.kind !== "success") {
+    throw expect(page1.kind).toMatchObject({
+      kind: "success",
+    });
+  }
+  expect(page1.data.totalResults).toBe(6);
+  expect(page1.data.results.length).toBe(5);
+  expect(page1.data.pageCount).toBe(2);
   const page2 = await listApartments(
     await authHeaders(CLIENT_BRIAN, BRIAN_PASSWORD),
     {
@@ -429,7 +552,12 @@ test("apartments pagination with filters", async () => {
       page: 2,
     },
   );
-  expect(page2.totalResults).toBe(6);
-  expect(page2.results.length).toBe(1);
-  expect(page2.pageCount).toBe(2);
+  if (page2.kind !== "success") {
+    throw expect(page2.kind).toMatchObject({
+      kind: "success",
+    });
+  }
+  expect(page2.data.totalResults).toBe(6);
+  expect(page2.data.results.length).toBe(1);
+  expect(page2.data.pageCount).toBe(2);
 });

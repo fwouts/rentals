@@ -57,13 +57,17 @@ export class AuthenticatedAdminViewModel {
   }
 
   public async fetchThenUpdateApartment(apartmentId: string) {
-    const apartment = await getApartment(
+    const response = await getApartment(
       {
         Authorization: this.authenticated.authToken,
       },
       apartmentId,
     );
-    this.updateApartment(apartment);
+    switch (response.kind) {
+      case "success":
+        this.updateApartment(response.data);
+        break;
+    }
   }
 
   public updateApartment = (apartment: ApartmentDetails) => {
@@ -96,13 +100,17 @@ export class AuthenticatedAdminViewModel {
   }
 
   public async fetchThenUpdateUser(userId: string) {
-    const user = await getUser(
+    const response = await getUser(
       {
         Authorization: this.authenticated.authToken,
       },
       userId,
     );
-    this.updateUser(user);
+    switch (response.kind) {
+      case "success":
+        this.updateUser(response.data);
+        break;
+    }
   }
 
   public updateUser = (user?: UserDetails) => {
@@ -125,13 +133,17 @@ export class AuthenticatedAdminViewModel {
   }
 
   public async fetchThenDeleteUser(userId: string) {
-    const user = await getUser(
+    const response = await getUser(
       {
         Authorization: this.authenticated.authToken,
       },
       userId,
     );
-    this.deleteUser(user);
+    switch (response.kind) {
+      case "success":
+        this.deleteUser(response.data);
+        break;
+    }
   }
 
   public deleteUser = (user?: UserDetails) => {

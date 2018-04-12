@@ -27,8 +27,8 @@ test("realtors can delete their own account", async () => {
     },
   );
   expect(response).toMatchObject({
-    status: "success",
-    message: "Your account was deleted successfully. Bye bye.",
+    kind: "success",
+    data: "Your account was deleted successfully. Bye bye.",
   });
 });
 
@@ -40,8 +40,8 @@ test("realtors cannot delete their account without entering password", async () 
     {},
   );
   expect(response).toMatchObject({
-    status: "error",
-    message: "For security reasons, a password must be provided.",
+    kind: "unauthorized",
+    data: "For security reasons, a password must be provided.",
   });
 });
 
@@ -55,8 +55,8 @@ test("realtors cannot delete their account with an incorrect password", async ()
     },
   );
   expect(response).toMatchObject({
-    status: "error",
-    message: "Incorrect password.",
+    kind: "unauthorized",
+    data: "Incorrect password.",
   });
 });
 
@@ -70,7 +70,7 @@ test("realtors cannot delete others' accounts", async () => {
     },
   );
   expect(response).toMatchObject({
-    status: "error",
-    message: "Users can only delete their own account.",
+    kind: "unauthorized",
+    data: "Users can only delete their own account.",
   });
 });

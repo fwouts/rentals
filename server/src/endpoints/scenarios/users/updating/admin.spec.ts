@@ -34,8 +34,8 @@ test("admins can update their own account", async () => {
     },
   );
   expect(response).toMatchObject({
-    status: "success",
-    message: "Please check your email to confirm your new email address.",
+    kind: "success",
+    data: "Please check your email to confirm your new email address.",
   });
   const userPendingVerification = await findUser(ADMIN_FRANK);
   await verifyEmailAddress({
@@ -62,8 +62,8 @@ test("admins cannot update their account without entering password", async () =>
     },
   );
   expect(response).toMatchObject({
-    status: "error",
-    message: "For security reasons, a password must be provided.",
+    kind: "unauthorized",
+    data: "For security reasons, a password must be provided.",
   });
   expect(await findUser(ADMIN_FRANK)).toEqual(user);
 });
@@ -81,8 +81,8 @@ test("admins cannot update their account with an incorrect password", async () =
     },
   );
   expect(response).toMatchObject({
-    status: "error",
-    message: "Incorrect password.",
+    kind: "unauthorized",
+    data: "Incorrect password.",
   });
   expect(await findUser(ADMIN_FRANK)).toEqual(user);
 });
@@ -99,8 +99,8 @@ test("admins can update clients' accounts", async () => {
     },
   );
   expect(response).toMatchObject({
-    status: "success",
-    message: "The account was updated successfully.",
+    kind: "success",
+    data: "The account was updated successfully.",
   });
   const updatedUser = await findUser("newemail@gmail.com");
   expect(updatedUser).toMatchObject({
@@ -123,8 +123,8 @@ test("admins can update realtors' accounts", async () => {
     },
   );
   expect(response).toMatchObject({
-    status: "success",
-    message: "The account was updated successfully.",
+    kind: "success",
+    data: "The account was updated successfully.",
   });
   const updatedUser = await findUser("newemail@gmail.com");
   expect(updatedUser).toMatchObject({
@@ -147,8 +147,8 @@ test("admins can update other admins' accounts", async () => {
     },
   );
   expect(response).toMatchObject({
-    status: "success",
-    message: "The account was updated successfully.",
+    kind: "success",
+    data: "The account was updated successfully.",
   });
   const updatedUser = await findUser("newemail@gmail.com");
   expect(updatedUser).toMatchObject({

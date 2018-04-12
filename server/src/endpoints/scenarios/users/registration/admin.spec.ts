@@ -56,8 +56,8 @@ test("only an admin can register another admin", async () => {
     },
   );
   expect(registerWithoutAuthorization).toMatchObject({
-    status: "error",
-    message: "Only an admin can register another admin.",
+    kind: "unauthorized",
+    data: "Only an admin can register another admin.",
   });
 
   const registerWithRealtorAuthorization = await registerUser(
@@ -70,8 +70,8 @@ test("only an admin can register another admin", async () => {
     },
   );
   expect(registerWithRealtorAuthorization).toMatchObject({
-    status: "error",
-    message: "Only an admin can register another admin.",
+    kind: "unauthorized",
+    data: "Only an admin can register another admin.",
   });
 
   const registerWithClientAuthorization = await registerUser(
@@ -84,8 +84,8 @@ test("only an admin can register another admin", async () => {
     },
   );
   expect(registerWithClientAuthorization).toMatchObject({
-    status: "error",
-    message: "Only an admin can register another admin.",
+    kind: "unauthorized",
+    data: "Only an admin can register another admin.",
   });
 
   const registerWithAdminAuthorization = await registerUser(
@@ -98,8 +98,8 @@ test("only an admin can register another admin", async () => {
     },
   );
   expect(registerWithAdminAuthorization).toMatchObject({
-    status: "success",
-    message: "User successfully registered.",
+    kind: "success",
+    data: "User successfully registered.",
   });
 });
 
@@ -114,27 +114,28 @@ test("admin registration", async () => {
     },
   );
   expect(registerResponse).toMatchObject({
-    status: "success",
-    message: "User successfully registered.",
+    kind: "success",
+    data: "User successfully registered.",
   });
   const incorrectLoginResponse = await loginUser({
     email: "admin2@gmail.com",
     password: "wrong password",
   });
   expect(incorrectLoginResponse).toMatchObject({
-    status: "error",
-    message: "Invalid credentials.",
+    kind: "failure",
+    data: "Invalid credentials.",
   });
   const correctLoginResponse = await loginUser({
     email: "admin2@gmail.com",
     password: GOOD_PASSWORD_4,
   });
-  expect(correctLoginResponse).toMatchObject({
-    status: "success",
-    role: "admin",
-  });
-  if (correctLoginResponse.status !== "success") {
-    throw new Error();
+  if (correctLoginResponse.kind !== "success") {
+    throw expect(correctLoginResponse).toMatchObject({
+      kind: "success",
+      data: {
+        role: "admin",
+      },
+    });
   }
-  expect(correctLoginResponse.authToken.length).toBeGreaterThan(5);
+  expect(correctLoginResponse.data.authToken.length).toBeGreaterThan(5);
 });
