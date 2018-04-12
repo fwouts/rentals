@@ -61,8 +61,7 @@ export class ListApartmentsViewModel {
   public constructor(authenticated: SessionInfo) {
     this.authenticated = authenticated;
     this.tab = {
-      kind: "map",
-      viewport: WORLD_VIEWPORT,
+      kind: "list",
     };
     if (authenticated.role === "admin") {
       this.realtorFilter = new UserPickerViewModel(

@@ -45,6 +45,7 @@ export class AuthenticatedAdminViewModel {
 
   public listApartments = async () => {
     this.state = new ListApartmentsViewModel(this.authenticated);
+    this.state.loadFresh();
     this.router.push();
   }
 
