@@ -1,7 +1,7 @@
 {
   "name": "api",
   "author": "Francois Wouts <f@zenc.io>",
-  "private": true,
+  "license": "MIT",
   "scripts": {
     "generate": "yarn generate-rentals-client && yarn generate-rentals-server && yarn generate-integration-test-client && yarn generate-integration-test-server",
     "generate-rentals-client": "apidef generate typescript rentals.api ../client/src -c https://rentals.zenc.io",

@@ -1,6 +1,7 @@
 {
+  "name": "rentals",
   "author": "Francois Wouts <f@zenc.io>",
-  "private": true,
+  "license": "MIT",
   "devDependencies": {
     "concurrently": "^3.5.1",
     "husky": "^0.15.0-rc.13",

@@ -1,7 +1,7 @@
 {
   "name": "client",
   "author": "Francois Wouts <f@zenc.io>",
-  "private": true,
+  "license": "MIT",
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
