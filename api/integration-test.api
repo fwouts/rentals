@@ -1,2 +1,9 @@
 endpoint resetDatabase: POST /reset void
 -> success 200 void
+
+endpoint verifyUser: POST /verifyUser VerifyUserRequest
+-> success 200 void
+
+type VerifyUserRequest = {
+  email: string
+}

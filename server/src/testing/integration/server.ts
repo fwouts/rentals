@@ -5,9 +5,11 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import express from "express";
 import * as types from "./api/types";
+import * as validators from "./api/validators";
 
 // start-generated-section endpointImports
 import { resetDatabase } from "./endpoints/resetDatabase";
+import { verifyUser } from "./endpoints/verifyUser";
 // end-generated-section endpointImports
 
 const PORT = 3020;
@@ -34,9 +36,27 @@ app.post("/reset", async (req, res, next) => {
         res.end();
         break;
       default:
-        throw new Error(
-          `Invalid response: ${JSON.stringify(response, null, 2)}`,
-        );
+        throw new Error(`Invalid response: ${JSON.stringify(response, null, 2)}`);
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.post("/verifyUser", async (req, res, next) => {
+  try {
+    const request: types.VerifyUserRequest = req.body;
+    if (!validators.validate_VerifyUserRequest(request)) {
+      throw new Error(`Invalid request: ${JSON.stringify(request, null, 2)}`);
+    }
+    const response: types.VerifyUser_Response = await verifyUser(request);
+    switch (response.kind) {
+      case "success":
+        res.status(200);
+        res.end();
+        break;
+      default:
+        throw new Error(`Invalid response: ${JSON.stringify(response, null, 2)}`);
     }
   } catch (err) {
     next(err);

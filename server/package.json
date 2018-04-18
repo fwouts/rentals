@@ -3,11 +3,11 @@
   "author": "Francois Wouts <f@zenc.io>",
   "license": "MIT",
   "scripts": {
-    "start": "yarn build && node build/server.js",
-    "integration-test-server": "yarn build && node build/testing/integration/server.js",
+    "start": "source dev.env && yarn build && node build/server.js",
+    "integration-test-server": "source dev.env && yarn build && node build/testing/integration/server.js",
     "build": "tsc && copyfiles -u 1 src/**/*.pug build/",
     "lint": "tslint --project tsconfig.json --fix",
-    "test": "SENDGRID_API_KEY=TEST jest --runInBand",
+    "test": "source test.env && jest --runInBand",
     "precommit": "lint-staged && concurrently \"yarn build\" \"yarn test\""
   },
   "_moduleAliases": {

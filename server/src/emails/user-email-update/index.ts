@@ -1,4 +1,4 @@
-import { APP_URL } from "@/config";
+import { FRONTEND_HOST } from "@/config";
 import { User } from "@/db/entities/user";
 import { sendEmail } from "@/emails/sender";
 import path from "path";
@@ -15,7 +15,7 @@ export async function sendEmailUpdateVerification(user: User) {
     }),
     html: HTML({
       user,
-      verifyUrl: `${APP_URL}/verify/${user.pendingEmailToken}`,
+      verifyUrl: `${FRONTEND_HOST}/verify/${user.pendingEmailToken}`,
     }),
   });
 }

@@ -1,7 +1,7 @@
 import * as types from "./types";
 
 export function validate_AuthOptional(value: any): value is types.AuthOptional {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_AuthOptional_Authorization(value.Authorization)) {
@@ -19,7 +19,7 @@ export function validate_AuthOptional_Authorization_present(value: any): boolean
 }
 
 export function validate_AuthRequired(value: any): value is types.AuthRequired {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_AuthRequired_Authorization(value.Authorization)) {
@@ -33,7 +33,7 @@ export function validate_AuthRequired_Authorization(value: any): boolean {
 }
 
 export function validate_RegisterUserRequest(value: any): value is types.RegisterUserRequest {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_RegisterUserRequest_email(value.email)) {
@@ -68,7 +68,7 @@ export function validate_RegisterUserRequest_role(value: any): boolean {
 }
 
 export function validate_VerifyEmailRequest(value: any): value is types.VerifyEmailRequest {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_VerifyEmailRequest_token(value.token)) {
@@ -86,7 +86,7 @@ export function validate_VerifyEmailResponse(value: any): value is types.VerifyE
 }
 
 export function validate_LoginUserRequest(value: any): value is types.LoginUserRequest {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_LoginUserRequest_email(value.email)) {
@@ -107,7 +107,7 @@ export function validate_LoginUserRequest_password(value: any): boolean {
 }
 
 export function validate_LoginUserResponse(value: any): value is types.LoginUserResponse {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_LoginUserResponse_authToken(value.authToken)) {
@@ -142,7 +142,7 @@ export function validate_LoginUserResponse_role(value: any): boolean {
 }
 
 export function validate_UpdateUserRequest(value: any): value is types.UpdateUserRequest {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_UpdateUserRequest_email(value.email)) {
@@ -193,7 +193,7 @@ export function validate_UpdateUserRequest_newPassword_present(value: any): bool
 }
 
 export function validate_DeleteUserRequest(value: any): value is types.DeleteUserRequest {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_DeleteUserRequest_password(value.password)) {
@@ -211,7 +211,7 @@ export function validate_DeleteUserRequest_password_present(value: any): boolean
 }
 
 export function validate_ListUsersRequest(value: any): value is types.ListUsersRequest {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_ListUsersRequest_filter(value.filter)) {
@@ -251,7 +251,7 @@ export function validate_ListUsersRequest_page_present(value: any): boolean {
 }
 
 export function validate_ListUsersFilter(value: any): value is types.ListUsersFilter {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_ListUsersFilter_role(value.role)) {
@@ -280,7 +280,7 @@ export function validate_ListUsersFilter_name_present(value: any): boolean {
 }
 
 export function validate_ListUsersResponse(value: any): value is types.ListUsersResponse {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_ListUsersResponse_results(value.results)) {
@@ -296,7 +296,7 @@ export function validate_ListUsersResponse(value: any): value is types.ListUsers
 }
 
 export function validate_ListUsersResponse_results(value: any): boolean {
-  if (!(value instanceof Array)) {
+  if (!Array.isArray(value)) {
     return false;
   }
   for (const item of value) {
@@ -320,7 +320,7 @@ export function validate_ListUsersResponse_pageCount(value: any): boolean {
 }
 
 export function validate_UserDetails(value: any): value is types.UserDetails {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_UserDetails_userId(value.userId)) {
@@ -380,7 +380,7 @@ export function validate_Role_2(value: any): boolean {
 }
 
 export function validate_CreateApartmentRequest(value: any): value is types.CreateApartmentRequest {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_CreateApartmentRequest_info(value.info)) {
@@ -405,7 +405,7 @@ export function validate_CreateApartmentRequest_realtorId_present(value: any): b
 }
 
 export function validate_CreateApartmentResponse(value: any): value is types.CreateApartmentResponse {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_CreateApartmentResponse_message(value.message)) {
@@ -426,7 +426,7 @@ export function validate_CreateApartmentResponse_apartmentId(value: any): boolea
 }
 
 export function validate_UpdateApartmentRequest(value: any): value is types.UpdateApartmentRequest {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_UpdateApartmentRequest_info(value.info)) {
@@ -451,7 +451,7 @@ export function validate_UpdateApartmentRequest_realtorId_present(value: any): b
 }
 
 export function validate_ListApartmentsRequest(value: any): value is types.ListApartmentsRequest {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_ListApartmentsRequest_filter(value.filter)) {
@@ -491,7 +491,7 @@ export function validate_ListApartmentsRequest_page_present(value: any): boolean
 }
 
 export function validate_ListApartmentsFilter(value: any): value is types.ListApartmentsFilter {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_ListApartmentsFilter_realtorId(value.realtorId)) {
@@ -536,7 +536,7 @@ export function validate_ListApartmentsFilter_sizeRange(value: any): boolean {
 }
 
 export function validate_ListApartmentsFilter_sizeRange_present(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_ListApartmentsFilter_sizeRange_present_min(value.min)) {
@@ -561,7 +561,7 @@ export function validate_ListApartmentsFilter_priceRange(value: any): boolean {
 }
 
 export function validate_ListApartmentsFilter_priceRange_present(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_ListApartmentsFilter_priceRange_present_min(value.min)) {
@@ -586,7 +586,7 @@ export function validate_ListApartmentsFilter_numberOfRooms(value: any): boolean
 }
 
 export function validate_ListApartmentsFilter_numberOfRooms_present(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_ListApartmentsFilter_numberOfRooms_present_min(value.min)) {
@@ -615,7 +615,7 @@ export function validate_ListApartmentsFilter_viewport_present(value: any): bool
 }
 
 export function validate_ListApartmentsResponse(value: any): value is types.ListApartmentsResponse {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_ListApartmentsResponse_results(value.results)) {
@@ -631,7 +631,7 @@ export function validate_ListApartmentsResponse(value: any): value is types.List
 }
 
 export function validate_ListApartmentsResponse_results(value: any): boolean {
-  if (!(value instanceof Array)) {
+  if (!Array.isArray(value)) {
     return false;
   }
   for (const item of value) {
@@ -655,7 +655,7 @@ export function validate_ListApartmentsResponse_pageCount(value: any): boolean {
 }
 
 export function validate_ApartmentDetails(value: any): value is types.ApartmentDetails {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_ApartmentDetails_apartmentId(value.apartmentId)) {
@@ -690,7 +690,7 @@ export function validate_ApartmentDetails_dateAdded(value: any): boolean {
 }
 
 export function validate_ApartmentInfo(value: any): value is types.ApartmentInfo {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_ApartmentInfo_floorArea(value.floorArea)) {
@@ -732,7 +732,7 @@ export function validate_ApartmentInfo_rented(value: any): boolean {
 }
 
 export function validate_Viewport(value: any): value is types.Viewport {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_Viewport_southWest(value.southWest)) {
@@ -753,7 +753,7 @@ export function validate_Viewport_northEast(value: any): boolean {
 }
 
 export function validate_Coordinates(value: any): value is types.Coordinates {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_Coordinates_latitude(value.latitude)) {
@@ -778,7 +778,7 @@ export function validate_Date(value: any): value is types.Date {
 }
 
 export function validate_Realtor(value: any): value is types.Realtor {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_Realtor_realtorId(value.realtorId)) {
@@ -812,7 +812,7 @@ export function validate_RegisterUser_Response(value: any): value is types.Regis
 }
 
 export function validate_RegisterUser_Response_0(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_RegisterUser_Response_0_kind(value.kind)) {
@@ -833,7 +833,7 @@ export function validate_RegisterUser_Response_0_data(value: any): boolean {
 }
 
 export function validate_RegisterUser_Response_1(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_RegisterUser_Response_1_kind(value.kind)) {
@@ -854,7 +854,7 @@ export function validate_RegisterUser_Response_1_data(value: any): boolean {
 }
 
 export function validate_RegisterUser_Response_2(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_RegisterUser_Response_2_kind(value.kind)) {
@@ -885,7 +885,7 @@ export function validate_VerifyEmailAddress_Response(value: any): value is types
 }
 
 export function validate_VerifyEmailAddress_Response_0(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_VerifyEmailAddress_Response_0_kind(value.kind)) {
@@ -906,7 +906,7 @@ export function validate_VerifyEmailAddress_Response_0_data(value: any): boolean
 }
 
 export function validate_VerifyEmailAddress_Response_1(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_VerifyEmailAddress_Response_1_kind(value.kind)) {
@@ -937,7 +937,7 @@ export function validate_LoginUser_Response(value: any): value is types.LoginUse
 }
 
 export function validate_LoginUser_Response_0(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_LoginUser_Response_0_kind(value.kind)) {
@@ -958,7 +958,7 @@ export function validate_LoginUser_Response_0_data(value: any): boolean {
 }
 
 export function validate_LoginUser_Response_1(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_LoginUser_Response_1_kind(value.kind)) {
@@ -989,7 +989,7 @@ export function validate_CheckAuth_Response(value: any): value is types.CheckAut
 }
 
 export function validate_CheckAuth_Response_0(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_CheckAuth_Response_0_kind(value.kind)) {
@@ -1010,7 +1010,7 @@ export function validate_CheckAuth_Response_0_data(value: any): boolean {
 }
 
 export function validate_CheckAuth_Response_1(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_CheckAuth_Response_1_kind(value.kind)) {
@@ -1047,7 +1047,7 @@ export function validate_UpdateUser_Response(value: any): value is types.UpdateU
 }
 
 export function validate_UpdateUser_Response_0(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_UpdateUser_Response_0_kind(value.kind)) {
@@ -1068,7 +1068,7 @@ export function validate_UpdateUser_Response_0_data(value: any): boolean {
 }
 
 export function validate_UpdateUser_Response_1(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_UpdateUser_Response_1_kind(value.kind)) {
@@ -1089,7 +1089,7 @@ export function validate_UpdateUser_Response_1_data(value: any): boolean {
 }
 
 export function validate_UpdateUser_Response_2(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_UpdateUser_Response_2_kind(value.kind)) {
@@ -1110,7 +1110,7 @@ export function validate_UpdateUser_Response_2_data(value: any): boolean {
 }
 
 export function validate_UpdateUser_Response_3(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_UpdateUser_Response_3_kind(value.kind)) {
@@ -1137,7 +1137,7 @@ export function validate_DeleteUser_Response(value: any): value is types.DeleteU
 }
 
 export function validate_DeleteUser_Response_0(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_DeleteUser_Response_0_kind(value.kind)) {
@@ -1158,7 +1158,7 @@ export function validate_DeleteUser_Response_0_data(value: any): boolean {
 }
 
 export function validate_DeleteUser_Response_1(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_DeleteUser_Response_1_kind(value.kind)) {
@@ -1179,7 +1179,7 @@ export function validate_DeleteUser_Response_1_data(value: any): boolean {
 }
 
 export function validate_DeleteUser_Response_2(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_DeleteUser_Response_2_kind(value.kind)) {
@@ -1203,7 +1203,7 @@ export function validate_ListUsers_Response(value: any): value is types.ListUser
 }
 
 export function validate_ListUsers_Response_0(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_ListUsers_Response_0_kind(value.kind)) {
@@ -1224,7 +1224,7 @@ export function validate_ListUsers_Response_0_data(value: any): boolean {
 }
 
 export function validate_ListUsers_Response_1(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_ListUsers_Response_1_kind(value.kind)) {
@@ -1258,7 +1258,7 @@ export function validate_GetUser_Response(value: any): value is types.GetUser_Re
 }
 
 export function validate_GetUser_Response_0(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_GetUser_Response_0_kind(value.kind)) {
@@ -1279,7 +1279,7 @@ export function validate_GetUser_Response_0_data(value: any): boolean {
 }
 
 export function validate_GetUser_Response_1(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_GetUser_Response_1_kind(value.kind)) {
@@ -1300,7 +1300,7 @@ export function validate_GetUser_Response_1_data(value: any): boolean {
 }
 
 export function validate_GetUser_Response_2(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_GetUser_Response_2_kind(value.kind)) {
@@ -1327,7 +1327,7 @@ export function validate_CreateApartment_Response(value: any): value is types.Cr
 }
 
 export function validate_CreateApartment_Response_0(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_CreateApartment_Response_0_kind(value.kind)) {
@@ -1348,7 +1348,7 @@ export function validate_CreateApartment_Response_0_data(value: any): boolean {
 }
 
 export function validate_CreateApartment_Response_1(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_CreateApartment_Response_1_kind(value.kind)) {
@@ -1369,7 +1369,7 @@ export function validate_CreateApartment_Response_1_data(value: any): boolean {
 }
 
 export function validate_CreateApartment_Response_2(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_CreateApartment_Response_2_kind(value.kind)) {
@@ -1406,7 +1406,7 @@ export function validate_UpdateApartment_Response(value: any): value is types.Up
 }
 
 export function validate_UpdateApartment_Response_0(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_UpdateApartment_Response_0_kind(value.kind)) {
@@ -1427,7 +1427,7 @@ export function validate_UpdateApartment_Response_0_data(value: any): boolean {
 }
 
 export function validate_UpdateApartment_Response_1(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_UpdateApartment_Response_1_kind(value.kind)) {
@@ -1448,7 +1448,7 @@ export function validate_UpdateApartment_Response_1_data(value: any): boolean {
 }
 
 export function validate_UpdateApartment_Response_2(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_UpdateApartment_Response_2_kind(value.kind)) {
@@ -1469,7 +1469,7 @@ export function validate_UpdateApartment_Response_2_data(value: any): boolean {
 }
 
 export function validate_UpdateApartment_Response_3(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_UpdateApartment_Response_3_kind(value.kind)) {
@@ -1496,7 +1496,7 @@ export function validate_DeleteApartment_Response(value: any): value is types.De
 }
 
 export function validate_DeleteApartment_Response_0(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_DeleteApartment_Response_0_kind(value.kind)) {
@@ -1517,7 +1517,7 @@ export function validate_DeleteApartment_Response_0_data(value: any): boolean {
 }
 
 export function validate_DeleteApartment_Response_1(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_DeleteApartment_Response_1_kind(value.kind)) {
@@ -1538,7 +1538,7 @@ export function validate_DeleteApartment_Response_1_data(value: any): boolean {
 }
 
 export function validate_DeleteApartment_Response_2(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_DeleteApartment_Response_2_kind(value.kind)) {
@@ -1562,7 +1562,7 @@ export function validate_ListApartments_Response(value: any): value is types.Lis
 }
 
 export function validate_ListApartments_Response_0(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_ListApartments_Response_0_kind(value.kind)) {
@@ -1583,7 +1583,7 @@ export function validate_ListApartments_Response_0_data(value: any): boolean {
 }
 
 export function validate_ListApartments_Response_1(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_ListApartments_Response_1_kind(value.kind)) {
@@ -1617,7 +1617,7 @@ export function validate_GetApartment_Response(value: any): value is types.GetAp
 }
 
 export function validate_GetApartment_Response_0(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_GetApartment_Response_0_kind(value.kind)) {
@@ -1638,7 +1638,7 @@ export function validate_GetApartment_Response_0_data(value: any): boolean {
 }
 
 export function validate_GetApartment_Response_1(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_GetApartment_Response_1_kind(value.kind)) {
@@ -1659,7 +1659,7 @@ export function validate_GetApartment_Response_1_data(value: any): boolean {
 }
 
 export function validate_GetApartment_Response_2(value: any): boolean {
-  if (!(value instanceof Object)) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
   if (!validate_GetApartment_Response_2_kind(value.kind)) {

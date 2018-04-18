@@ -2,7 +2,10 @@ import axios, { AxiosError } from "axios";
 import * as types from "./api/types";
 import * as validators from "./api/validators";
 
-const URL = "http://localhost:3010";
+const URL = process.env.REACT_APP_API_URL;
+if (!URL) {
+  throw new Error(`Missing environment variable REACT_APP_API_URL.`);
+}
 
 // start-generated-section endpoints
 export async function registerUser(

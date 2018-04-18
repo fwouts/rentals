@@ -32,8 +32,8 @@ export class AuthenticatedClientViewModel {
 
   public listApartments = async () => {
     this.state = new ListApartmentsViewModel(this.authenticated);
-    this.state.loadFresh();
     this.router.push();
+    await this.state.loadFresh();
   }
 
   public updateUser = () => {

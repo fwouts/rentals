@@ -1,5 +1,5 @@
 import "jest";
-import { resetDatabase } from "../../testing/integration/client";
+import { resetDatabase, verifyUser } from "../../testing/integration/client";
 import { AppController } from "../app";
 
 beforeEach(async () => {
@@ -26,7 +26,11 @@ test("client list apartments", async () => {
   registerState.name = "Francois";
   registerState.role = "client";
   await registerState.submit();
+  await verifyUser({
+    email: "f@zenc.io",
+  });
 
+  await app.signIn();
   const authenticateState = app.state;
   if (authenticateState.kind !== "signin") {
     throw expect(app.state).toMatchObject({
