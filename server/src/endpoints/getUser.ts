@@ -1,7 +1,7 @@
 import { authenticate } from "@/auth/token";
 import { connection } from "@/db/connections";
 import { User } from "@/db/entities/user";
-import { AuthRequired, GetUser_Response } from "../api";
+import { AuthRequired, GetUser_Response } from "../api/types";
 
 export async function getUser(
   headers: AuthRequired,

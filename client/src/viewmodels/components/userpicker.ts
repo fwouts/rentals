@@ -1,5 +1,5 @@
 import { observable } from "mobx";
-import { Role, UserDetails } from "../../api";
+import { Role, UserDetails } from "../../api/types";
 import { listUsers } from "../../client";
 import { SessionInfo } from "../signin";
 

@@ -1,5 +1,5 @@
 import { observable } from "mobx";
-import { ApartmentDetails } from "../../api";
+import { ApartmentDetails } from "../../api/types";
 import { getApartment } from "../../client";
 import { Router } from "../../router";
 import { AppViewModel } from "../app";

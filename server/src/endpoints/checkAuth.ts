@@ -1,5 +1,5 @@
 import { authenticate } from "@/auth/token";
-import { AuthRequired, CheckAuth_Response } from "../api";
+import { AuthRequired, CheckAuth_Response } from "../api/types";
 
 export async function checkAuth(
   headers: AuthRequired,

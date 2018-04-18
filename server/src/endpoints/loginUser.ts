@@ -1,6 +1,6 @@
 import { passwordValid } from "@/auth/salting";
 import { createSessionToken } from "@/auth/token";
-import { LoginUser_Response, LoginUserRequest } from "../api";
+import { LoginUser_Response, LoginUserRequest } from "../api/types";
 import { connection } from "../db/connections";
 import { User } from "../db/entities/user";
 

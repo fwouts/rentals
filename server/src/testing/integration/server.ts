@@ -4,33 +4,30 @@ import { initDatabase } from "@/db";
 import bodyParser from "body-parser";
 import cors from "cors";
 import express from "express";
-import * as api from "./api";
+import * as types from "./api/types";
+
+// start-generated-section endpointImports
 import { resetDatabase } from "./endpoints/resetDatabase";
+// end-generated-section endpointImports
 
 const PORT = 3020;
 
 const app = express();
 app.use(bodyParser.json());
-// TODO: Change CORS configuration.
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (
-        !origin ||
-        origin === "http://localhost" ||
-        origin.startsWith("http://localhost:")
-      ) {
-        callback(null, true);
-      } else {
-        callback(new Error(`Access is not allowed from ${origin}.`));
-      }
+      callback(null, true);
+      // If you want to only allow some origins, use the following instead:
+      // callback(new Error(`Access is not allowed from ${origin}.`));
     },
   }),
 );
 
+// start-generated-section httpHooks
 app.post("/reset", async (req, res, next) => {
   try {
-    const response: api.ResetDatabase_Response = await resetDatabase();
+    const response: types.ResetDatabase_Response = await resetDatabase();
     switch (response.kind) {
       case "success":
         res.status(200);
@@ -45,6 +42,7 @@ app.post("/reset", async (req, res, next) => {
     next(err);
   }
 });
+// end-generated-section httpHooks
 
 if (require.main === module) {
   initDatabase().catch((e) => {

@@ -1,9 +1,10 @@
 import axios, { AxiosError } from "axios";
-import * as api from "./api";
+import * as types from "./api/types";
 
 const URL = "http://localhost:3020";
 
-export async function resetDatabase(): Promise<api.ResetDatabase_Response> {
+// start-generated-section endpoints
+export async function resetDatabase(): Promise<types.ResetDatabase_Response> {
   const url = `${URL}/reset`;
   let statusCode: number;
   let statusText: string;
@@ -34,3 +35,4 @@ export async function resetDatabase(): Promise<api.ResetDatabase_Response> {
       throw new Error(`Unexpected status: ${statusCode} ${statusText}`);
   }
 }
+// end-generated-section endpoints

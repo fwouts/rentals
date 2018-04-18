@@ -1,4 +1,6 @@
-export function validate_ResetDatabase_Response(value: any): boolean {
+import * as types from "./types";
+
+export function validate_ResetDatabase_Response(value: any): value is types.ResetDatabase_Response {
   if (validate_ResetDatabase_Response_0(value)) {
     return true;
   }
@@ -19,30 +21,30 @@ export function validate_ResetDatabase_Response_0_kind(value: any): boolean {
   return value === "success";
 }
 
-export function validate_bool(value: any): boolean {
+export function validate_bool(value: any): value is boolean {
   return typeof value === "boolean";
 }
 
-export function validate_int(value: any): boolean {
+export function validate_int(value: any): value is number {
   return typeof value === "number" && Number.isInteger(value);
 }
 
-export function validate_long(value: any): boolean {
+export function validate_long(value: any): value is number {
   return typeof value === "number" && Number.isInteger(value);
 }
 
-export function validate_float(value: any): boolean {
+export function validate_float(value: any): value is number {
   return typeof value === "number";
 }
 
-export function validate_double(value: any): boolean {
+export function validate_double(value: any): value is number {
   return typeof value === "number";
 }
 
-export function validate_string(value: any): boolean {
+export function validate_string(value: any): value is string {
   return typeof value === "string";
 }
 
-export function validate_null(value: any): boolean {
+export function validate_null(value: any): value is null {
   return value === null;
 }

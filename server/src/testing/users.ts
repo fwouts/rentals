@@ -1,4 +1,4 @@
-import { AuthRequired } from "@/api";
+import { AuthRequired } from "@/api/types";
 import { connection } from "@/db/connections";
 import { User } from "@/db/entities/user";
 import { loginUser } from "@/endpoints/loginUser";

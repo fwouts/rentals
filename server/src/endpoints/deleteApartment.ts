@@ -1,7 +1,7 @@
 import { authenticate } from "@/auth/token";
 import { connection } from "@/db/connections";
 import { Apartment } from "@/db/entities/apartment";
-import { AuthRequired, DeleteApartment_Response } from "../api";
+import { AuthRequired, DeleteApartment_Response } from "../api/types";
 
 export async function deleteApartment(
   headers: AuthRequired,

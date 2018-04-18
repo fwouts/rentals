@@ -1,4 +1,4 @@
-import { Role } from "@/api";
+import { Role } from "@/api/types";
 import * as salting from "@/auth/salting";
 import { Session } from "@/db/entities/session";
 import owasp from "owasp-password-strength-test";

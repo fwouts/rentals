@@ -1,6 +1,6 @@
 import { Message } from "element-react";
 import { observable } from "mobx";
-import { ApartmentInfo, UserDetails } from "../../../../api";
+import { ApartmentInfo, UserDetails } from "../../../../api/types";
 import { createApartment } from "../../../../client";
 import { UserPickerViewModel } from "../../../components/userpicker";
 import { SessionInfo } from "../../../signin";

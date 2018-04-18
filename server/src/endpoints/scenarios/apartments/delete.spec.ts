@@ -1,4 +1,4 @@
-import { ApartmentInfo } from "@/api";
+import { ApartmentInfo } from "@/api/types";
 import { connection } from "@/db/connections";
 import { Apartment } from "@/db/entities/apartment";
 import { deleteApartment } from "@/endpoints/deleteApartment";

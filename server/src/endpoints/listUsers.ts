@@ -6,7 +6,7 @@ import {
   ListUsers_Response,
   ListUsersRequest,
   UserDetails,
-} from "../api";
+} from "../api/types";
 
 const MAX_RESULTS_PER_PAGE = 100;
 

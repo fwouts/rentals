@@ -1,4 +1,6 @@
-export function validate_AuthOptional(value: any): boolean {
+import * as types from "./types";
+
+export function validate_AuthOptional(value: any): value is types.AuthOptional {
   if (!(value instanceof Object)) {
     return false;
   }
@@ -16,7 +18,7 @@ export function validate_AuthOptional_Authorization_present(value: any): boolean
   return typeof value === "string";
 }
 
-export function validate_AuthRequired(value: any): boolean {
+export function validate_AuthRequired(value: any): value is types.AuthRequired {
   if (!(value instanceof Object)) {
     return false;
   }
@@ -30,7 +32,7 @@ export function validate_AuthRequired_Authorization(value: any): boolean {
   return typeof value === "string";
 }
 
-export function validate_RegisterUserRequest(value: any): boolean {
+export function validate_RegisterUserRequest(value: any): value is types.RegisterUserRequest {
   if (!(value instanceof Object)) {
     return false;
   }
@@ -65,7 +67,7 @@ export function validate_RegisterUserRequest_role(value: any): boolean {
   return validate_Role(value);
 }
 
-export function validate_VerifyEmailRequest(value: any): boolean {
+export function validate_VerifyEmailRequest(value: any): value is types.VerifyEmailRequest {
   if (!(value instanceof Object)) {
     return false;
   }
@@ -79,11 +81,11 @@ export function validate_VerifyEmailRequest_token(value: any): boolean {
   return typeof value === "string";
 }
 
-export function validate_VerifyEmailResponse(value: any): boolean {
+export function validate_VerifyEmailResponse(value: any): value is types.VerifyEmailResponse {
   return validate_LoginUserResponse(value);
 }
 
-export function validate_LoginUserRequest(value: any): boolean {
+export function validate_LoginUserRequest(value: any): value is types.LoginUserRequest {
   if (!(value instanceof Object)) {
     return false;
   }
@@ -104,7 +106,7 @@ export function validate_LoginUserRequest_password(value: any): boolean {
   return typeof value === "string";
 }
 
-export function validate_LoginUserResponse(value: any): boolean {
+export function validate_LoginUserResponse(value: any): value is types.LoginUserResponse {
   if (!(value instanceof Object)) {
     return false;
   }
@@ -139,7 +141,7 @@ export function validate_LoginUserResponse_role(value: any): boolean {
   return validate_Role(value);
 }
 
-export function validate_UpdateUserRequest(value: any): boolean {
+export function validate_UpdateUserRequest(value: any): value is types.UpdateUserRequest {
   if (!(value instanceof Object)) {
     return false;
   }
@@ -190,7 +192,7 @@ export function validate_UpdateUserRequest_newPassword_present(value: any): bool
   return typeof value === "string";
 }
 
-export function validate_DeleteUserRequest(value: any): boolean {
+export function validate_DeleteUserRequest(value: any): value is types.DeleteUserRequest {
   if (!(value instanceof Object)) {
     return false;
   }
@@ -208,7 +210,7 @@ export function validate_DeleteUserRequest_password_present(value: any): boolean
   return typeof value === "string";
 }
 
-export function validate_ListUsersRequest(value: any): boolean {
+export function validate_ListUsersRequest(value: any): value is types.ListUsersRequest {
   if (!(value instanceof Object)) {
     return false;
   }
@@ -248,7 +250,7 @@ export function validate_ListUsersRequest_page_present(value: any): boolean {
   return typeof value === "number" && Number.isInteger(value);
 }
 
-export function validate_ListUsersFilter(value: any): boolean {
+export function validate_ListUsersFilter(value: any): value is types.ListUsersFilter {
   if (!(value instanceof Object)) {
     return false;
   }
@@ -277,7 +279,7 @@ export function validate_ListUsersFilter_name_present(value: any): boolean {
   return typeof value === "string";
 }
 
-export function validate_ListUsersResponse(value: any): boolean {
+export function validate_ListUsersResponse(value: any): value is types.ListUsersResponse {
   if (!(value instanceof Object)) {
     return false;
   }
@@ -317,7 +319,7 @@ export function validate_ListUsersResponse_pageCount(value: any): boolean {
   return typeof value === "number" && Number.isInteger(value);
 }
 
-export function validate_UserDetails(value: any): boolean {
+export function validate_UserDetails(value: any): value is types.UserDetails {
   if (!(value instanceof Object)) {
     return false;
   }
@@ -352,7 +354,7 @@ export function validate_UserDetails_role(value: any): boolean {
   return validate_Role(value);
 }
 
-export function validate_Role(value: any): boolean {
+export function validate_Role(value: any): value is types.Role {
   if (validate_Role_0(value)) {
     return true;
   }
@@ -377,7 +379,7 @@ export function validate_Role_2(value: any): boolean {
   return value === "admin";
 }
 
-export function validate_CreateApartmentRequest(value: any): boolean {
+export function validate_CreateApartmentRequest(value: any): value is types.CreateApartmentRequest {
   if (!(value instanceof Object)) {
     return false;
   }
@@ -402,7 +404,7 @@ export function validate_CreateApartmentRequest_realtorId_present(value: any): b
   return typeof value === "string";
 }
 
-export function validate_CreateApartmentResponse(value: any): boolean {
+export function validate_CreateApartmentResponse(value: any): value is types.CreateApartmentResponse {
   if (!(value instanceof Object)) {
     return false;
   }
@@ -423,7 +425,7 @@ export function validate_CreateApartmentResponse_apartmentId(value: any): boolea
   return typeof value === "string";
 }
 
-export function validate_UpdateApartmentRequest(value: any): boolean {
+export function validate_UpdateApartmentRequest(value: any): value is types.UpdateApartmentRequest {
   if (!(value instanceof Object)) {
     return false;
   }
@@ -448,7 +450,7 @@ export function validate_UpdateApartmentRequest_realtorId_present(value: any): b
   return typeof value === "string";
 }
 
-export function validate_ListApartmentsRequest(value: any): boolean {
+export function validate_ListApartmentsRequest(value: any): value is types.ListApartmentsRequest {
   if (!(value instanceof Object)) {
     return false;
   }
@@ -488,7 +490,7 @@ export function validate_ListApartmentsRequest_page_present(value: any): boolean
   return typeof value === "number" && Number.isInteger(value);
 }
 
-export function validate_ListApartmentsFilter(value: any): boolean {
+export function validate_ListApartmentsFilter(value: any): value is types.ListApartmentsFilter {
   if (!(value instanceof Object)) {
     return false;
   }
@@ -612,7 +614,7 @@ export function validate_ListApartmentsFilter_viewport_present(value: any): bool
   return validate_Viewport(value);
 }
 
-export function validate_ListApartmentsResponse(value: any): boolean {
+export function validate_ListApartmentsResponse(value: any): value is types.ListApartmentsResponse {
   if (!(value instanceof Object)) {
     return false;
   }
@@ -652,7 +654,7 @@ export function validate_ListApartmentsResponse_pageCount(value: any): boolean {
   return typeof value === "number" && Number.isInteger(value);
 }
 
-export function validate_ApartmentDetails(value: any): boolean {
+export function validate_ApartmentDetails(value: any): value is types.ApartmentDetails {
   if (!(value instanceof Object)) {
     return false;
   }
@@ -687,7 +689,7 @@ export function validate_ApartmentDetails_dateAdded(value: any): boolean {
   return validate_Date(value);
 }
 
-export function validate_ApartmentInfo(value: any): boolean {
+export function validate_ApartmentInfo(value: any): value is types.ApartmentInfo {
   if (!(value instanceof Object)) {
     return false;
   }
@@ -729,7 +731,7 @@ export function validate_ApartmentInfo_rented(value: any): boolean {
   return typeof value === "boolean";
 }
 
-export function validate_Viewport(value: any): boolean {
+export function validate_Viewport(value: any): value is types.Viewport {
   if (!(value instanceof Object)) {
     return false;
   }
@@ -750,7 +752,7 @@ export function validate_Viewport_northEast(value: any): boolean {
   return validate_Coordinates(value);
 }
 
-export function validate_Coordinates(value: any): boolean {
+export function validate_Coordinates(value: any): value is types.Coordinates {
   if (!(value instanceof Object)) {
     return false;
   }
@@ -771,11 +773,11 @@ export function validate_Coordinates_longitude(value: any): boolean {
   return typeof value === "number";
 }
 
-export function validate_Date(value: any): boolean {
+export function validate_Date(value: any): value is types.Date {
   return typeof value === "number" && Number.isInteger(value);
 }
 
-export function validate_Realtor(value: any): boolean {
+export function validate_Realtor(value: any): value is types.Realtor {
   if (!(value instanceof Object)) {
     return false;
   }
@@ -796,7 +798,7 @@ export function validate_Realtor_name(value: any): boolean {
   return typeof value === "string";
 }
 
-export function validate_RegisterUser_Response(value: any): boolean {
+export function validate_RegisterUser_Response(value: any): value is types.RegisterUser_Response {
   if (validate_RegisterUser_Response_0(value)) {
     return true;
   }
@@ -872,7 +874,7 @@ export function validate_RegisterUser_Response_2_data(value: any): boolean {
   return typeof value === "string";
 }
 
-export function validate_VerifyEmailAddress_Response(value: any): boolean {
+export function validate_VerifyEmailAddress_Response(value: any): value is types.VerifyEmailAddress_Response {
   if (validate_VerifyEmailAddress_Response_0(value)) {
     return true;
   }
@@ -924,7 +926,7 @@ export function validate_VerifyEmailAddress_Response_1_data(value: any): boolean
   return typeof value === "string";
 }
 
-export function validate_LoginUser_Response(value: any): boolean {
+export function validate_LoginUser_Response(value: any): value is types.LoginUser_Response {
   if (validate_LoginUser_Response_0(value)) {
     return true;
   }
@@ -976,7 +978,7 @@ export function validate_LoginUser_Response_1_data(value: any): boolean {
   return typeof value === "string";
 }
 
-export function validate_CheckAuth_Response(value: any): boolean {
+export function validate_CheckAuth_Response(value: any): value is types.CheckAuth_Response {
   if (validate_CheckAuth_Response_0(value)) {
     return true;
   }
@@ -1028,7 +1030,7 @@ export function validate_CheckAuth_Response_1_data(value: any): boolean {
   return typeof value === "string";
 }
 
-export function validate_UpdateUser_Response(value: any): boolean {
+export function validate_UpdateUser_Response(value: any): value is types.UpdateUser_Response {
   if (validate_UpdateUser_Response_0(value)) {
     return true;
   }
@@ -1121,7 +1123,7 @@ export function validate_UpdateUser_Response_3_kind(value: any): boolean {
   return value === "notfound";
 }
 
-export function validate_DeleteUser_Response(value: any): boolean {
+export function validate_DeleteUser_Response(value: any): value is types.DeleteUser_Response {
   if (validate_DeleteUser_Response_0(value)) {
     return true;
   }
@@ -1190,7 +1192,7 @@ export function validate_DeleteUser_Response_2_kind(value: any): boolean {
   return value === "notfound";
 }
 
-export function validate_ListUsers_Response(value: any): boolean {
+export function validate_ListUsers_Response(value: any): value is types.ListUsers_Response {
   if (validate_ListUsers_Response_0(value)) {
     return true;
   }
@@ -1242,7 +1244,7 @@ export function validate_ListUsers_Response_1_data(value: any): boolean {
   return typeof value === "string";
 }
 
-export function validate_GetUser_Response(value: any): boolean {
+export function validate_GetUser_Response(value: any): value is types.GetUser_Response {
   if (validate_GetUser_Response_0(value)) {
     return true;
   }
@@ -1311,7 +1313,7 @@ export function validate_GetUser_Response_2_kind(value: any): boolean {
   return value === "notfound";
 }
 
-export function validate_CreateApartment_Response(value: any): boolean {
+export function validate_CreateApartment_Response(value: any): value is types.CreateApartment_Response {
   if (validate_CreateApartment_Response_0(value)) {
     return true;
   }
@@ -1387,7 +1389,7 @@ export function validate_CreateApartment_Response_2_data(value: any): boolean {
   return typeof value === "string";
 }
 
-export function validate_UpdateApartment_Response(value: any): boolean {
+export function validate_UpdateApartment_Response(value: any): value is types.UpdateApartment_Response {
   if (validate_UpdateApartment_Response_0(value)) {
     return true;
   }
@@ -1480,7 +1482,7 @@ export function validate_UpdateApartment_Response_3_kind(value: any): boolean {
   return value === "notfound";
 }
 
-export function validate_DeleteApartment_Response(value: any): boolean {
+export function validate_DeleteApartment_Response(value: any): value is types.DeleteApartment_Response {
   if (validate_DeleteApartment_Response_0(value)) {
     return true;
   }
@@ -1549,7 +1551,7 @@ export function validate_DeleteApartment_Response_2_kind(value: any): boolean {
   return value === "notfound";
 }
 
-export function validate_ListApartments_Response(value: any): boolean {
+export function validate_ListApartments_Response(value: any): value is types.ListApartments_Response {
   if (validate_ListApartments_Response_0(value)) {
     return true;
   }
@@ -1601,7 +1603,7 @@ export function validate_ListApartments_Response_1_data(value: any): boolean {
   return typeof value === "string";
 }
 
-export function validate_GetApartment_Response(value: any): boolean {
+export function validate_GetApartment_Response(value: any): value is types.GetApartment_Response {
   if (validate_GetApartment_Response_0(value)) {
     return true;
   }
@@ -1670,30 +1672,30 @@ export function validate_GetApartment_Response_2_kind(value: any): boolean {
   return value === "notfound";
 }
 
-export function validate_bool(value: any): boolean {
+export function validate_bool(value: any): value is boolean {
   return typeof value === "boolean";
 }
 
-export function validate_int(value: any): boolean {
+export function validate_int(value: any): value is number {
   return typeof value === "number" && Number.isInteger(value);
 }
 
-export function validate_long(value: any): boolean {
+export function validate_long(value: any): value is number {
   return typeof value === "number" && Number.isInteger(value);
 }
 
-export function validate_float(value: any): boolean {
+export function validate_float(value: any): value is number {
   return typeof value === "number";
 }
 
-export function validate_double(value: any): boolean {
+export function validate_double(value: any): value is number {
   return typeof value === "number";
 }
 
-export function validate_string(value: any): boolean {
+export function validate_string(value: any): value is string {
   return typeof value === "string";
 }
 
-export function validate_null(value: any): boolean {
+export function validate_null(value: any): value is null {
   return value === null;
 }

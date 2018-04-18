@@ -5,7 +5,7 @@ import {
   AuthRequired,
   CreateApartment_Response,
   CreateApartmentRequest,
-} from "../api";
+} from "../api/types";
 
 export async function createApartment(
   headers: AuthRequired,

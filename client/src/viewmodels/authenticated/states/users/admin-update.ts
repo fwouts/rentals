@@ -1,6 +1,6 @@
 import { Message } from "element-react";
 import { observable } from "mobx";
-import { UserDetails } from "../../../../api";
+import { UserDetails } from "../../../../api/types";
 import { updateUser } from "../../../../client";
 import { SessionInfo } from "../../../signin";
 

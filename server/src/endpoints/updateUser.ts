@@ -5,7 +5,11 @@ import { User } from "@/db/entities/user";
 import { sendEmailUpdateVerification } from "@/emails/user-email-update";
 import emailValidator from "email-validator";
 import owasp from "owasp-password-strength-test";
-import { AuthRequired, UpdateUser_Response, UpdateUserRequest } from "../api";
+import {
+  AuthRequired,
+  UpdateUser_Response,
+  UpdateUserRequest,
+} from "../api/types";
 
 export async function updateUser(
   headers: AuthRequired,

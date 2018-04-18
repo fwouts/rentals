@@ -20,7 +20,7 @@ import {
   withGoogleMap,
   withScriptjs,
 } from "react-google-maps";
-import { ApartmentDetails, Viewport } from "../../api";
+import { ApartmentDetails, Viewport } from "../../api/types";
 import { ListApartmentsViewModel } from "../../viewmodels/authenticated/states/apartments/list";
 import { UserPickerViewModel } from "../../viewmodels/components/userpicker";
 import "./ListApartments.scss";

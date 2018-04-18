@@ -1,17 +1,18 @@
 import axios, { AxiosError } from "axios";
-import * as api from "./api";
-import * as validation from "./validation";
+import * as types from "./api/types";
+import * as validators from "./api/validators";
 
 const URL = "http://localhost:3010";
 
+// start-generated-section endpoints
 export async function registerUser(
-  headers: api.AuthOptional,
-  request: api.RegisterUserRequest,
-): Promise<api.RegisterUser_Response> {
-  if (!validation.validate_AuthOptional(headers)) {
+  headers: types.AuthOptional,
+  request: types.RegisterUserRequest,
+): Promise<types.RegisterUser_Response> {
+  if (!validators.validate_AuthOptional(headers)) {
     throw new Error(`Invalid headers: ${JSON.stringify(headers, null, 2)}`);
   }
-  if (!validation.validate_RegisterUserRequest(request)) {
+  if (!validators.validate_RegisterUserRequest(request)) {
     throw new Error(`Invalid request: ${JSON.stringify(request, null, 2)}`);
   }
   const url = `${URL}/users/register`;
@@ -42,7 +43,7 @@ export async function registerUser(
   }
   switch (statusCode) {
     case 200:
-      if (!validation.validate_string(data)) {
+      if (!validators.validate_string(data)) {
         throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
       }
       return {
@@ -50,7 +51,7 @@ export async function registerUser(
         data,
       };
     case 403:
-      if (!validation.validate_string(data)) {
+      if (!validators.validate_string(data)) {
         throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
       }
       return {
@@ -58,7 +59,7 @@ export async function registerUser(
         data,
       };
     case 409:
-      if (!validation.validate_string(data)) {
+      if (!validators.validate_string(data)) {
         throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
       }
       return {
@@ -71,9 +72,9 @@ export async function registerUser(
 }
 
 export async function verifyEmailAddress(
-  request: api.VerifyEmailRequest,
-): Promise<api.VerifyEmailAddress_Response> {
-  if (!validation.validate_VerifyEmailRequest(request)) {
+  request: types.VerifyEmailRequest,
+): Promise<types.VerifyEmailAddress_Response> {
+  if (!validators.validate_VerifyEmailRequest(request)) {
     throw new Error(`Invalid request: ${JSON.stringify(request, null, 2)}`);
   }
   const url = `${URL}/users/verify`;
@@ -103,7 +104,7 @@ export async function verifyEmailAddress(
   }
   switch (statusCode) {
     case 200:
-      if (!validation.validate_VerifyEmailResponse(data)) {
+      if (!validators.validate_VerifyEmailResponse(data)) {
         throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
       }
       return {
@@ -111,7 +112,7 @@ export async function verifyEmailAddress(
         data,
       };
     case 409:
-      if (!validation.validate_string(data)) {
+      if (!validators.validate_string(data)) {
         throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
       }
       return {
@@ -124,9 +125,9 @@ export async function verifyEmailAddress(
 }
 
 export async function loginUser(
-  request: api.LoginUserRequest,
-): Promise<api.LoginUser_Response> {
-  if (!validation.validate_LoginUserRequest(request)) {
+  request: types.LoginUserRequest,
+): Promise<types.LoginUser_Response> {
+  if (!validators.validate_LoginUserRequest(request)) {
     throw new Error(`Invalid request: ${JSON.stringify(request, null, 2)}`);
   }
   const url = `${URL}/users/login`;
@@ -156,7 +157,7 @@ export async function loginUser(
   }
   switch (statusCode) {
     case 200:
-      if (!validation.validate_LoginUserResponse(data)) {
+      if (!validators.validate_LoginUserResponse(data)) {
         throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
       }
       return {
@@ -164,7 +165,7 @@ export async function loginUser(
         data,
       };
     case 401:
-      if (!validation.validate_string(data)) {
+      if (!validators.validate_string(data)) {
         throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
       }
       return {
@@ -177,9 +178,9 @@ export async function loginUser(
 }
 
 export async function checkAuth(
-  headers: api.AuthRequired,
-): Promise<api.CheckAuth_Response> {
-  if (!validation.validate_AuthRequired(headers)) {
+  headers: types.AuthRequired,
+): Promise<types.CheckAuth_Response> {
+  if (!validators.validate_AuthRequired(headers)) {
     throw new Error(`Invalid headers: ${JSON.stringify(headers, null, 2)}`);
   }
   const url = `${URL}/users/auth`;
@@ -209,7 +210,7 @@ export async function checkAuth(
   }
   switch (statusCode) {
     case 200:
-      if (!validation.validate_LoginUserResponse(data)) {
+      if (!validators.validate_LoginUserResponse(data)) {
         throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
       }
       return {
@@ -217,7 +218,7 @@ export async function checkAuth(
         data,
       };
     case 401:
-      if (!validation.validate_string(data)) {
+      if (!validators.validate_string(data)) {
         throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
       }
       return {
@@ -230,14 +231,14 @@ export async function checkAuth(
 }
 
 export async function updateUser(
-  headers: api.AuthRequired,
+  headers: types.AuthRequired,
   id: string,
-  request: api.UpdateUserRequest,
-): Promise<api.UpdateUser_Response> {
-  if (!validation.validate_AuthRequired(headers)) {
+  request: types.UpdateUserRequest,
+): Promise<types.UpdateUser_Response> {
+  if (!validators.validate_AuthRequired(headers)) {
     throw new Error(`Invalid headers: ${JSON.stringify(headers, null, 2)}`);
   }
-  if (!validation.validate_UpdateUserRequest(request)) {
+  if (!validators.validate_UpdateUserRequest(request)) {
     throw new Error(`Invalid request: ${JSON.stringify(request, null, 2)}`);
   }
   const url = `${URL}/users/${id}`;
@@ -268,7 +269,7 @@ export async function updateUser(
   }
   switch (statusCode) {
     case 200:
-      if (!validation.validate_string(data)) {
+      if (!validators.validate_string(data)) {
         throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
       }
       return {
@@ -276,7 +277,7 @@ export async function updateUser(
         data,
       };
     case 403:
-      if (!validation.validate_string(data)) {
+      if (!validators.validate_string(data)) {
         throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
       }
       return {
@@ -284,7 +285,7 @@ export async function updateUser(
         data,
       };
     case 409:
-      if (!validation.validate_string(data)) {
+      if (!validators.validate_string(data)) {
         throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
       }
       return {
@@ -301,14 +302,14 @@ export async function updateUser(
 }
 
 export async function deleteUser(
-  headers: api.AuthRequired,
+  headers: types.AuthRequired,
   id: string,
-  request: api.DeleteUserRequest,
-): Promise<api.DeleteUser_Response> {
-  if (!validation.validate_AuthRequired(headers)) {
+  request: types.DeleteUserRequest,
+): Promise<types.DeleteUser_Response> {
+  if (!validators.validate_AuthRequired(headers)) {
     throw new Error(`Invalid headers: ${JSON.stringify(headers, null, 2)}`);
   }
-  if (!validation.validate_DeleteUserRequest(request)) {
+  if (!validators.validate_DeleteUserRequest(request)) {
     throw new Error(`Invalid request: ${JSON.stringify(request, null, 2)}`);
   }
   const url = `${URL}/users/${id}`;
@@ -339,7 +340,7 @@ export async function deleteUser(
   }
   switch (statusCode) {
     case 200:
-      if (!validation.validate_string(data)) {
+      if (!validators.validate_string(data)) {
         throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
       }
       return {
@@ -347,7 +348,7 @@ export async function deleteUser(
         data,
       };
     case 403:
-      if (!validation.validate_string(data)) {
+      if (!validators.validate_string(data)) {
         throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
       }
       return {
@@ -364,13 +365,13 @@ export async function deleteUser(
 }
 
 export async function listUsers(
-  headers: api.AuthRequired,
-  request: api.ListUsersRequest,
-): Promise<api.ListUsers_Response> {
-  if (!validation.validate_AuthRequired(headers)) {
+  headers: types.AuthRequired,
+  request: types.ListUsersRequest,
+): Promise<types.ListUsers_Response> {
+  if (!validators.validate_AuthRequired(headers)) {
     throw new Error(`Invalid headers: ${JSON.stringify(headers, null, 2)}`);
   }
-  if (!validation.validate_ListUsersRequest(request)) {
+  if (!validators.validate_ListUsersRequest(request)) {
     throw new Error(`Invalid request: ${JSON.stringify(request, null, 2)}`);
   }
   const url = `${URL}/users/list`;
@@ -401,7 +402,7 @@ export async function listUsers(
   }
   switch (statusCode) {
     case 200:
-      if (!validation.validate_ListUsersResponse(data)) {
+      if (!validators.validate_ListUsersResponse(data)) {
         throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
       }
       return {
@@ -409,7 +410,7 @@ export async function listUsers(
         data,
       };
     case 403:
-      if (!validation.validate_string(data)) {
+      if (!validators.validate_string(data)) {
         throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
       }
       return {
@@ -422,10 +423,10 @@ export async function listUsers(
 }
 
 export async function getUser(
-  headers: api.AuthRequired,
+  headers: types.AuthRequired,
   id: string,
-): Promise<api.GetUser_Response> {
-  if (!validation.validate_AuthRequired(headers)) {
+): Promise<types.GetUser_Response> {
+  if (!validators.validate_AuthRequired(headers)) {
     throw new Error(`Invalid headers: ${JSON.stringify(headers, null, 2)}`);
   }
   const url = `${URL}/users/${id}`;
@@ -455,7 +456,7 @@ export async function getUser(
   }
   switch (statusCode) {
     case 200:
-      if (!validation.validate_UserDetails(data)) {
+      if (!validators.validate_UserDetails(data)) {
         throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
       }
       return {
@@ -463,7 +464,7 @@ export async function getUser(
         data,
       };
     case 403:
-      if (!validation.validate_string(data)) {
+      if (!validators.validate_string(data)) {
         throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
       }
       return {
@@ -480,13 +481,13 @@ export async function getUser(
 }
 
 export async function createApartment(
-  headers: api.AuthRequired,
-  request: api.CreateApartmentRequest,
-): Promise<api.CreateApartment_Response> {
-  if (!validation.validate_AuthRequired(headers)) {
+  headers: types.AuthRequired,
+  request: types.CreateApartmentRequest,
+): Promise<types.CreateApartment_Response> {
+  if (!validators.validate_AuthRequired(headers)) {
     throw new Error(`Invalid headers: ${JSON.stringify(headers, null, 2)}`);
   }
-  if (!validation.validate_CreateApartmentRequest(request)) {
+  if (!validators.validate_CreateApartmentRequest(request)) {
     throw new Error(`Invalid request: ${JSON.stringify(request, null, 2)}`);
   }
   const url = `${URL}/apartments/create`;
@@ -517,7 +518,7 @@ export async function createApartment(
   }
   switch (statusCode) {
     case 200:
-      if (!validation.validate_CreateApartmentResponse(data)) {
+      if (!validators.validate_CreateApartmentResponse(data)) {
         throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
       }
       return {
@@ -525,7 +526,7 @@ export async function createApartment(
         data,
       };
     case 403:
-      if (!validation.validate_string(data)) {
+      if (!validators.validate_string(data)) {
         throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
       }
       return {
@@ -533,7 +534,7 @@ export async function createApartment(
         data,
       };
     case 409:
-      if (!validation.validate_string(data)) {
+      if (!validators.validate_string(data)) {
         throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
       }
       return {
@@ -546,14 +547,14 @@ export async function createApartment(
 }
 
 export async function updateApartment(
-  headers: api.AuthRequired,
+  headers: types.AuthRequired,
   id: string,
-  request: api.UpdateApartmentRequest,
-): Promise<api.UpdateApartment_Response> {
-  if (!validation.validate_AuthRequired(headers)) {
+  request: types.UpdateApartmentRequest,
+): Promise<types.UpdateApartment_Response> {
+  if (!validators.validate_AuthRequired(headers)) {
     throw new Error(`Invalid headers: ${JSON.stringify(headers, null, 2)}`);
   }
-  if (!validation.validate_UpdateApartmentRequest(request)) {
+  if (!validators.validate_UpdateApartmentRequest(request)) {
     throw new Error(`Invalid request: ${JSON.stringify(request, null, 2)}`);
   }
   const url = `${URL}/apartments/${id}`;
@@ -584,7 +585,7 @@ export async function updateApartment(
   }
   switch (statusCode) {
     case 200:
-      if (!validation.validate_string(data)) {
+      if (!validators.validate_string(data)) {
         throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
       }
       return {
@@ -592,7 +593,7 @@ export async function updateApartment(
         data,
       };
     case 403:
-      if (!validation.validate_string(data)) {
+      if (!validators.validate_string(data)) {
         throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
       }
       return {
@@ -600,7 +601,7 @@ export async function updateApartment(
         data,
       };
     case 409:
-      if (!validation.validate_string(data)) {
+      if (!validators.validate_string(data)) {
         throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
       }
       return {
@@ -617,10 +618,10 @@ export async function updateApartment(
 }
 
 export async function deleteApartment(
-  headers: api.AuthRequired,
+  headers: types.AuthRequired,
   id: string,
-): Promise<api.DeleteApartment_Response> {
-  if (!validation.validate_AuthRequired(headers)) {
+): Promise<types.DeleteApartment_Response> {
+  if (!validators.validate_AuthRequired(headers)) {
     throw new Error(`Invalid headers: ${JSON.stringify(headers, null, 2)}`);
   }
   const url = `${URL}/apartments/${id}`;
@@ -650,7 +651,7 @@ export async function deleteApartment(
   }
   switch (statusCode) {
     case 200:
-      if (!validation.validate_string(data)) {
+      if (!validators.validate_string(data)) {
         throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
       }
       return {
@@ -658,7 +659,7 @@ export async function deleteApartment(
         data,
       };
     case 403:
-      if (!validation.validate_string(data)) {
+      if (!validators.validate_string(data)) {
         throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
       }
       return {
@@ -675,13 +676,13 @@ export async function deleteApartment(
 }
 
 export async function listApartments(
-  headers: api.AuthRequired,
-  request: api.ListApartmentsRequest,
-): Promise<api.ListApartments_Response> {
-  if (!validation.validate_AuthRequired(headers)) {
+  headers: types.AuthRequired,
+  request: types.ListApartmentsRequest,
+): Promise<types.ListApartments_Response> {
+  if (!validators.validate_AuthRequired(headers)) {
     throw new Error(`Invalid headers: ${JSON.stringify(headers, null, 2)}`);
   }
-  if (!validation.validate_ListApartmentsRequest(request)) {
+  if (!validators.validate_ListApartmentsRequest(request)) {
     throw new Error(`Invalid request: ${JSON.stringify(request, null, 2)}`);
   }
   const url = `${URL}/apartments/list`;
@@ -712,7 +713,7 @@ export async function listApartments(
   }
   switch (statusCode) {
     case 200:
-      if (!validation.validate_ListApartmentsResponse(data)) {
+      if (!validators.validate_ListApartmentsResponse(data)) {
         throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
       }
       return {
@@ -720,7 +721,7 @@ export async function listApartments(
         data,
       };
     case 403:
-      if (!validation.validate_string(data)) {
+      if (!validators.validate_string(data)) {
         throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
       }
       return {
@@ -733,10 +734,10 @@ export async function listApartments(
 }
 
 export async function getApartment(
-  headers: api.AuthRequired,
+  headers: types.AuthRequired,
   id: string,
-): Promise<api.GetApartment_Response> {
-  if (!validation.validate_AuthRequired(headers)) {
+): Promise<types.GetApartment_Response> {
+  if (!validators.validate_AuthRequired(headers)) {
     throw new Error(`Invalid headers: ${JSON.stringify(headers, null, 2)}`);
   }
   const url = `${URL}/apartments/${id}`;
@@ -766,7 +767,7 @@ export async function getApartment(
   }
   switch (statusCode) {
     case 200:
-      if (!validation.validate_ApartmentDetails(data)) {
+      if (!validators.validate_ApartmentDetails(data)) {
         throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
       }
       return {
@@ -774,7 +775,7 @@ export async function getApartment(
         data,
       };
     case 403:
-      if (!validation.validate_string(data)) {
+      if (!validators.validate_string(data)) {
         throw new Error(`Invalid response: ${JSON.stringify(data, null, 2)}`);
       }
       return {
@@ -789,3 +790,4 @@ export async function getApartment(
       throw new Error(`Unexpected status: ${statusCode} ${statusText}`);
   }
 }
+// end-generated-section endpoints

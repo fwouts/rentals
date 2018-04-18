@@ -1,6 +1,10 @@
 import { Message } from "element-react";
 import { observable } from "mobx";
-import { ApartmentDetails, ApartmentInfo, UserDetails } from "../../../../api";
+import {
+  ApartmentDetails,
+  ApartmentInfo,
+  UserDetails,
+} from "../../../../api/types";
 import { updateApartment } from "../../../../client";
 import { UserPickerViewModel } from "../../../components/userpicker";
 import { SessionInfo } from "../../../signin";

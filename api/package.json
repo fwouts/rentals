@@ -10,7 +10,7 @@
     "generate-integration-test-server": "apidef generate typescript integration-test.api ../server/src/testing/integration -s"
   },
   "devDependencies": {
-    "@zenclabs/api": "^0.0.17",
+    "@zenclabs/api": "^0.0.19",
     "uuid": "^3.2.1"
   }
 }

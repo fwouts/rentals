@@ -1,4 +1,4 @@
-import { ApartmentDetails, ApartmentInfo } from "@/api";
+import { ApartmentDetails, ApartmentInfo } from "@/api/types";
 import { User } from "@/db/entities/user";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 import uuid from "uuid";

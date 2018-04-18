@@ -2,7 +2,11 @@ import { passwordValid } from "@/auth/salting";
 import { authenticate } from "@/auth/token";
 import { connection } from "@/db/connections";
 import { User } from "@/db/entities/user";
-import { AuthRequired, DeleteUser_Response, DeleteUserRequest } from "../api";
+import {
+  AuthRequired,
+  DeleteUser_Response,
+  DeleteUserRequest,
+} from "../api/types";
 
 export async function deleteUser(
   headers: AuthRequired,

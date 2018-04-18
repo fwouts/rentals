@@ -1,6 +1,6 @@
 import { Message } from "element-react";
 import { observable } from "mobx";
-import { Role } from "../api";
+import { Role } from "../api/types";
 import { registerUser } from "../client";
 
 export class RegisterViewModel {

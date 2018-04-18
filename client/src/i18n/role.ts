@@ -1,4 +1,4 @@
-import { Role } from "../api";
+import { Role } from "../api/types";
 
 export function humanizeRole(role: Role, forSentence = false) {
   if (forSentence) {

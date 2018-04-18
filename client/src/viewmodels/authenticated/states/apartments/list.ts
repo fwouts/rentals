@@ -6,7 +6,7 @@ import {
   ListApartmentsFilter,
   UserDetails,
   Viewport,
-} from "../../../../api";
+} from "../../../../api/types";
 import { listApartments } from "../../../../client";
 import { UserPickerViewModel } from "../../../components/userpicker";
 import { SessionInfo } from "../../../signin";

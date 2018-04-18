@@ -5,7 +5,7 @@ import {
   AuthRequired,
   ListApartments_Response,
   ListApartmentsRequest,
-} from "../api";
+} from "../api/types";
 
 const MAX_RESULTS_PER_PAGE = 500;
 

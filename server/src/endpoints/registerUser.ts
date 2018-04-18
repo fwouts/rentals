@@ -6,7 +6,7 @@ import {
   AuthOptional,
   RegisterUser_Response,
   RegisterUserRequest,
-} from "../api";
+} from "../api/types";
 import { connection } from "../db/connections";
 import { User } from "../db/entities/user";
 

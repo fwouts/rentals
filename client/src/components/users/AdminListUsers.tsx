@@ -9,7 +9,7 @@ import {
 } from "element-react";
 import { observer } from "mobx-react";
 import * as React from "react";
-import { Role, UserDetails } from "../../api";
+import { Role, UserDetails } from "../../api/types";
 import { humanizeRole } from "../../i18n/role";
 import { AdminListUsersViewModel } from "../../viewmodels/authenticated/states/users/admin-list";
 import "./AdminListUsers.scss";

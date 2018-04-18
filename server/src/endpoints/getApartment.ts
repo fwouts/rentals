@@ -1,7 +1,7 @@
 import { authenticate } from "@/auth/token";
 import { connection } from "@/db/connections";
 import { Apartment } from "@/db/entities/apartment";
-import { AuthRequired, GetApartment_Response } from "../api";
+import { AuthRequired, GetApartment_Response } from "../api/types";
 
 export async function getApartment(
   headers: AuthRequired,

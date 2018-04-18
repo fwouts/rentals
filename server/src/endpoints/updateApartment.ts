@@ -6,7 +6,7 @@ import {
   AuthRequired,
   UpdateApartment_Response,
   UpdateApartmentRequest,
-} from "../api";
+} from "../api/types";
 
 export async function updateApartment(
   headers: AuthRequired,

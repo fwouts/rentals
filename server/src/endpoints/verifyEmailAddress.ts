@@ -1,7 +1,7 @@
 import { createSessionToken } from "@/auth/token";
 import { connection } from "@/db/connections";
 import { User } from "@/db/entities/user";
-import { VerifyEmailAddress_Response, VerifyEmailRequest } from "../api";
+import { VerifyEmailAddress_Response, VerifyEmailRequest } from "../api/types";
 
 export async function verifyEmailAddress(
   request: VerifyEmailRequest,
