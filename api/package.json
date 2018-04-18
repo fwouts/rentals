@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "generate": "yarn generate-rentals-client && yarn generate-rentals-server && yarn generate-integration-test-client && yarn generate-integration-test-server",
-    "generate-rentals-client": "apidef generate typescript rentals.api ../client/src -c https://rentals.toptal.zenc.io",
+    "generate-rentals-client": "apidef generate typescript rentals.api ../client/src -c https://rentals.zenc.io",
     "generate-rentals-server": "apidef generate typescript rentals.api ../server/src -s",
     "generate-integration-test-client": "apidef generate typescript integration-test.api ../client/src/testing/integration -c http://localhost:3020",
     "generate-integration-test-server": "apidef generate typescript integration-test.api ../server/src/testing/integration -s"
